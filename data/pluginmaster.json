@@ -1,10 +1,10 @@
 [
     {
         "Author": "GiR-Zippo, Meowchestra, MoogleTroupe",
-        "Name": "HypnotoadPlugin",
+        "Name": "Hypnotoad",
         "InternalName": "HypnotoadPlugin",
         "AssemblyVersion": "0.0.1.12",
-        "Description": "BardMusicPlayer & LightAmp companion for enhanced functionality.",
+        "Description": "MeowMusic companion for enhanced functionality.",
         "ApplicableVersion": "any",
         "Tags": [
             "BardMusicPlayer",
@@ -18,14 +18,14 @@
         "LoadRequiredState": 0,
         "LoadPriority": 0,
         "LoadSync": "false",
-        "IconUrl": "https://raw.githubusercontent.com/Meowchestra/Hypnotoad-Plugin/develop/data/icon.png",
+        "IconUrl": "https://raw.githubusercontent.com/Meowchestra/Hypnotoad/develop/data/icon.png",
         "Punchline": "Companion plugin for enhanced functionality.",
         "IsHide": "false",
         "IsTestingExclusive": "false",
         "AcceptsFeedback": "false",
         "LastUpdate": "0",
-        "DownloadLinkInstall": "https://raw.githubusercontent.com/Meowchestra/Hypnotoad-Plugin/develop/data/latest.zip",
-        "DownloadLinkTesting": "https://raw.githubusercontent.com/Meowchestra/Hypnotoad-Plugin/develop/data/latest.zip",
-        "DownloadLinkUpdate": "https://raw.githubusercontent.com/Meowchestra/Hypnotoad-Plugin/develop/data/latest.zip"
+        "DownloadLinkInstall": "https://raw.githubusercontent.com/Meowchestra/Hypnotoad/develop/data/latest.zip",
+        "DownloadLinkTesting": "https://raw.githubusercontent.com/Meowchestra/Hypnotoad/develop/data/latest.zip",
+        "DownloadLinkUpdate": "https://raw.githubusercontent.com/Meowchestra/Hypnotoad/develop/data/latest.zip"
     }
 ]
