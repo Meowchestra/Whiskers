@@ -1,9 +1,9 @@
 {
   "Author": "GiR-Zippo, Meowchestra, MoogleTroupe",
-  "Name": "Hypnotoad",
+  "Name": "HypnotoadPlugin",
   "InternalName": "HypnotoadPlugin",
   "AssemblyVersion": "0.0.1.12",
-  "Description": "MeowMusic companion for enhanced functionality.",
+  "Description": "BardMusicPlayer & LightAmp companion for enhanced functionality.",
   "ApplicableVersion": "any",
   "Tags": [
     "BardMusicPlayer",
@@ -18,6 +18,6 @@
   "LoadSync": false,
   "CanUnloadAsync": false,
   "LoadPriority": 0,
-  "Punchline": "MeowMusic companion for enhanced functionality.",
+  "Punchline": "BardMusicPlayer & LightAmp companion for enhanced functionality.",
   "AcceptsFeedback": true
 }
