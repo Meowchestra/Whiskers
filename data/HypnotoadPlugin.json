@@ -3,7 +3,7 @@
   "Name": "HypnotoadPlugin",
   "InternalName": "HypnotoadPlugin",
   "AssemblyVersion": "0.0.1.12",
-  "Description": "BardMusicPlayer & LightAmp companion for enhanced functionality.",
+  "Description": "MeowMusic companion for enhanced functionality.",
   "ApplicableVersion": "any",
   "Tags": [
     "BardMusicPlayer",
@@ -18,6 +18,6 @@
   "LoadSync": false,
   "CanUnloadAsync": false,
   "LoadPriority": 0,
-  "Punchline": "BardMusicPlayer & LightAmp companion for enhanced functionality.",
+  "Punchline": "MeowMusic companion for enhanced functionality.",
   "AcceptsFeedback": true
 }
