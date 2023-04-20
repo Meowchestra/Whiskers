@@ -1,6 +1,8 @@
-# Hypnotoad Plugin
+# Hypnotoad
 
-BardMusicPlayer & LightAmp can be used with the [Hypnotoad](https://github.com/Meowchestra/Hypnotoad-Plugin) companion plugin for enhanced functionality.
+[MeowMusic](https://github.com/Meowchestra/MeowMusic/) can be used with the [Hypnotoad](https://github.com/Meowchestra/Hypnotoad) dalamud companion plugin for enhanced functionality. 
+
+_Personal fork based on BardMusicPlayer & LightAmp's Hypnotoad plugin with custom changes ahead of upstream._
 
 <details>
 <summary>Enhanced Features</summary>
@@ -19,4 +21,4 @@ BardMusicPlayer & LightAmp can be used with the [Hypnotoad](https://github.com/M
 
 Copy this url to your dalamud settings experimental custom plugin repositories and search for the hypnotoad plugin.
 
-`https://raw.githubusercontent.com/Meowchestra/Hypnotoad-Plugin/develop/data/pluginmaster.json`
+`https://raw.githubusercontent.com/Meowchestra/Hypnotoad/develop/data/pluginmaster.json`
