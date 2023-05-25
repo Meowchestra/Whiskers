@@ -24,7 +24,7 @@ public static partial class Chat
 
 public static class Offsets
 {
-    [StaticAddress("48 8D 05 ?? ?? ?? ?? 48 8B F9 48 89 01 48 8D 05 ?? ?? ?? ?? 48 89 41 28 48 8B 49 48")]
+    [StaticAddress("48 8D 05 ?? ?? ?? ?? 48 8B ?? 48 89 01 48 8D 05 ?? ?? ?? ?? 48 89 41 28 48 8B 49 48")]
     public static nint AgentPerformance { get; private set; }
 
     [StaticAddress("48 8D 05 ?? ?? ?? ?? 48 89 03 48 8D 4B 40")]
