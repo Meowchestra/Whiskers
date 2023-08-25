@@ -15,7 +15,7 @@
 
     <Description>MeowMusic companion for enhanced functionality.</Description>
     <PackageProjectUrl>https://github.com/Meowchestra/Hypnotoad</PackageProjectUrl>
-    <Version>0.0.1.13</Version>
+    <Version>0.0.1.14</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
