@@ -1,13 +1,18 @@
-﻿using System.Numerics;
+﻿/*
+ * Copyright(c) 2023 GiR-Zippo, Meowchestra
+ * Licensed under the GPL v3 license. See https://github.com/GiR-Zippo/LightAmp/blob/main/LICENSE for full license information.
+ */
+
+using System.Numerics;
 using System.Reflection;
 using System.Timers;
 using Dalamud.Logging;
 using H.Pipes.Args;
-using HypnotoadPlugin.Offsets;
 using ImGuiNET;
+using Whiskers.Offsets;
 using Timer = System.Timers.Timer;
 
-namespace HypnotoadPlugin;
+namespace Whiskers;
 
 public class PayloadMessage
 {
@@ -23,8 +28,6 @@ internal class PluginUi : IDisposable
     private Timer ReconnectTimer { get; set; } = new();
     private readonly Queue<PayloadMessage> _qt = new();
     private readonly Configuration _configuration;
-
-    private bool PerformanceModeOpen { get; set; } = false;
 
     // this extra bool exists for ImGui, since you can't ref a property
     private bool _visible;
@@ -77,9 +80,14 @@ internal class PluginUi : IDisposable
         {
             MsgType    = MessageType.SetGfx,
             MsgChannel = 0,
-            Message    = Environment.ProcessId + ":" + GfxSettings.AgentConfigSystem.CheckLowSettings()
+            Message    = Environment.ProcessId + ":" + GameSettings.AgentConfigSystem.CheckLowSettings()
         });
 
+        Pipe.Client?.WriteAsync(new PayloadMessage
+        {
+            MsgType = MessageType.SetSoundOnOff,
+            Message = Environment.ProcessId + ":" + GameSettings.AgentConfigSystem.GetMasterSoundEnable()
+        });
         Collector.Instance.UpdateClientStats();
     }
 
@@ -121,7 +129,7 @@ internal class PluginUi : IDisposable
                 {
                     ManuallyDisconnected = true;
                     Pipe.Client?.DisconnectAsync();
-                    PluginLog.LogError("Hypnotoad is out of date and cannot work with the running bard program.");
+                    PluginLog.LogError("Whiskers is out of date and cannot work with the running bard program.");
                 }
                 break;
             case MessageType.NoteOn:
@@ -137,6 +145,7 @@ internal class PluginUi : IDisposable
             case MessageType.Instrument:
             case MessageType.AcceptReply:
             case MessageType.SetGfx:
+            case MessageType.SetSoundOnOff:
             case MessageType.StartEnsemble:
                 _qt.Enqueue(inMsg);
                 break;
@@ -179,7 +188,7 @@ internal class PluginUi : IDisposable
         {
             ImGui.SetNextWindowSize(new Vector2(300, 110), ImGuiCond.FirstUseEver);
             ImGui.SetNextWindowSizeConstraints(new Vector2(300, 110), new Vector2(float.MaxValue, float.MaxValue));
-            if (ImGui.Begin("Hypnotoad", ref _visible, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
+            if (ImGui.Begin("Whiskers", ref _visible, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
             {
                 // can't ref a property, so use a local copy
                 var configValue = _configuration.AutoConnect;
@@ -216,15 +225,15 @@ internal class PluginUi : IDisposable
         }
 
         //Check performance state
-        /*if (Hypnotoad.AgentPerformance != null && Hypnotoad.AgentPerformance.InPerformanceMode != performanceModeOpen)
+        /*if (Whiskers.AgentPerformance != null && Whiskers.AgentPerformance.InPerformanceMode != performanceModeOpen)
         {
-            performanceModeOpen = Hypnotoad.AgentPerformance.InPerformanceMode;
+            performanceModeOpen = Whiskers.AgentPerformance.InPerformanceMode;
             if (Pipe.Client != null && Pipe.Client.IsConnected)
             {
                 Pipe.Client.WriteAsync(new PayloadMessage()
                 {
                     MsgType = MessageType.PerformanceModeState,
-                    Message = Environment.ProcessId + ":" + Hypnotoad.AgentPerformance.Instrument.ToString()
+                    Message = Environment.ProcessId + ":" + Whiskers.AgentPerformance.Instrument.ToString()
                 });
             }
         }*/
@@ -251,17 +260,20 @@ internal class PluginUi : IDisposable
                         PerformActions.ConfirmReceiveReadyCheck();
                         break;
                     case MessageType.SetGfx:
-                        if (Convert.ToUInt32(msg.Message) == 1)
+                        if (Convert.ToBoolean(msg.Message))
                         {
-                            GfxSettings.AgentConfigSystem.GetObjQuantity();
-                            GfxSettings.AgentConfigSystem.SetMinimalObjQuantity();
-                            Hypnotoad.AgentConfigSystem?.ApplyGraphicSettings();
+                            GameSettings.AgentConfigSystem.GetSettings();
+                            GameSettings.AgentConfigSystem.SetMinimalGfx();
+                            Whiskers.AgentConfigSystem?.ApplyGraphicSettings();
                         }
                         else
                         {
-                            GfxSettings.AgentConfigSystem.RestoreObjQuantity();
-                            Hypnotoad.AgentConfigSystem?.ApplyGraphicSettings();
+                            GameSettings.AgentConfigSystem.RestoreSettings();
+                            Whiskers.AgentConfigSystem?.ApplyGraphicSettings();
                         }
+                        break;
+                    case MessageType.SetSoundOnOff:
+                        GameSettings.AgentConfigSystem.SetMasterSoundEnable(Convert.ToBoolean(msg.Message));
                         break;
                     case MessageType.StartEnsemble:
                         PerformActions.BeginReadyCheck();

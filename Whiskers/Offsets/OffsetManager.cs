@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using Dalamud.Game;
 using Dalamud.Logging;
 
-namespace HypnotoadPlugin.Offsets;
+namespace Whiskers.Offsets;
 
 public static class OffsetManager
 {

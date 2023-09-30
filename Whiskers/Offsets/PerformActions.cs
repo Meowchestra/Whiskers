@@ -1,5 +1,6 @@
 ﻿/*
- * Copyright(c) 2022 Ori @MidiBard2
+ * Copyright(c) 2023 GiR-Zippo, Ori @MidiBard2
+ * Licensed under the GPL v3 license. See https://github.com/GiR-Zippo/LightAmp/blob/main/LICENSE for full license information.
  */
 
 using System.Diagnostics;
@@ -8,7 +9,7 @@ using Dalamud.Logging;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 
-namespace HypnotoadPlugin.Offsets;
+namespace Whiskers.Offsets;
 
 public class PerformActions
 {
@@ -165,26 +166,25 @@ public class PerformActions
     {
         if (on)
         {
-            if (Hypnotoad.AgentPerformance != null && Hypnotoad.AgentPerformance.NoteNumber - 39 == noteNum)
+            if (Whiskers.AgentPerformance != null && Whiskers.AgentPerformance.NoteNumber - 39 == noteNum)
                 if (ReleaseKey(noteNum))
-                    Hypnotoad.AgentPerformance.Struct->CurrentPressingNote = -100;
+                    Whiskers.AgentPerformance.Struct->CurrentPressingNote = -100;
 
-            if (Hypnotoad.AgentPerformance != null && PressKey(noteNum, ref Hypnotoad.AgentPerformance.Struct->NoteOffset, ref Hypnotoad.AgentPerformance.Struct->OctaveOffset))
+            if (Whiskers.AgentPerformance != null && PressKey(noteNum, ref Whiskers.AgentPerformance.Struct->NoteOffset, ref Whiskers.AgentPerformance.Struct->OctaveOffset))
             {
-                Hypnotoad.AgentPerformance.Struct->CurrentPressingNote = noteNum + 39;
+                Whiskers.AgentPerformance.Struct->CurrentPressingNote = noteNum + 39;
             }
 
         }
         else
         {
-            if (Hypnotoad.AgentPerformance != null && Hypnotoad.AgentPerformance.Struct->CurrentPressingNote - 39 != noteNum)
+            if (Whiskers.AgentPerformance != null && Whiskers.AgentPerformance.Struct->CurrentPressingNote - 39 != noteNum)
                 return;
 
             if (ReleaseKey(noteNum))
             {
-                if (Hypnotoad.AgentPerformance != null) Hypnotoad.AgentPerformance.Struct->CurrentPressingNote = -100;
+                if (Whiskers.AgentPerformance != null) Whiskers.AgentPerformance.Struct->CurrentPressingNote = -100;
             }
         }
     }
-
 }

@@ -1,7 +1,7 @@
 ﻿using H.Formatters;
 using H.Pipes;
 
-namespace HypnotoadPlugin;
+namespace Whiskers;
 
 internal static class Pipe
 {
@@ -9,7 +9,7 @@ internal static class Pipe
 
     internal static void Initialize()
     {
-        Client = new PipeClient<PayloadMessage>("Hypnotoad", formatter: new NewtonsoftJsonFormatter());
+        Client = new PipeClient<PayloadMessage>("Whiskers", formatter: new NewtonsoftJsonFormatter());
     }
 
     internal static void Dispose()

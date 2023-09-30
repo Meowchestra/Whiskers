@@ -1,31 +1,29 @@
 [
     {
         "Author": "GiR-Zippo, Meowchestra, MoogleTroupe",
-        "Name": "Hypnotoad",
-        "InternalName": "HypnotoadPlugin",
-        "AssemblyVersion": "0.0.1.14",
+        "Name": "Whiskers",
+        "InternalName": "Whiskers",
+        "AssemblyVersion": "0.0.1.15",
         "Description": "MeowMusic companion for enhanced functionality.",
         "ApplicableVersion": "any",
         "Tags": [
-            "BardMusicPlayer",
-            "LightAmp",
-            "BMP",
+            "MeowMusic",
             "Midi",
-            "Bard",
-            "Doot"
+            "Performance",
+            "Bard"
         ],
         "DalamudApiLevel": 8,
         "LoadRequiredState": 0,
         "LoadPriority": 0,
         "LoadSync": "false",
-        "IconUrl": "https://raw.githubusercontent.com/Meowchestra/Hypnotoad/develop/data/icon.png",
+        "IconUrl": "https://raw.githubusercontent.com/Meowchestra/Whiskers/develop/data/icon.png",
         "Punchline": "Companion plugin for enhanced functionality.",
         "IsHide": "false",
         "IsTestingExclusive": "false",
         "AcceptsFeedback": "false",
         "LastUpdate": "0",
-        "DownloadLinkInstall": "https://raw.githubusercontent.com/Meowchestra/Hypnotoad/develop/data/latest.zip",
-        "DownloadLinkTesting": "https://raw.githubusercontent.com/Meowchestra/Hypnotoad/develop/data/latest.zip",
-        "DownloadLinkUpdate": "https://raw.githubusercontent.com/Meowchestra/Hypnotoad/develop/data/latest.zip"
+        "DownloadLinkInstall": "https://raw.githubusercontent.com/Meowchestra/Whiskers/develop/data/latest.zip",
+        "DownloadLinkTesting": "https://raw.githubusercontent.com/Meowchestra/Whiskers/develop/data/latest.zip",
+        "DownloadLinkUpdate": "https://raw.githubusercontent.com/Meowchestra/Whiskers/develop/data/latest.zip"
     }
 ]

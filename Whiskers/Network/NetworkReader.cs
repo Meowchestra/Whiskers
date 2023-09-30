@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
 using System.Runtime.InteropServices;
 using Dalamud.Game.Network;
-using HypnotoadPlugin.Offsets;
+using Whiskers.Offsets;
 
-namespace HypnotoadPlugin.Network;
+namespace Whiskers.Network;
 
 public static unsafe class NetworkReader
 {

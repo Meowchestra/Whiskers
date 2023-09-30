@@ -1,16 +1,14 @@
 {
     "Author": "GiR-Zippo, Meowchestra, MoogleTroupe",
-    "Name": "Hypnotoad",
+    "Name": "Whiskers",
+    "InternalName": "Whiskers",
     "Punchline": "MeowMusic companion for enhanced functionality.",
     "Description": "MeowMusic companion for enhanced functionality.",
-    "InternalName": "HypnotoadPlugin",
     "ApplicableVersion": "any",
     "Tags": [
-        "BardMusicPlayer",
-        "LightAmp",
-        "BMP",
+        "MeowMusic",
         "Midi",
-        "Bard",
-        "Doot"
+        "Performance",
+        "Bard"
     ]
 }

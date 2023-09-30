@@ -1,8 +1,8 @@
-# Hypnotoad
+# Whiskers
 
-[MeowMusic](https://github.com/Meowchestra/MeowMusic/) can be used with the [Hypnotoad](https://github.com/Meowchestra/Hypnotoad) dalamud companion plugin for enhanced functionality. 
+[MeowMusic](https://github.com/Meowchestra/MeowMusic/) can be used with my custom <a href="https://github.com/Meowchestra/Whiskers">Whiskers</a> companion plugin for enhanced functionality.
 
-_Personal fork based on BardMusicPlayer & LightAmp's Hypnotoad plugin with custom changes ahead of upstream._
+_Personal fork based on <a href="https://github.com/GiR-Zippo/LightAmp">LightAmp's</a> <a href="https://github.com/GiR-Zippo/Hypnotoad-Plugin">Hypnotoad</a> plugin._
 
 <details>
 <summary>Enhanced Features</summary>
@@ -13,12 +13,13 @@ _Personal fork based on BardMusicPlayer & LightAmp's Hypnotoad plugin with custo
     * Direct ensemble ready / accept.
     * Improved note playing.
     * Set graphics toggle.
+    * Mute sounds toggle.
     
     And much more!
 </details>
 
 ## How to Install
 
-Copy this url to your dalamud settings experimental custom plugin repositories and search for the hypnotoad plugin.
+Copy this url to your dalamud settings experimental custom plugin repositories and search for the Whiskers plugin.
 
-`https://raw.githubusercontent.com/Meowchestra/Hypnotoad/develop/data/pluginmaster.json`
+`https://raw.githubusercontent.com/Meowchestra/Whiskers/develop/data/pluginmaster.json`

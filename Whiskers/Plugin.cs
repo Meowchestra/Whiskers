@@ -1,21 +1,26 @@
-﻿using Dalamud.Data;
+﻿/*
+ * Copyright(c) 2023 GiR-Zippo, Meowchestra
+ * Licensed under the GPL v3 license. See https://github.com/GiR-Zippo/LightAmp/blob/main/LICENSE for full license information.
+ */
+
+using Dalamud.Data;
 using Dalamud.Game;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Party;
 using Dalamud.Game.Command;
 using Dalamud.IoC;
 using Dalamud.Plugin;
-using HypnotoadPlugin.Offsets;
-using static HypnotoadPlugin.Offsets.GfxSettings;
+using Whiskers.Offsets;
+using static Whiskers.Offsets.GameSettings;
 
-namespace HypnotoadPlugin;
+namespace Whiskers;
 
-public class Hypnotoad : IDalamudPlugin
+public class Whiskers : IDalamudPlugin
 {
     //public static XivCommonBase CBase;
-    public string Name => "Hypnotoad";
+    public string Name => "Whiskers";
 
-    private const string CommandName = "/hypnotoad";
+    private const string CommandName = "/purr";
 
     private DalamudPluginInterface PluginInterface { get; }
     private CommandManager CommandManager { get; }
@@ -28,7 +33,7 @@ public class Hypnotoad : IDalamudPlugin
     [PluginService] 
     private static SigScanner? SigScanner { get; set; }
 
-    public Hypnotoad(DalamudPluginInterface pluginInterface, DataManager? data, CommandManager commandManager, ClientState? clientState, PartyList? partyList)
+    public Whiskers(DalamudPluginInterface pluginInterface, DataManager? data, CommandManager commandManager, ClientState? clientState, PartyList? partyList)
     {
         Api.Initialize(this, pluginInterface);
         PluginInterface = pluginInterface;
@@ -40,7 +45,7 @@ public class Hypnotoad : IDalamudPlugin
 
         CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
         {
-            HelpMessage = "Open the Hypnotoad settings menu."
+            HelpMessage = "Open the Whiskers settings menu."
         });
 
         AgentConfigSystem = new AgentConfigSystem(AgentManager.Instance.FindAgentInterfaceByVtable(Offsets.Offsets.AgentConfigSystem));
@@ -49,7 +54,7 @@ public class Hypnotoad : IDalamudPlugin
 
         Collector.Instance.Initialize(data, clientState, partyList);
 
-        AgentConfigSystem.GetObjQuantity();
+        AgentConfigSystem.GetSettings();
 
         //NetworkReader.Initialize();
 
@@ -63,7 +68,7 @@ public class Hypnotoad : IDalamudPlugin
     public void Dispose()
     {
         //NetworkReader.Dispose();
-        AgentConfigSystem.RestoreObjQuantity();
+        AgentConfigSystem.RestoreSettings();
         AgentConfigSystem?.ApplyGraphicSettings();
         EnsembleManager?.Dispose();
         Collector.Instance.Dispose();

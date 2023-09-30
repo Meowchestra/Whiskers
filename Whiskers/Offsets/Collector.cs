@@ -1,8 +1,13 @@
-﻿using Dalamud.Data;
+﻿/*
+ * Copyright(c) 2023 GiR-Zippo
+ * Licensed under the GPL v3 license. See https://github.com/GiR-Zippo/LightAmp/blob/main/LICENSE for full license information.
+ */
+
+using Dalamud.Data;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Party;
 
-namespace HypnotoadPlugin.Offsets;
+namespace Whiskers.Offsets;
 
 public readonly struct PlayerInfo
 {
@@ -20,7 +25,6 @@ public readonly struct PlayerInfo
     private string PlayerRegion { get; }
     public override string ToString() => $"{PlayerName} [{PlayerWorld}, {PlayerRegion}]";
 }
-
 
 public class Collector
 {

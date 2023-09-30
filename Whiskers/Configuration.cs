@@ -1,7 +1,12 @@
-﻿using Dalamud.Configuration;
+﻿/*
+ * Copyright(c) 2023 GiR-Zippo
+ * Licensed under the GPL v3 license. See https://github.com/GiR-Zippo/LightAmp/blob/main/LICENSE for full license information.
+ */
+
+using Dalamud.Configuration;
 using Dalamud.Plugin;
 
-namespace HypnotoadPlugin;
+namespace Whiskers;
 
 [Serializable]
 public class Configuration : IPluginConfiguration

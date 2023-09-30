@@ -30,7 +30,7 @@ using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Client.System.String;
 
-namespace HypnotoadPlugin.Offsets;
+namespace Whiskers.Offsets;
 
 /// <summary>
 /// A class containing chat functionality
