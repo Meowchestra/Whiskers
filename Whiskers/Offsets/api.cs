@@ -14,73 +14,76 @@ namespace Whiskers.Offsets;
 public class Api
 {
     [PluginService]
-    public static DalamudPluginInterface? PluginInterface { get; set; }
+    public static DalamudPluginInterface? PluginInterface { get; private set; }
 
     [PluginService]
-    public static IBuddyList? BuddyList { get; set; }
+    public static IBuddyList? BuddyList { get; private set; }
 
     [PluginService]
-    public static IChatGui? ChatGui { get; set; }
+    public static IChatGui? ChatGui { get; private set; }
 
     [PluginService]
-    public static IClientState? ClientState { get; set; }
+    public static IClientState? ClientState { get; private set; }
 
     [PluginService]
-    public static ICommandManager? CommandManager { get; set; }
+    public static ICommandManager? CommandManager { get; private set; }
 
     [PluginService]
-    public static ICondition? Condition { get; set; }
+    public static ICondition? Condition { get; private set; }
 
     [PluginService] 
-    public static IGameInteropProvider? GameInteropProvider { get; set; }
+    public static IGameInteropProvider? GameInteropProvider { get; private set; }
 
     [PluginService]
-    public static IDataManager? DataManager { get; set; }
+    public static IDataManager? DataManager { get; private set; }
 
     [PluginService]
-    public static IFateTable? FateTable { get; set; }
+    public static IFateTable? FateTable { get; private set; }
 
     [PluginService]
-    public static IFlyTextGui? FlyTextGui { get; set; }
+    public static IFlyTextGui? FlyTextGui { get; private set; }
 
     [PluginService]
-    public static IFramework? Framework { get; set; }
+    public static IFramework? Framework { get; private set; }
 
     [PluginService]
-    public static IGameGui? GameGui { get; set; }
+    public static IGameGui? GameGui { get; private set; }
 
     [PluginService]
-    public static IGameNetwork? GameNetwork { get; set; }
+    public static IGameNetwork? GameNetwork { get; private set; }
 
     [PluginService]
-    public static IJobGauges? JobGauges { get; set; }
+    public static IJobGauges? JobGauges { get; private set; }
 
     [PluginService]
-    public static IKeyState? KeyState { get; set; }
+    public static IKeyState? KeyState { get; private set; }
 
     [PluginService]
-    public static ILibcFunction? LibcFunction { get; set; }
+    public static ILibcFunction? LibcFunction { get; private set; }
 
     [PluginService]
-    public static IObjectTable? ObjectTable { get; set; }
+    public static IObjectTable? ObjectTable { get; private set; }
 
     [PluginService]
-    public static IPartyFinderGui? PartyFinderGui { get; set; }
+    public static IPartyFinderGui? PartyFinderGui { get; private set; }
 
     [PluginService]
-    public static IPartyList? PartyList { get; set; }
+    public static IPartyList? PartyList { get; private set; }
 
     [PluginService]
-    public static ISigScanner? SigScanner { get; set; }
+    public static ISigScanner? SigScanner { get; private set; }
 
     [PluginService]
-    public static ITargetManager? TargetManager { get; set; }
+    public static ITargetManager? TargetManager { get; private set; }
 
     [PluginService]
-    public static IToastGui? ToastGui { get; set; }
+    public static IToastGui? ToastGui { get; private set; }
 
     [PluginService]
-    public static IPluginLog? PluginLog { get; set; }
+    public static IPluginLog? PluginLog { get; private set; }
+    
+    [PluginService] 
+    public static IGameConfig? GameConfig { get; private set; }
 
     private static PluginCommandManager<IDalamudPlugin>? _pluginCommandManager;
 
