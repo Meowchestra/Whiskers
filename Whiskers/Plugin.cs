@@ -29,7 +29,7 @@ public class Whiskers : IDalamudPlugin
     internal static EnsembleManager? EnsembleManager { get; set; }
 
     [PluginService] 
-    private static SigScanner? SigScanner { get; set; }
+    private static ISigScanner? SigScanner { get; set; }
 
     public Whiskers(DalamudPluginInterface pluginInterface, IDataManager? data, ICommandManager commandManager, IClientState? clientState, IPartyList? partyList)
     {

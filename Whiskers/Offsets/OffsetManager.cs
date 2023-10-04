@@ -10,7 +10,7 @@ namespace Whiskers.Offsets;
 
 public static class OffsetManager
 {
-    public static void Setup(SigScanner? scanner)
+    public static void Setup(ISigScanner? scanner)
     {
         var props = typeof(Offsets).GetProperties(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
             .Select(i => (prop: i, Attribute: i.GetCustomAttribute<SigAttribute>())).Where(i => i.Attribute != null);
