@@ -77,8 +77,6 @@ public class Collector
     /// Triggered by ClientState_Login
     /// Send the Name and WorldId to the LA
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private void ClientState_Login()
     {
         if (ClientState?.LocalPlayer != null)
