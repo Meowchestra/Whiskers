@@ -32,7 +32,7 @@ public class Api
     public static ICondition? Condition { get; set; }
 
     [PluginService] 
-    public static IGameInteropProvider? HoodProvider { get; set; }
+    public static IGameInteropProvider? GameInteropProvider { get; set; }
 
     [PluginService]
     public static IDataManager? DataManager { get; set; }
@@ -81,9 +81,6 @@ public class Api
 
     [PluginService]
     public static IPluginLog? PluginLog { get; set; }
-
-    [PluginService]
-    public static IGameInteropProvider? GameInteropProvider { get; set; }
 
     private static PluginCommandManager<IDalamudPlugin>? _pluginCommandManager;
 

@@ -21,7 +21,7 @@ public class PerformActions
 
     private PerformActions() { }
     private static unsafe nint GetWindowByName(string s) => (nint)AtkStage.GetSingleton()->RaptureAtkUnitManager->GetAddonByName(s);
-    public static void Init() => Api.HoodProvider.InitializeFromAttributes(new PerformActions());
+    public static void Init() => Api.GameInteropProvider?.InitializeFromAttributes(new PerformActions());
 
     private static void SendAction(nint ptr, params ulong[] param)
     {
