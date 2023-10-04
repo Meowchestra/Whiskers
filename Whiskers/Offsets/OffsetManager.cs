@@ -5,7 +5,6 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Dalamud.Game;
-using Dalamud.Logging;
 
 namespace Whiskers.Offsets;
 
@@ -40,7 +39,7 @@ public static class OffsetManager
                         address += sigAttribute.Offset;
                         var structure = Marshal.PtrToStructure(address, propertyInfo.PropertyType);
                         propertyInfo.SetValue(null, structure);
-                        PluginLog.Information($"[{nameof(OffsetManager)}][{propertyInfo.Name}] {propertyInfo.PropertyType.FullName} {structure}");
+                        Api.PluginLog?.Debug($"[{nameof(OffsetManager)}][{propertyInfo.Name}] {propertyInfo.PropertyType.FullName} {structure}");
                         continue;
                     }
                     default:
@@ -49,12 +48,12 @@ public static class OffsetManager
 
                 address += sigAttribute.Offset;
                 propertyInfo.SetValue(null, address);
-                PluginLog.Information($"[{nameof(OffsetManager)}][{propertyInfo.Name}] {address.ToInt64():X}");
-                PluginLog.Information($"[{nameof(OffsetManager)}][{propertyInfo.Name}] {PerformActions.MainModuleRva(address)}");
+                Api.PluginLog?.Debug($"[{nameof(OffsetManager)}][{propertyInfo.Name}] {address.ToInt64():X}");
+                Api.PluginLog?.Debug($"[{nameof(OffsetManager)}][{propertyInfo.Name}] {PerformActions.MainModuleRva(address)}");
             }
             catch (Exception e)
             {
-                PluginLog.Error(e, $"[{nameof(OffsetManager)}][{propertyInfo.Name}] failed to find sig : {sigAttribute?.SigString}");
+                Api.PluginLog?.Error(e, $"[{nameof(OffsetManager)}][{propertyInfo.Name}] failed to find sig : {sigAttribute?.SigString}");
                 exceptions.Add(e);
             }
         }

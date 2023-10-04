@@ -3,9 +3,7 @@
  * Licensed under the GPL v3 license. See https://github.com/GiR-Zippo/LightAmp/blob/main/LICENSE for full license information.
  */
 
-using Dalamud.Data;
-using Dalamud.Game.ClientState;
-using Dalamud.Game.ClientState.Party;
+using Dalamud.Plugin.Services;
 
 namespace Whiskers.Offsets;
 
@@ -38,7 +36,7 @@ public class Collector
     public static Collector Instance => LazyInstance.Value;
 
        
-    public void Initialize(DataManager? data, ClientState? clientState, PartyList? partyList)
+    public void Initialize(IDataManager? data, IClientState? clientState, IPartyList? partyList)
     {
         Data        = data;
         ClientState = clientState;
@@ -63,16 +61,16 @@ public class Collector
     }
     #endregion
 
-    internal DataManager? Data;
-    internal ClientState? ClientState;
-    internal PartyList? PartyList;
+    internal IDataManager? Data;
+    internal IClientState? ClientState;
+    internal IPartyList? PartyList;
 
     /// <summary>
     /// Only called when the plugin is started
     /// </summary>
     public void UpdateClientStats()
     {
-        ClientState_Login(null, null);
+        ClientState_Login();
     }
 
     /// <summary>
@@ -81,7 +79,7 @@ public class Collector
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void ClientState_Login(object? sender, EventArgs? e)
+    private void ClientState_Login()
     {
         if (ClientState?.LocalPlayer != null)
         {
@@ -102,10 +100,9 @@ public class Collector
         }
     }
 
-    private static void ClientState_Logout(object? sender, EventArgs e)
+    private static void ClientState_Logout()
     {
     }
-
 
     private List<PlayerInfo> _getInfoFromNormalParty()
     {

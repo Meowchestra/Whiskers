@@ -6,7 +6,6 @@
 using System.Runtime.InteropServices;
 using Dalamud.Game.Gui.Toast;
 using Dalamud.Game.Text.SeStringHandling;
-using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 
@@ -221,7 +220,7 @@ internal static class GameSettings
         public static unsafe bool GetMasterSoundEnable()
         {
             if (Framework.Instance()->SystemConfig.CommonSystemConfig.ConfigBase.ConfigEntry[(int)ConfigOption.IsSndMaster].Value.UInt == 0)
-                PluginLog.Debug("Enabled");
+                Api.PluginLog?.Debug("Enabled");
             return (Framework.Instance()->SystemConfig.CommonSystemConfig.ConfigBase.ConfigEntry[(int)ConfigOption.IsSndMaster].Value.UInt == 0);
         }
         #endregion
@@ -264,7 +263,7 @@ internal unsafe class AgentManager
         }
         catch (Exception e)
         {
-            PluginLog.Error(e.ToString());
+            Api.PluginLog?.Error(e.ToString());
         }
     }
 

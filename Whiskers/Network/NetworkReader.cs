@@ -88,11 +88,11 @@ public static unsafe class NetworkReader
 
             /*if (opCode == 1234)
             {
-                PluginLog.Debug("NET: " + Convert.ToString(opCode));
-                PluginLog.Debug(BitConverter.ToString(ti));
-                PluginLog.Debug(hexString);
-                PluginLog.Debug(sourceActorId.ToString());
-                PluginLog.Debug(targetActorId.ToString());
+                Api.PluginLog?.Debug("NET: " + Convert.ToString(opCode));
+                Api.PluginLog?.Debug(BitConverter.ToString(ti));
+                Api.PluginLog?.Debug(hexString);
+                Api.PluginLog?.Debug(sourceActorId.ToString());
+                Api.PluginLog?.Debug(targetActorId.ToString());
             }*/
 
             if (CheckPattern(EnsembleStart, inPacket))

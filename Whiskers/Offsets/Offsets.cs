@@ -73,11 +73,11 @@ public sealed unsafe class AgentPerformance : AgentInterface
 internal class EnsembleManager : IDisposable
 {
     private delegate long SubNetworkEnsemble(IntPtr a1, IntPtr a2);
-    private readonly Hook<SubNetworkEnsemble> _networkEnsembleHook;
+    private readonly Hook<SubNetworkEnsemble>? _networkEnsembleHook;
     internal EnsembleManager()
     {
         //Get the ensemble start
-        _networkEnsembleHook = Hook<SubNetworkEnsemble>.FromAddress(Offsets.NetworkEnsembleStart, (a1, a2) =>
+        _networkEnsembleHook = Api.GameInteropProvider?.HookFromAddress<SubNetworkEnsemble>(Offsets.NetworkEnsembleStart, (a1, a2) =>
         {
             //and pipe it
             if (Pipe.Client != null && Pipe.Client.IsConnected)
@@ -91,11 +91,11 @@ internal class EnsembleManager : IDisposable
 
             return _networkEnsembleHook != null ? _networkEnsembleHook.Original(a1, a2) : 0;
         });
-        _networkEnsembleHook.Enable();
+        _networkEnsembleHook?.Enable();
     }
 
     public void Dispose()
     {
-        _networkEnsembleHook.Dispose();
+        _networkEnsembleHook?.Dispose();
     }
 }

@@ -3,13 +3,11 @@
  * Licensed under the GPL v3 license. See https://github.com/GiR-Zippo/LightAmp/blob/main/LICENSE for full license information.
  */
 
-using Dalamud.Data;
 using Dalamud.Game;
-using Dalamud.Game.ClientState;
-using Dalamud.Game.ClientState.Party;
 using Dalamud.Game.Command;
 using Dalamud.IoC;
 using Dalamud.Plugin;
+using Dalamud.Plugin.Services;
 using Whiskers.Offsets;
 using static Whiskers.Offsets.GameSettings;
 
@@ -23,7 +21,7 @@ public class Whiskers : IDalamudPlugin
     private const string CommandName = "/purr";
 
     private DalamudPluginInterface PluginInterface { get; }
-    private CommandManager CommandManager { get; }
+    private ICommandManager CommandManager { get; }
     private Configuration Configuration { get; }
     private PluginUi PluginUi { get; }
     internal static AgentConfigSystem? AgentConfigSystem { get; private set; }
@@ -33,7 +31,7 @@ public class Whiskers : IDalamudPlugin
     [PluginService] 
     private static SigScanner? SigScanner { get; set; }
 
-    public Whiskers(DalamudPluginInterface pluginInterface, DataManager? data, CommandManager commandManager, ClientState? clientState, PartyList? partyList)
+    public Whiskers(DalamudPluginInterface pluginInterface, IDataManager? data, ICommandManager commandManager, IClientState? clientState, IPartyList? partyList)
     {
         Api.Initialize(this, pluginInterface);
         PluginInterface = pluginInterface;

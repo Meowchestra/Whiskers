@@ -5,8 +5,6 @@
 
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using Dalamud.Logging;
-using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 
 namespace Whiskers.Offsets;
@@ -17,13 +15,13 @@ public class PerformActions
     private static DoPerformActionDelegate DoPerformAction { get; } = Marshal.GetDelegateForFunctionPointer<DoPerformActionDelegate>(Offsets.DoPerformAction);
     public static void PerformAction(uint instrumentId)
     {
-        PluginLog.Information($"[PerformAction] instrumentId: {instrumentId}");
+        Api.PluginLog?.Debug($"[PerformAction] instrumentId: {instrumentId}");
         DoPerformAction(Offsets.PerformanceStructPtr, instrumentId);
     }
 
     private PerformActions() { }
     private static unsafe nint GetWindowByName(string s) => (nint)AtkStage.GetSingleton()->RaptureAtkUnitManager->GetAddonByName(s);
-    public static void Init() => SignatureHelper.Initialise(new PerformActions());
+    public static void Init() => Api.HoodProvider.InitializeFromAttributes(new PerformActions());
 
     private static void SendAction(nint ptr, params ulong[] param)
     {

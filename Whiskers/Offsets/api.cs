@@ -1,24 +1,10 @@
 ﻿using System.Reflection;
-using Dalamud.Data;
 using Dalamud.Game;
-using Dalamud.Game.ClientState;
-using Dalamud.Game.ClientState.Buddy;
-using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.ClientState.Fates;
-using Dalamud.Game.ClientState.JobGauge;
-using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.ClientState.Objects;
-using Dalamud.Game.ClientState.Party;
 using Dalamud.Game.Command;
-using Dalamud.Game.Gui;
-using Dalamud.Game.Gui.FlyText;
-using Dalamud.Game.Gui.PartyFinder;
-using Dalamud.Game.Gui.Toast;
-using Dalamud.Game.Libc;
-using Dalamud.Game.Network;
 using Dalamud.IoC;
-using Dalamud.Logging;
 using Dalamud.Plugin;
+using Dalamud.Plugin.Services;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // https://github.com/UnknownX7/DalamudRepoBrowser/blob/master/DalamudApi.cs
@@ -28,92 +14,76 @@ namespace Whiskers.Offsets;
 public class Api
 {
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static DalamudPluginInterface? PluginInterface { get; private set; }
+    public static DalamudPluginInterface? PluginInterface { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static BuddyList? BuddyList { get; private set; }
+    public static IBuddyList? BuddyList { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static ChatGui? ChatGui { get; private set; }
+    public static IChatGui? ChatGui { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static ChatHandlers? ChatHandlers { get; private set; }
+    public static IClientState? ClientState { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static ClientState? ClientState { get; private set; }
+    public static ICommandManager? CommandManager { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static CommandManager? CommandManager { get; private set; }
+    public static ICondition? Condition { get; set; }
+
+    [PluginService] 
+    public static IGameInteropProvider? HoodProvider { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static Condition? Condition { get; private set; }
+    public static IDataManager? DataManager { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static DataManager? DataManager { get; private set; }
+    public static IFateTable? FateTable { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static FateTable? FateTable { get; private set; }
+    public static IFlyTextGui? FlyTextGui { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static FlyTextGui? FlyTextGui { get; private set; }
+    public static IFramework? Framework { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static Framework? Framework { get; private set; }
+    public static IGameGui? GameGui { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static GameGui? GameGui { get; private set; }
+    public static IGameNetwork? GameNetwork { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static GameNetwork? GameNetwork { get; private set; }
+    public static IJobGauges? JobGauges { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static JobGauges? JobGauges { get; private set; }
+    public static IKeyState? KeyState { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static KeyState? KeyState { get; private set; }
+    public static ILibcFunction? LibcFunction { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static LibcFunction? LibcFunction { get; private set; }
+    public static IObjectTable? ObjectTable { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static ObjectTable? ObjectTable { get; private set; }
+    public static IPartyFinderGui? PartyFinderGui { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static PartyFinderGui? PartyFinderGui { get; private set; }
+    public static IPartyList? PartyList { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static PartyList? PartyList { get; private set; }
+    public static ISigScanner? SigScanner { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static SigScanner? SigScanner { get; private set; }
+    public static ITargetManager? TargetManager { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static TargetManager? TargetManager { get; private set; }
+    public static IToastGui? ToastGui { get; set; }
 
     [PluginService]
-    //[RequiredVersion("1.0")]
-    public static ToastGui? ToastGui { get; private set; }
+    public static IPluginLog? PluginLog { get; set; }
+
+    [PluginService]
+    public static IGameInteropProvider? GameInteropProvider { get; set; }
 
     private static PluginCommandManager<IDalamudPlugin>? _pluginCommandManager;
 
@@ -125,7 +95,7 @@ public class Api
     {
         if (pluginInterface != null && !pluginInterface.Inject(this))
         {
-            PluginLog.LogError("Failed loading DalamudApi!");
+            PluginLog?.Debug("Failed loading DalamudApi!");
             return;
         }
 

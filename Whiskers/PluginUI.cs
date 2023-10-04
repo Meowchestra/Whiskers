@@ -6,7 +6,6 @@
 using System.Numerics;
 using System.Reflection;
 using System.Timers;
-using Dalamud.Logging;
 using H.Pipes.Args;
 using ImGuiNET;
 using Whiskers.Offsets;
@@ -129,7 +128,7 @@ internal class PluginUi : IDisposable
                 {
                     ManuallyDisconnected = true;
                     Pipe.Client?.DisconnectAsync();
-                    PluginLog.LogError("Whiskers is out of date and cannot work with the running bard program.");
+                    Api.PluginLog?.Error("Whiskers is out of date and cannot work with the running bard program.");
                 }
                 break;
             case MessageType.NoteOn:
@@ -283,7 +282,7 @@ internal class PluginUi : IDisposable
             }
             catch (Exception ex)
             {
-                PluginLog.LogError($"exception: {ex}");
+                Api.PluginLog?.Error($"exception: {ex}");
             }
         }
     }
