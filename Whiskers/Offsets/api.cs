@@ -85,6 +85,9 @@ public class Api
     [PluginService] 
     public static IGameConfig? GameConfig { get; private set; }
 
+    [PluginService]
+    public static IGameLifecycle? GameLifecycle { get; private set; }
+
     private static PluginCommandManager<IDalamudPlugin>? _pluginCommandManager;
 
     public Api() { }

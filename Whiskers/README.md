@@ -154,6 +154,7 @@ Send a message to the chat
 
 ## Not in use
 
+    MasterVolume int16
     NoteOn                  = 21,
     NoteOff                 = 22,
     ProgramChange           = 23,

@@ -52,8 +52,8 @@ public class Whiskers : IDalamudPlugin
 
         Collector.Instance.Initialize(data, clientState, partyList);
 
-        AgentConfigSystem.GetSettings();
-
+        AgentConfigSystem.GetSettings(GameSettingsTables.Instance?.StartupTable);
+        AgentConfigSystem.GetSettings(GameSettingsTables.Instance?.CustomTable);
         //NetworkReader.Initialize();
 
         // you might normally want to embed resources and load them from the manifest stream
@@ -61,12 +61,35 @@ public class Whiskers : IDalamudPlugin
 
         PluginInterface.UiBuilder.Draw         += DrawUi;
         PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUi;
+
+        if (Api.ClientState != null)
+        {
+            Api.ClientState.Login  += OnLogin;
+            Api.ClientState.Logout += OnLogout;
+        }
+    }
+
+    private static void OnLogin()
+    {
+        AgentConfigSystem.LoadConfig();
+    }
+
+    private static void OnLogout()
+    {
+        AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance?.StartupTable);
+        AgentConfigSystem?.ApplyGraphicSettings();
     }
 
     public void Dispose()
     {
+        if (Api.ClientState != null)
+        {
+            Api.ClientState.Login  -= OnLogin;
+            Api.ClientState.Logout -= OnLogout;
+        }
+
         //NetworkReader.Dispose();
-        AgentConfigSystem.RestoreSettings();
+        AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance?.StartupTable);
         AgentConfigSystem?.ApplyGraphicSettings();
         EnsembleManager?.Dispose();
         Collector.Instance.Dispose();

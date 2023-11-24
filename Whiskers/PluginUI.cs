@@ -3,6 +3,7 @@
  * Licensed under the GPL v3 license. See https://github.com/GiR-Zippo/LightAmp/blob/main/LICENSE for full license information.
  */
 
+using System.Diagnostics;
 using System.Numerics;
 using System.Reflection;
 using System.Timers;
@@ -56,6 +57,8 @@ internal class PluginUi : IDisposable
         ReconnectTimer.Enabled  = configuration.AutoConnect;
 
         Visible = false;
+        
+        GameSettings.AgentConfigSystem.LoadConfig();
     }
 
     private static void pipeClient_Connected(object? sender, ConnectionEventArgs<PayloadMessage> e)
@@ -75,18 +78,10 @@ internal class PluginUi : IDisposable
             Message    = Environment.ProcessId + ":" + Assembly.GetExecutingAssembly().GetName().Version
         });
 
-        Pipe.Client?.WriteAsync(new PayloadMessage
-        {
-            MsgType    = MessageType.SetGfx,
-            MsgChannel = 0,
-            Message    = Environment.ProcessId + ":" + GameSettings.AgentConfigSystem.CheckLowSettings()
-        });
+        Pipe.Write(MessageType.SetGfx, 0, GameSettings.AgentConfigSystem.CheckLowSettings(GameSettingsTables.Instance?.CustomTable));
+        Pipe.Write(MessageType.MasterSoundState, 0, GameSettings.AgentConfigSystem.GetMasterSoundEnable());
+        Pipe.Write(MessageType.MasterVolume, 0, GameSettings.AgentConfigSystem.GetMasterSoundVolume());
 
-        Pipe.Client?.WriteAsync(new PayloadMessage
-        {
-            MsgType = MessageType.SetSoundOnOff,
-            Message = Environment.ProcessId + ":" + GameSettings.AgentConfigSystem.GetMasterSoundEnable()
-        });
         Collector.Instance.UpdateClientStats();
     }
 
@@ -144,8 +139,12 @@ internal class PluginUi : IDisposable
             case MessageType.Instrument:
             case MessageType.AcceptReply:
             case MessageType.SetGfx:
-            case MessageType.SetSoundOnOff:
+            case MessageType.MasterSoundState:
+            case MessageType.MasterVolume:
+            case MessageType.VoiceSoundState:
+            case MessageType.EffectsSoundState:
             case MessageType.StartEnsemble:
+            case MessageType.ExitGame:
                 _qt.Enqueue(inMsg);
                 break;
         }
@@ -217,8 +216,22 @@ internal class PluginUi : IDisposable
 
                     ManuallyDisconnected = true;
                 }
-
                 ImGui.Text($"Is connected: {Pipe.Client is { IsConnected: true }}");
+
+                //PlayerConfig Save/Erase
+                ImGui.NewLine();
+                ImGui.Text($"Player configuration");
+                ImGui.BeginGroup();
+                if (ImGui.Button("Save"))
+                {
+                    GameSettings.AgentConfigSystem.SaveConfig();
+                }
+                ImGui.SameLine();
+                if (ImGui.Button("Erase"))
+                {
+                    File.Delete($"{Api.PluginInterface?.GetPluginConfigDirectory()}\\{Api.ClientState?.LocalPlayer?.Name}-({Api.ClientState?.LocalPlayer?.HomeWorld.GameData?.Name}).json");
+                }
+                ImGui.EndGroup();
             }
             ImGui.End();
         }
@@ -261,18 +274,38 @@ internal class PluginUi : IDisposable
                     case MessageType.SetGfx:
                         if (Convert.ToBoolean(msg.Message))
                         {
-                            GameSettings.AgentConfigSystem.GetSettings();
+                            GameSettings.AgentConfigSystem.GetSettings(GameSettingsTables.Instance?.CustomTable);
                             GameSettings.AgentConfigSystem.SetMinimalGfx();
                             Whiskers.AgentConfigSystem?.ApplyGraphicSettings();
                         }
                         else
                         {
-                            GameSettings.AgentConfigSystem.RestoreSettings();
+                            GameSettings.AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance?.CustomTable);
                             Whiskers.AgentConfigSystem?.ApplyGraphicSettings();
                         }
                         break;
-                    case MessageType.SetSoundOnOff:
+                    case MessageType.MasterSoundState:
                         GameSettings.AgentConfigSystem.SetMasterSoundEnable(Convert.ToBoolean(msg.Message));
+                        break;
+                    case MessageType.MasterVolume:
+                        if (Convert.ToInt16(msg.Message) == -1)
+                        {
+                            Pipe.Write(MessageType.MasterVolume, 0, GameSettings.AgentConfigSystem.GetMasterSoundVolume());
+                            Pipe.Write(MessageType.MasterSoundState, 0, GameSettings.AgentConfigSystem.GetMasterSoundEnable());
+                            Pipe.Write(MessageType.VoiceSoundState, 0, GameSettings.AgentConfigSystem.GetVoiceSoundEnable());
+                            Pipe.Write(MessageType.EffectsSoundState, 0, GameSettings.AgentConfigSystem.GetEffectsSoundEnable());
+                        }
+                        else
+                            GameSettings.AgentConfigSystem.SetMasterSoundVolume(Convert.ToInt16(msg.Message));
+                        break;
+                    case MessageType.VoiceSoundState:
+                        GameSettings.AgentConfigSystem.SetVoiceSoundEnable(Convert.ToBoolean(msg.Message));
+                        break;
+                    case MessageType.EffectsSoundState:
+                        GameSettings.AgentConfigSystem.SetEffectsSoundEnable(Convert.ToBoolean(msg.Message));
+                        break;
+                    case MessageType.ExitGame:
+                        Process.GetCurrentProcess().Kill();
                         break;
                     case MessageType.StartEnsemble:
                         PerformActions.BeginReadyCheck();
