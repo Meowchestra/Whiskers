@@ -184,8 +184,8 @@ internal class PluginUi : IDisposable
     {
         if (Visible)
         {
-            ImGui.SetNextWindowSize(new Vector2(300, 110), ImGuiCond.FirstUseEver);
-            ImGui.SetNextWindowSizeConstraints(new Vector2(300, 110), new Vector2(float.MaxValue, float.MaxValue));
+            ImGui.SetNextWindowSize(new Vector2(300, 150), ImGuiCond.FirstUseEver);
+            ImGui.SetNextWindowSizeConstraints(new Vector2(300, 150), new Vector2(float.MaxValue, float.MaxValue));
             if (ImGui.Begin("Whiskers", ref _visible, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
             {
                 // can't ref a property, so use a local copy
