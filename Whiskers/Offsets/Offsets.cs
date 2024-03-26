@@ -41,9 +41,9 @@ public static class Offsets
     public static IntPtr NetworkEnsembleStart { get; private set; }
 }
 
-public sealed unsafe class AgentPerformance : AgentInterface
+public sealed unsafe class AgentPerformance(AgentInterface agentInterface)
+    : AgentInterface(agentInterface.Pointer, agentInterface.Id)
 {
-    public AgentPerformance(AgentInterface agentInterface) : base(agentInterface.Pointer, agentInterface.Id) { }
     public static AgentPerformance? Instance => Whiskers.AgentPerformance;
     public new AgentPerformanceStruct* Struct => (AgentPerformanceStruct*)Pointer;
 

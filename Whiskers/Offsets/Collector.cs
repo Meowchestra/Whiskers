@@ -7,20 +7,17 @@ using Dalamud.Plugin.Services;
 
 namespace Whiskers.Offsets;
 
-public readonly struct PlayerInfo
+public readonly struct PlayerInfo(string? name, string? world, string? region)
 {
     // Struct for holding the playerInfo relevant to our purposes. These values
     // are fetched using the various methods throughout the PartyHandler class
-    public PlayerInfo(string? name, string world, string region)
-    {
-        PlayerName   = name;
-        PlayerWorld  = world;
-        PlayerRegion = region;
-    }
 
-    private string? PlayerName { get; }
-    private string PlayerWorld { get; }
-    private string PlayerRegion { get; }
+    private string? PlayerName { get; } = name;
+
+    private string? PlayerWorld { get; } = world;
+
+    private string? PlayerRegion { get; } = region;
+
     public override string ToString() => $"{PlayerName} [{PlayerWorld}, {PlayerRegion}]";
 }
 

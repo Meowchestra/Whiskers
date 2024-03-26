@@ -184,25 +184,15 @@ public class PluginCommandManager<T> : IDisposable where T : IDalamudPlugin
 
 #region Attributes
 [AttributeUsage(AttributeTargets.Method)]
-public abstract class AliasesAttribute : Attribute
+public abstract class AliasesAttribute(params string[] aliases) : Attribute
 {
-    public string[] Aliases { get; }
-
-    protected AliasesAttribute(params string[] aliases)
-    {
-        Aliases = aliases;
-    }
+    public IEnumerable<string> Aliases { get; } = aliases;
 }
 
 [AttributeUsage(AttributeTargets.Method)]
-public abstract class CommandAttribute : Attribute
+public abstract class CommandAttribute(string command) : Attribute
 {
-    public string Command { get; }
-
-    protected CommandAttribute(string command)
-    {
-        Command = command;
-    }
+    public string Command { get; } = command;
 }
 
 [AttributeUsage(AttributeTargets.Method)]
@@ -211,13 +201,8 @@ public abstract class DoNotShowInHelpAttribute : Attribute
 }
 
 [AttributeUsage(AttributeTargets.Method)]
-public abstract class HelpMessageAttribute : Attribute
+public abstract class HelpMessageAttribute(string helpMessage) : Attribute
 {
-    public string HelpMessage { get; }
-
-    protected HelpMessageAttribute(string helpMessage)
-    {
-        HelpMessage = helpMessage;
-    }
+    public string HelpMessage { get; } = helpMessage;
 }
 #endregion

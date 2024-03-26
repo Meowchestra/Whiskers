@@ -78,18 +78,18 @@ internal static class GameSettings
     /// <summary>
     /// The agent for the client config
     /// </summary>
-    internal class AgentConfigSystem : AgentInterface
+    internal class AgentConfigSystem(AgentInterface agentInterface)
+        : AgentInterface(agentInterface.Pointer, agentInterface.Id)
     {
-        public AgentConfigSystem(AgentInterface agentInterface) : base(agentInterface.Pointer, agentInterface.Id) { }
-
         /// <summary>
         /// Apply Settings
         /// </summary>
         public unsafe void ApplyGraphicSettings()
         {
             var refreshConfigGraphicState = (delegate* unmanaged<nint, long>)Offsets.ApplyGraphicConfigsFunc;
-            var _ = refreshConfigGraphicState(Pointer);
+            _ = refreshConfigGraphicState(Pointer);
             if (Api.ToastGui != null) Api.ToastGui.Toast += OnToast;
+            return;
 
             void OnToast(ref SeString message, ref ToastOptions options, ref bool handled)
             {

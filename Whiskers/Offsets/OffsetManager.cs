@@ -58,7 +58,7 @@ public static class OffsetManager
             }
         }
 
-        if (exceptions.Any())
+        if (exceptions.Count != 0)
         {
             throw new AggregateException(exceptions);
         }
@@ -78,19 +78,10 @@ internal class SigAttribute : Attribute
 }
 
 [AttributeUsage(AttributeTargets.Property)]
-internal sealed class StaticAddressAttribute : SigAttribute
-{
-    public StaticAddressAttribute(string sigString, int offset = 0) : base(sigString, offset) { }
-}
+internal sealed class StaticAddressAttribute(string sigString, int offset = 0) : SigAttribute(sigString, offset);
 
 [AttributeUsage(AttributeTargets.Property)]
-internal sealed class FunctionAttribute : SigAttribute
-{
-    public FunctionAttribute(string sigString, int offset = 0) : base(sigString, offset) { }
-}
+internal sealed class FunctionAttribute(string sigString, int offset = 0) : SigAttribute(sigString, offset);
 
 [AttributeUsage(AttributeTargets.Property)]
-internal sealed class OffsetAttribute : SigAttribute
-{
-    public OffsetAttribute(string sigString, int offset) : base(sigString, offset) { }
-}
+internal sealed class OffsetAttribute(string sigString, int offset) : SigAttribute(sigString, offset);

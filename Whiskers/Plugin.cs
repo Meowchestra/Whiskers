@@ -16,7 +16,7 @@ namespace Whiskers;
 public class Whiskers : IDalamudPlugin
 {
     //public static XivCommonBase CBase;
-    public string Name => "Whiskers";
+    public static string Name => "Whiskers";
 
     private const string CommandName = "/purr";
 

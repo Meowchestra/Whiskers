@@ -148,7 +148,7 @@ public class PerformActions
     public static string MainModuleRva(nint ptr)
     {
         var modules = Process.GetCurrentProcess().Modules;
-        List<ProcessModule> mh = new();
+        List<ProcessModule> mh = [];
         for (var i = 0; i < modules.Count; i++)
             mh.Add(modules[i]);
 
