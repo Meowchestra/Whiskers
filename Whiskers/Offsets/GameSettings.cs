@@ -87,9 +87,8 @@ internal static class GameSettings
         public unsafe void ApplyGraphicSettings()
         {
             var refreshConfigGraphicState = (delegate* unmanaged<nint, long>)Offsets.ApplyGraphicConfigsFunc;
-            _ = refreshConfigGraphicState(Pointer);
+            var _ = refreshConfigGraphicState(Pointer);
             if (Api.ToastGui != null) Api.ToastGui.Toast += OnToast;
-            return;
 
             void OnToast(ref SeString message, ref ToastOptions options, ref bool handled)
             {
