@@ -54,13 +54,15 @@ public class Whiskers : IDalamudPlugin
 
         AgentConfigSystem.GetSettings(GameSettingsTables.Instance?.StartupTable);
         AgentConfigSystem.GetSettings(GameSettingsTables.Instance?.CustomTable);
+
         //NetworkReader.Initialize();
 
         // you might normally want to embed resources and load them from the manifest stream
         PluginUi = new PluginUi(Configuration);
 
         PluginInterface.UiBuilder.Draw         += DrawUi;
-        PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUi;
+        PluginInterface.UiBuilder.OpenConfigUi += UiBuilder_DrawConfigUI;
+        PluginInterface.UiBuilder.OpenMainUi   += UiBuilder_OpenMainUi;
 
         if (Api.ClientState != null)
         {
@@ -109,7 +111,13 @@ public class Whiskers : IDalamudPlugin
         PluginUi.Draw();
     }
 
-    private void DrawConfigUi()
+    private void UiBuilder_OpenMainUi()
+    {
+        PluginUi.Visible = true;
+    }
+
+    private void UiBuilder_DrawConfigUI()
+
     {
         PluginUi.Visible = true;
     }

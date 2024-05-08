@@ -9,30 +9,40 @@ namespace Whiskers;
 
 public enum MessageType
 {
-    None                    = 0,
-    Handshake               = 1,
-    Version                 = 2,
+    None                  = 0,
+    Handshake             = 1,
+    Version               = 2,
 
-    SetGfx                  = 10, //Get<->Set
-    NameAndHomeWorld        = 11, //Get
-    MasterSoundState        = 12, //Set<->Get
-    MasterVolume            = 13, //Set<->Get
-    VoiceSoundState         = 14, //Set<->Get
-    EffectsSoundState       = 15, //Set<->Get
+    NameAndHomeWorld      = 5, //Get
 
-    Instrument              = 20,
-    NoteOn                  = 21,
-    NoteOff                 = 22,
-    ProgramChange           = 23,
+    Instrument            = 20,
+    NoteOn                = 21,
+    NoteOff               = 22,
+    ProgramChange         = 23,
 
-    StartEnsemble           = 30, //Get<->Set
-    AcceptReply             = 31,
-    PerformanceModeState    = 32, //Get
+    StartEnsemble         = 30, //Get<->Set
+    AcceptReply           = 31,
+    PerformanceModeState  = 32, //Get
+    
+    SetGfx                = 50, //Get<->Set
+    MasterSoundState      = 60, //Set<->Get
+    MasterVolume          = 61, //Set<->Get
+    BgmSoundState         = 62, //Set<->Get
+    BgmVolume             = 63, //Set<->Get
+    EffectsSoundState     = 64, //Set<->Get
+    EffectsVolume         = 65, //Set<->Get
+    VoiceSoundState       = 66, //Set<->Get
+    VoiceVolume           = 67, //Set<->Get
+    AmbientSoundState     = 68, //Set<->Get
+    AmbientVolume         = 69, //Set<->Get
+    SystemSoundState      = 70, //Set<->Get
+    SystemVolume          = 71, //Set<->Get
+    PerformanceSoundState = 72, //Set<->Get
+    PerformanceVolume     = 73, //Set<->Get
 
-    Chat                    = 40,
-
-    NetworkPacket           = 50,
-    ExitGame                = 55
+    Chat                  = 85,
+    NetworkPacket         = 90,
+    ExitGame              = 100
 }
 
 public readonly struct ChatMessageChannelType
