@@ -66,7 +66,7 @@ public sealed class GameSettingsTables
     {
     }
 
-    public static GameSettingsTables? Instance
+    public static GameSettingsTables Instance
     {
         get
         {

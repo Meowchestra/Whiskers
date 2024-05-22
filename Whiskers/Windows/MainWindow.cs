@@ -32,7 +32,7 @@ public class MainWindow : Window, IDisposable
     private bool ManuallyDisconnected { get; set; }
 
     public MainWindow(Whiskers plugin, Configuration configuration) : base(
-        "Whiskers", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
+        "Whiskers", ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
     {
         Configuration = configuration;
 
@@ -317,58 +317,75 @@ public class MainWindow : Window, IDisposable
             }
         }
     }
-    
+
     public override void Draw()
     {
-        ImGui.SetNextWindowSize(new Vector2(300, 180), ImGuiCond.FirstUseEver);
-        ImGui.SetNextWindowSizeConstraints(new Vector2(300, 180), new Vector2(float.MaxValue, float.MaxValue));
-        if (ImGui.Begin("Whiskers", ref _visible, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
+        ImGui.SetNextWindowSize(new Vector2(250, 150), ImGuiCond.FirstUseEver);
+        ImGui.SetNextWindowSizeConstraints(new Vector2(250, 150), new Vector2(float.MaxValue, float.MaxValue));
+        if (ImGui.Begin("Whiskers", ref _visible))
         {
-            // can't ref a property, so use a local copy
-            var configValue = Configuration.AutoConnect;
-            if (ImGui.Checkbox("Auto Connect", ref configValue))
+            if (ImGui.BeginTabBar("WhiskersTabs"))
             {
-                Configuration.AutoConnect = configValue;
-                // can save immediately on change, if you don't want to provide a "Save and Close" button
-                Configuration.Save();
-            }
+                if (ImGui.BeginTabItem("Connection"))
+                {
+                    DrawConnectionTab();
+                    ImGui.EndTabItem();
+                }
+                if (ImGui.BeginTabItem("Settings"))
+                {
+                    DrawSettingsTab();
+                    ImGui.EndTabItem();
+                }
 
-            //The connect Button
-            if (ImGui.Button("Connect"))
-            {
-                if (Configuration.AutoConnect)
-                    ManuallyDisconnected = false;
-                ReconnectTimer.Interval = 500;
-                ReconnectTimer.Enabled  = true;
+                ImGui.EndTabBar();
             }
-            ImGui.SameLine();
-            //The disconnect Button
-            if (ImGui.Button("Disconnect"))
-            {
-                if (Pipe.Client is { IsConnected: false })
-                    return;
-
-                Pipe.Client?.DisconnectAsync();
-
-                ManuallyDisconnected = true;
-            }
-            ImGui.Text($"Is connected: {Pipe.Client is { IsConnected: true }}");
-
-            //PlayerConfig Save/Erase
-            ImGui.NewLine();
-            ImGui.Text($"Player Configuration");
-            ImGui.BeginGroup();
-            if (ImGui.Button("Save"))
-            {
-                GameSettings.AgentConfigSystem.SaveConfig();
-            }
-            ImGui.SameLine();
-            if (ImGui.Button("Erase"))
-            {
-                File.Delete($"{Api.PluginInterface?.GetPluginConfigDirectory()}\\{Api.ClientState?.LocalPlayer?.Name}-({Api.ClientState?.LocalPlayer?.HomeWorld.GameData?.Name}).json");
-            }
-            ImGui.EndGroup();
+            ImGui.End();
         }
-        ImGui.End();
+    }
+
+    private void DrawConnectionTab()
+    {
+        // can't ref a property, so use a local copy
+        var configValue = Configuration.AutoConnect;
+        if (ImGui.Checkbox("Auto Connect", ref configValue))
+        {
+            Configuration.AutoConnect = configValue;
+            // can save immediately on change, if you don't want to provide a "Save and Close" button
+            Configuration.Save();
+        }
+
+        if (ImGui.Button("Connect"))
+        {
+            if (Configuration.AutoConnect)
+                ManuallyDisconnected = false;
+            ReconnectTimer.Interval = 500;
+            ReconnectTimer.Enabled  = true;
+        }
+        ImGui.SameLine();
+        if (ImGui.Button("Disconnect"))
+        {
+            if (Pipe.Client is { IsConnected: false })
+                return;
+
+            Pipe.Client?.DisconnectAsync();
+            ManuallyDisconnected = true;
+        }
+        ImGui.Text($"Is connected: {Pipe.Client is { IsConnected: true }}");
+    }
+
+    private static void DrawSettingsTab()
+    {
+        ImGui.Text("Player Configuration");
+        ImGui.BeginGroup();
+        if (ImGui.Button("Save"))
+        {
+            GameSettings.AgentConfigSystem.SaveConfig();
+        }
+        ImGui.SameLine();
+        if (ImGui.Button("Erase"))
+        {
+            File.Delete($"{Api.PluginInterface?.GetPluginConfigDirectory()}\\{Api.ClientState?.LocalPlayer?.Name}-({Api.ClientState?.LocalPlayer?.HomeWorld.GameData?.Name}).json");
+        }
+        ImGui.EndGroup();
     }
 }

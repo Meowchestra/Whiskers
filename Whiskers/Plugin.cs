@@ -17,10 +17,8 @@ public class Whiskers : IDalamudPlugin
 {
     public static string Name => "Whiskers";
 
-    //The windows
-    public WindowSystem WindowSystem = new("Whiskers");
+    private readonly WindowSystem _windowSystem = new("Whiskers");
     private MainWindow PluginUi { get; init; }
-    private ConfigWindow ConfigUi { get; set; }
 
     private const string CommandName = "/purr";
 
@@ -52,21 +50,16 @@ public class Whiskers : IDalamudPlugin
 
         Collector.Instance.Initialize(data, clientState, partyList);
 
-        AgentConfigSystem.GetSettings(GameSettingsTables.Instance?.StartupTable);
-        AgentConfigSystem.GetSettings(GameSettingsTables.Instance?.CustomTable);
+        AgentConfigSystem.GetSettings(GameSettingsTables.Instance.StartupTable);
+        AgentConfigSystem.GetSettings(GameSettingsTables.Instance.CustomTable);
 
         //NetworkReader.Initialize();
 
-        // you might normally want to embed resources and load them from the manifest stream
         PluginUi = new MainWindow(this, Configuration);
-        ConfigUi = new ConfigWindow(this);
-
-        WindowSystem.AddWindow(PluginUi);
-        WindowSystem.AddWindow(ConfigUi);
+        _windowSystem.AddWindow(PluginUi);
 
         PluginInterface.UiBuilder.Draw         += DrawUi;
-        PluginInterface.UiBuilder.OpenConfigUi += UiBuilder_DrawConfigUI;
-        PluginInterface.UiBuilder.OpenMainUi   += UiBuilder_OpenMainUi;
+        PluginInterface.UiBuilder.OpenConfigUi += OpenMainUi;
 
         AgentConfigSystem.LoadConfig();
         if (Api.ClientState != null)
@@ -83,7 +76,7 @@ public class Whiskers : IDalamudPlugin
 
     private static void OnLogout()
     {
-        AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance?.StartupTable);
+        AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance.StartupTable);
         AgentConfigSystem?.ApplyGraphicSettings();
     }
 
@@ -96,37 +89,30 @@ public class Whiskers : IDalamudPlugin
         }
 
         //NetworkReader.Dispose();
-        AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance?.StartupTable);
+        AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance.StartupTable);
         AgentConfigSystem?.ApplyGraphicSettings();
         EnsembleManager?.Dispose();
         Collector.Instance.Dispose();
 
-        WindowSystem.RemoveAllWindows();
+        _windowSystem.RemoveAllWindows();
         PluginUi.Dispose();
-        ConfigUi.Dispose();
 
         Api.CommandManager?.RemoveHandler(CommandName);
     }
 
-    private void OnCommand(string command, string args)
-    {
-        // in response to the slash command, just display our main ui
-        PluginUi.IsOpen = !PluginUi.IsOpen;
-    }
-
     private void DrawUi()
     {
-        WindowSystem.Draw();
+        _windowSystem.Draw();
         PluginUi.Update(); //update the main window... for the msg queue
     }
 
-    private void UiBuilder_OpenMainUi()
+    private void OpenMainUi()
     {
         PluginUi.IsOpen = !PluginUi.IsOpen;
     }
 
-    private void UiBuilder_DrawConfigUI()
+    private void OnCommand(string command, string args)
     {
-        ConfigUi.IsOpen = !ConfigUi.IsOpen;
+        PluginUi.IsOpen = !PluginUi.IsOpen;
     }
 }
