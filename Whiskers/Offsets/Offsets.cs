@@ -1,6 +1,6 @@
 ﻿/*
- * Copyright(c) 2023 GiR-Zippo, akira0245 @MidiBard, Ori @MidiBard2
- * Licensed under the GPL v3 license. See https://github.com/GiR-Zippo/LightAmp/blob/main/LICENSE for full license information.
+ * Copyright(c) 2024 Meowchestra, GiR-Zippo, akira0245 @MidiBard, Ori @MidiBard2
+ * Licensed under the GPL v3 license. See https://github.com/Meowchestra/MeowMusic/blob/main/LICENSE for full license information.
  */
 
 using System.Diagnostics.CodeAnalysis;
@@ -82,7 +82,7 @@ internal class EnsembleManager : IDisposable
             //and pipe it
             if (Pipe.Client != null && Pipe.Client.IsConnected)
             {
-                Pipe.Client.WriteAsync(new PayloadMessage
+                Pipe.Client.WriteAsync(new IpcMessage
                 {
                     MsgType = MessageType.StartEnsemble,
                     Message = Environment.ProcessId + ":1"

@@ -1,47 +1,47 @@
 ﻿/*
- * Copyright(c) 2023 GiR-Zippo, Meowchestra
- * Licensed under the GPL v3 license. See https://github.com/GiR-Zippo/LightAmp/blob/main/LICENSE for full license information.
+ * Copyright(c) 2024 Meowchestra, GiR-Zippo
+ * Licensed under the GPL v3 license. See https://github.com/Meowchestra/MeowMusic/blob/main/LICENSE for full license information.
  */
 
-using Dalamud.Game;
 using Dalamud.Game.Command;
-using Dalamud.IoC;
+using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using Whiskers.Offsets;
+using Whiskers.Windows;
 using static Whiskers.Offsets.GameSettings;
 
 namespace Whiskers;
 
 public class Whiskers : IDalamudPlugin
 {
-    //public static XivCommonBase CBase;
     public static string Name => "Whiskers";
+
+    //The windows
+    public WindowSystem WindowSystem = new("Whiskers");
+    private MainWindow PluginUi { get; init; }
+    private ConfigWindow ConfigUi { get; set; }
 
     private const string CommandName = "/purr";
 
     private DalamudPluginInterface PluginInterface { get; }
-    private ICommandManager CommandManager { get; }
     private Configuration Configuration { get; }
-    private PluginUi PluginUi { get; }
     internal static AgentConfigSystem? AgentConfigSystem { get; private set; }
     internal static AgentPerformance? AgentPerformance { get; private set; }
     internal static EnsembleManager? EnsembleManager { get; set; }
 
-    [PluginService] 
-    private static ISigScanner? SigScanner { get; set; }
+    public Api? Api { get; set; }
 
     public Whiskers(DalamudPluginInterface pluginInterface, IDataManager? data, ICommandManager commandManager, IClientState? clientState, IPartyList? partyList)
     {
-        Api.Initialize(this, pluginInterface);
+        Api             = pluginInterface.Create<Api>();
         PluginInterface = pluginInterface;
-        CommandManager  = commandManager;
 
         Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
         Configuration.Initialize(PluginInterface);
-        OffsetManager.Setup(SigScanner);
+        OffsetManager.Setup(Api.SigScanner);
 
-        CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
+        Api.CommandManager?.AddHandler(CommandName, new CommandInfo(OnCommand)
         {
             HelpMessage = "Open the Whiskers settings menu."
         });
@@ -58,12 +58,17 @@ public class Whiskers : IDalamudPlugin
         //NetworkReader.Initialize();
 
         // you might normally want to embed resources and load them from the manifest stream
-        PluginUi = new PluginUi(Configuration);
+        PluginUi = new MainWindow(this, Configuration);
+        ConfigUi = new ConfigWindow(this);
+
+        WindowSystem.AddWindow(PluginUi);
+        WindowSystem.AddWindow(ConfigUi);
 
         PluginInterface.UiBuilder.Draw         += DrawUi;
         PluginInterface.UiBuilder.OpenConfigUi += UiBuilder_DrawConfigUI;
         PluginInterface.UiBuilder.OpenMainUi   += UiBuilder_OpenMainUi;
 
+        AgentConfigSystem.LoadConfig();
         if (Api.ClientState != null)
         {
             Api.ClientState.Login  += OnLogin;
@@ -96,29 +101,32 @@ public class Whiskers : IDalamudPlugin
         EnsembleManager?.Dispose();
         Collector.Instance.Dispose();
 
+        WindowSystem.RemoveAllWindows();
         PluginUi.Dispose();
-        CommandManager.RemoveHandler(CommandName);
+        ConfigUi.Dispose();
+
+        Api.CommandManager?.RemoveHandler(CommandName);
     }
 
     private void OnCommand(string command, string args)
     {
         // in response to the slash command, just display our main ui
-        PluginUi.Visible = true;
+        PluginUi.IsOpen = !PluginUi.IsOpen;
     }
 
     private void DrawUi()
     {
-        PluginUi.Draw();
+        WindowSystem.Draw();
+        PluginUi.Update(); //update the main window... for the msg queue
     }
 
     private void UiBuilder_OpenMainUi()
     {
-        PluginUi.Visible = true;
+        PluginUi.IsOpen = !PluginUi.IsOpen;
     }
 
     private void UiBuilder_DrawConfigUI()
-
     {
-        PluginUi.Visible = true;
+        ConfigUi.IsOpen = !ConfigUi.IsOpen;
     }
 }

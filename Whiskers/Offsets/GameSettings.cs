@@ -1,6 +1,6 @@
 ﻿/*
- * Copyright(c) 2023 GiR-Zippo, Ori@MidiBard2
- * Licensed under the GPL v3 license. See https://github.com/GiR-Zippo/LightAmp/blob/main/LICENSE for full license information.
+ * Copyright(c) 2024 Meowchestra, GiR-Zippo, Ori @MidiBard2
+ * Licensed under the GPL v3 license. See https://github.com/Meowchestra/MeowMusic/blob/main/LICENSE for full license information.
  */
 
 using System.Runtime.InteropServices;
@@ -441,12 +441,24 @@ internal static class GameSettings
         }
         #endregion
 
-        public static void LoadConfig()
+        private static string GetCharConfigFilename()
         {
             if (Api.ClientState != null && !Api.ClientState.IsLoggedIn)
-                return;
+                return "";
 
-            var file = $"{Api.PluginInterface?.GetPluginConfigDirectory()}\\{Api.ClientState?.LocalPlayer?.Name}-({Api.ClientState?.LocalPlayer?.HomeWorld.GameData?.Name}).json";
+            var player = Api.ClientState?.LocalPlayer;
+            if (player == null)
+                return "";
+
+            var world = player.HomeWorld.GameData;
+            return world == null ? "" : $"{Api.PluginInterface?.GetPluginConfigDirectory()}\\{player.Name.TextValue}-({world.Name.RawString}).json";
+        }
+
+        public static void LoadConfig()
+        {
+            var file = GetCharConfigFilename();
+            if (file == "")
+                return;
             if (!File.Exists(file))
                 return;
 
@@ -462,14 +474,14 @@ internal static class GameSettings
 
         public static void SaveConfig()
         {
-            if (Api.ClientState != null && !Api.ClientState.IsLoggedIn)
+            var file = GetCharConfigFilename();
+            if (file == "")
                 return;
 
             //Save the config
             GetSettings(GameSettingsTables.Instance?.CustomTable);
             var jsonString = JsonConvert.SerializeObject(GameSettingsTables.Instance?.CustomTable);
-            File.WriteAllText($"{Api.PluginInterface?.GetPluginConfigDirectory()}\\{Api.ClientState?.LocalPlayer?.Name}-({Api.ClientState?.LocalPlayer?.HomeWorld.GameData?.Name}).json",
-                JsonConvert.SerializeObject(GameSettingsTables.Instance?.CustomTable));
+            File.WriteAllText(file, JsonConvert.SerializeObject(GameSettingsTables.Instance?.CustomTable));
         }
     }
 }

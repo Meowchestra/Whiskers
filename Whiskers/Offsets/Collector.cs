@@ -1,6 +1,6 @@
 ﻿/*
- * Copyright(c) 2023 GiR-Zippo
- * Licensed under the GPL v3 license. See https://github.com/GiR-Zippo/LightAmp/blob/main/LICENSE for full license information.
+ * Copyright(c) 2024 Meowchestra, GiR-Zippo
+ * Licensed under the GPL v3 license. See https://github.com/Meowchestra/MeowMusic/blob/main/LICENSE for full license information.
  */
 
 using Dalamud.Plugin.Services;
@@ -85,7 +85,7 @@ public class Collector
 
                 if (Pipe.Client != null && Pipe.Client.IsConnected)
                 {
-                    Pipe.Client.WriteAsync(new PayloadMessage
+                    Pipe.Client.WriteAsync(new IpcMessage
                     {
                         MsgType = MessageType.NameAndHomeWorld,
                         Message = Environment.ProcessId + ":" + name + ":" + homeWorld

@@ -1,4 +1,9 @@
-﻿using System.Globalization;
+﻿/*
+ * Copyright(c) 2024 Meowchestra, GiR-Zippo
+ * Licensed under the GPL v3 license. See https://github.com/Meowchestra/MeowMusic/blob/main/LICENSE for full license information.
+ */
+
+using System.Globalization;
 using System.Runtime.InteropServices;
 using Dalamud.Game.Network;
 using Whiskers.Offsets;
@@ -108,7 +113,7 @@ public static unsafe class NetworkReader
 
             if (packet != null)
             {
-                Pipe.Client.WriteAsync(new PayloadMessage
+                Pipe.Client.WriteAsync(new IpcMessage
                 {
                     MsgType = MessageType.NetworkPacket,
                     Message = Environment.ProcessId + ":" + Convert.ToBase64String(packet)
@@ -140,5 +145,4 @@ public static unsafe class NetworkReader
         var strBytes = pattern.Split(' ');
         return !strBytes.Where((t, i) => t != "?" && t != "??" && byte.Parse(t, NumberStyles.HexNumber) != array2Check[i]).Any();
     }
-
 }
