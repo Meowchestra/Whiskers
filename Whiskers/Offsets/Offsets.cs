@@ -14,20 +14,20 @@ public static partial class Chat
 {
     private static class Signatures
     {
-        internal const string SendChat = "48895C24??574883EC20488BFA488BD94584C9";
-        internal const string SanitiseString = "E8????????488D4C24??0FB6F0E8????????488D4DC0";
+        internal const string SendChat = "48 89 5C 24 ?? 57 48 83 EC 20 48 8B FA 48 8B D9 45 84 C9";
+        internal const string SanitiseString = "E8 ?? ?? ?? ?? 48 8D 4C 24 ?? 0F B6 F0 E8 ?? ?? ?? ?? 48 8D 4D C0";
     }
 }
 
 public static class Offsets
 {
-    [StaticAddress("488BC20FB615????????F6C201")]
+    [StaticAddress("48 8B C2 0F B6 15 ?? ?? ?? ?? F6 C2 01")]
     public static nint PerformanceStructPtr { get; private set; }
 
-    [Function("48896C24104889742418574883EC??48833D??????????418BE8")]
+    [Function("48 89 6C 24 10 48 89 74 24 18 57 48 83 EC ?? 48 83 3D ?? ?? ?? ?? ?? 41 8B E8")]
     public static nint DoPerformAction { get; private set; }
 
-    [Function("40534883EC20488BD94883C178E8????488D8B????E8????488D5320")]
+    [Function("40 53 48 83 EC 20 48 8B D9 48 83 C1 78 E8 ? ? ? ? 48 8D 8B ? ? ? ? E8 ? ? ? ? 48 8D 53 20")]
     public static IntPtr NetworkEnsembleStart { get; private set; }
 }
 
