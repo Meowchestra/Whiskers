@@ -22,7 +22,7 @@ public static class OffsetManager
             try
             {
                 var sig = sigAttribute?.SigString;
-                sig = string.Join(' ', sig?.Split(new[] { ' ' }, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+                sig = string.Join(' ', sig?.Split([' '], StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
                     .Select(i => i == "?" ? "??" : i)!);
 
                 nint address = 0;

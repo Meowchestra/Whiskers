@@ -7,6 +7,7 @@ using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Whiskers.Offsets;
 using Whiskers.Windows;
 using static Whiskers.Offsets.GameSettings;
@@ -22,20 +23,20 @@ public class Whiskers : IDalamudPlugin
 
     private const string CommandName = "/purr";
 
-    private DalamudPluginInterface PluginInterface { get; }
+    private static IDalamudPluginInterface? PluginInterface { get; set; }
+
     private Configuration Configuration { get; }
-    internal static AgentConfigSystem? AgentConfigSystem { get; private set; }
     internal static AgentPerformance? AgentPerformance { get; private set; }
     internal static EnsembleManager? EnsembleManager { get; set; }
 
     public Api? Api { get; set; }
 
-    public Whiskers(DalamudPluginInterface pluginInterface, IDataManager? data, ICommandManager commandManager, IClientState? clientState, IPartyList? partyList)
+    public Whiskers(IDalamudPluginInterface? pluginInterface, IDataManager? data, ICommandManager commandManager, IClientState? clientState, IPartyList? partyList)
     {
-        Api             = pluginInterface.Create<Api>();
+        Api             = pluginInterface?.Create<Api>();
         PluginInterface = pluginInterface;
 
-        Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+        Configuration = PluginInterface?.GetPluginConfig() as Configuration ?? new Configuration();
         Configuration.Initialize(PluginInterface);
         OffsetManager.Setup(Api.SigScanner);
 
@@ -44,9 +45,8 @@ public class Whiskers : IDalamudPlugin
             HelpMessage = "Open the Whiskers settings menu."
         });
 
-        AgentConfigSystem = new AgentConfigSystem(AgentManager.Instance.FindAgentInterfaceByVtable(Offsets.Offsets.AgentConfigSystem));
-        AgentPerformance  = new AgentPerformance(AgentManager.Instance.FindAgentInterfaceByVtable(Offsets.Offsets.AgentPerformance));
-        EnsembleManager   = new EnsembleManager();
+        AgentPerformance = new AgentPerformance(AgentId.PerformanceMode);
+        EnsembleManager  = new EnsembleManager();
 
         Collector.Instance.Initialize(data, clientState, partyList);
 
@@ -58,8 +58,11 @@ public class Whiskers : IDalamudPlugin
         PluginUi = new MainWindow(this, Configuration);
         _windowSystem.AddWindow(PluginUi);
 
-        PluginInterface.UiBuilder.Draw         += DrawUi;
-        PluginInterface.UiBuilder.OpenConfigUi += OpenMainUi;
+        if (PluginInterface != null)
+        {
+            PluginInterface.UiBuilder.Draw         += DrawUi;
+            PluginInterface.UiBuilder.OpenConfigUi += OpenMainUi;
+        }
 
         AgentConfigSystem.LoadConfig();
         if (Api.ClientState != null)
@@ -77,7 +80,6 @@ public class Whiskers : IDalamudPlugin
     private static void OnLogout()
     {
         AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance.StartupTable);
-        AgentConfigSystem?.ApplyGraphicSettings();
     }
 
     public void Dispose()
@@ -90,7 +92,6 @@ public class Whiskers : IDalamudPlugin
 
         //NetworkReader.Dispose();
         AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance.StartupTable);
-        AgentConfigSystem?.ApplyGraphicSettings();
         EnsembleManager?.Dispose();
         Collector.Instance.Dispose();
 

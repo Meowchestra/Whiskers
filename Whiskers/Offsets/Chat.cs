@@ -79,7 +79,7 @@ public static partial class Chat
             throw new InvalidOperationException("Could not find signature for chat sending");
         }
 
-        var uiModule = (nint)Framework.Instance()->GetUiModule();
+        var uiModule = (nint)Framework.Instance()->GetUIModule();
 
         using var payload = new ChatPayload(message);
         var mem1 = Marshal.AllocHGlobal(400);

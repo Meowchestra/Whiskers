@@ -20,7 +20,7 @@ public class PerformActions
     }
 
     private PerformActions() { }
-    private static unsafe nint GetWindowByName(string s) => (nint)AtkStage.GetSingleton()->RaptureAtkUnitManager->GetAddonByName(s);
+    private static unsafe nint GetWindowByName(string s) => (nint)AtkStage.Instance()->RaptureAtkUnitManager->GetAddonByName(s);
     public static void Init() => Api.GameInteropProvider?.InitializeFromAttributes(new PerformActions());
 
     private static void SendAction(nint ptr, params ulong[] param)
@@ -35,7 +35,7 @@ public class PerformActions
         {
             fixed (ulong* u = param)
             {
-                AtkUnitBase.MemberFunctionPointers.FireCallback((AtkUnitBase*)ptr, pairCount, (AtkValue*)u, (void*)1);
+                AtkUnitBase.MemberFunctionPointers.FireCallback((AtkUnitBase*)ptr, (uint)pairCount, (AtkValue*)u, true); // (void*)1);
             }
         }
     }
@@ -44,6 +44,7 @@ public class PerformActions
     {
         var ptr = GetWindowByName(name);
         if (ptr == nint.Zero) return false;
+        Api.PluginLog?.Debug(name);
         SendAction(ptr, param);
         return true;
     }

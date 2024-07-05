@@ -76,21 +76,18 @@ public class Collector
     /// </summary>
     private void ClientState_Login()
     {
-        if (ClientState?.LocalPlayer != null)
+        var name = ClientState?.LocalPlayer?.Name.TextValue;
+        if (ClientState?.LocalPlayer?.HomeWorld.GameData != null)
         {
-            var name = ClientState.LocalPlayer.Name.TextValue;
-            if (ClientState.LocalPlayer.HomeWorld.GameData != null)
-            {
-                var homeWorld = ClientState.LocalPlayer.HomeWorld.GameData.RowId;
+            var homeWorld = ClientState.LocalPlayer.HomeWorld.GameData.RowId;
 
-                if (Pipe.Client != null && Pipe.Client.IsConnected)
+            if (Pipe.Client != null && Pipe.Client.IsConnected)
+            {
+                Pipe.Client.WriteAsync(new IpcMessage
                 {
-                    Pipe.Client.WriteAsync(new IpcMessage
-                    {
-                        MsgType = MessageType.NameAndHomeWorld,
-                        Message = Environment.ProcessId + ":" + name + ":" + homeWorld
-                    });
-                }
+                    MsgType = MessageType.NameAndHomeWorld,
+                    Message = Environment.ProcessId + ":" + name + ":" + homeWorld
+                });
             }
         }
     }

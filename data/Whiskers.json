@@ -2,7 +2,7 @@
   "Author": "GiR-Zippo, Meowchestra, MoogleTroupe",
   "Name": "Whiskers",
   "InternalName": "Whiskers",
-  "AssemblyVersion": "0.0.1.23",
+  "AssemblyVersion": "0.0.1.24",
   "Description": "MeowMusic companion for enhanced functionality.",
   "ApplicableVersion": "any",
   "Tags": [
@@ -11,7 +11,7 @@
     "Performance",
     "Bard"
   ],
-  "DalamudApiLevel": 9,
+  "DalamudApiLevel": 10,
   "LoadRequiredState": 0,
   "LoadSync": false,
   "CanUnloadAsync": false,

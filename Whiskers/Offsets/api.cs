@@ -14,7 +14,7 @@ namespace Whiskers.Offsets;
 public class Api
 {
     [PluginService]
-    public static DalamudPluginInterface? PluginInterface { get; private set; }
+    public static IDalamudPluginInterface? PluginInterface { get; private set; }
 
     [PluginService]
     public static IBuddyList? BuddyList { get; private set; }
@@ -57,9 +57,6 @@ public class Api
 
     [PluginService]
     public static IKeyState? KeyState { get; private set; }
-
-    [PluginService]
-    public static ILibcFunction? LibcFunction { get; private set; }
 
     [PluginService]
     public static IObjectTable? ObjectTable { get; private set; }

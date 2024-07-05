@@ -214,12 +214,10 @@ public class MainWindow : Window, IDisposable
                         {
                             GameSettings.AgentConfigSystem.GetSettings(GameSettingsTables.Instance?.CustomTable);
                             GameSettings.AgentConfigSystem.SetMinimalGfx();
-                            Whiskers.AgentConfigSystem?.ApplyGraphicSettings();
                         }
                         else
                         {
                             GameSettings.AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance?.CustomTable);
-                            Whiskers.AgentConfigSystem?.ApplyGraphicSettings();
                         }
                         break;
                     case MessageType.MasterSoundState:
