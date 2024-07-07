@@ -11,12 +11,21 @@ namespace Whiskers.Offsets;
 
 public class PerformActions
 {
-    private delegate void DoPerformActionDelegate(nint performInfoPtr, uint instrumentId, int a3 = 0);
-    private static DoPerformActionDelegate DoPerformAction { get; } = Marshal.GetDelegateForFunctionPointer<DoPerformActionDelegate>(Offsets.DoPerformAction);
-    public static void PerformAction(uint instrumentId)
+    private delegate void PerformActionDelegate(nint performInfoPtr, uint instrumentId, int a3 = 0);
+    private static PerformActionDelegate PerformAction { get; } = Marshal.GetDelegateForFunctionPointer<PerformActionDelegate>(Offsets.DoPerformAction);
+
+    private static void DoPerformAction(uint instrumentId)
     {
-        Api.PluginLog?.Debug($"[PerformAction] instrumentId: {instrumentId}");
-        DoPerformAction(Offsets.PerformanceStructPtr, instrumentId);
+        Api.PluginLog?.Information($"[DoPerformAction] instrumentId: {instrumentId}");
+        PerformAction(Offsets.PerformanceStructPtr, instrumentId);
+    }
+
+    public static void DoPerformActionOnTick(uint instrumentId)
+    {
+        Api.Framework?.RunOnTick(delegate
+        {
+            DoPerformAction(instrumentId);
+        });
     }
 
     private PerformActions() { }
@@ -44,7 +53,6 @@ public class PerformActions
     {
         var ptr = GetWindowByName(name);
         if (ptr == nint.Zero) return false;
-        Api.PluginLog?.Debug(name);
         SendAction(ptr, param);
         return true;
     }

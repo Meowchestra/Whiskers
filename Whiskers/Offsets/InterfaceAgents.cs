@@ -21,15 +21,15 @@ public unsafe class AgentInterface
     public AgentInterface(nint pointer, int id)
     {
         Pointer = pointer;
-        Id = id;
-        VTable = Marshal.ReadIntPtr(Pointer);
+        Id      = id;
+        VTable  = Marshal.ReadIntPtr(Pointer);
     }
 
     public AgentInterface(AgentId id)
     {
         Pointer = (nint)AgentModule.Instance()->GetAgentByInternalId(id);
-        Id = (int)id;
-        VTable = (nint)AgentModule.Instance()->GetAgentByInternalId(id)->VirtualTable;
+        Id      = (int)id;
+        VTable  = (nint)AgentModule.Instance()->GetAgentByInternalId(id)->VirtualTable;
     }
 
     public override string ToString()

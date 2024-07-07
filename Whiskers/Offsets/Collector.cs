@@ -79,7 +79,7 @@ public class Collector
         var name = ClientState?.LocalPlayer?.Name.TextValue;
         if (ClientState?.LocalPlayer?.HomeWorld.GameData != null)
         {
-            var homeWorld = ClientState.LocalPlayer.HomeWorld.GameData.RowId;
+            var homeWorld = ClientState?.LocalPlayer?.HomeWorld.GameData.RowId;
 
             if (Pipe.Client != null && Pipe.Client.IsConnected)
             {

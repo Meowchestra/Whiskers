@@ -23,7 +23,11 @@ public enum MessageType
     StartEnsemble         = 30, //Get<->Set
     AcceptReply           = 31,
     PerformanceModeState  = 32, //Get
-    
+
+    PartyInvite           = 40, //Set           (name;HomeWorldId)
+    PartyInviteAccept     = 41,
+    PartyPromote          = 42, //Set
+
     SetGfx                = 50, //Get<->Set
     MasterSoundState      = 60, //Set<->Get
     MasterVolume          = 61, //Set<->Get

@@ -122,12 +122,12 @@ public class MainWindow : Window, IDisposable
         switch (inMsg.MsgType)
         {
             case MessageType.Version:
-                if (new Version(inMsg.Message) > Assembly.GetEntryAssembly()?.GetName().Version)
+                /*if (new Version(inMsg.Message) > Assembly.GetEntryAssembly()?.GetName().Version)
                 {
                     ManuallyDisconnected = true;
                     Pipe.Client?.DisconnectAsync();
                     Api.PluginLog?.Error("Whiskers is out of date and cannot work with the running bard program.");
-                }
+                }*/
                 break;
             case MessageType.NoteOn:
                 PerformActions.PlayNote(Convert.ToInt16(inMsg.Message), true);
@@ -142,6 +142,9 @@ public class MainWindow : Window, IDisposable
             case MessageType.Instrument:
             case MessageType.StartEnsemble:
             case MessageType.AcceptReply:
+            case MessageType.PartyInvite:
+            case MessageType.PartyInviteAccept:
+            case MessageType.PartyPromote:
             case MessageType.SetGfx:
             case MessageType.MasterSoundState:
             case MessageType.MasterVolume:
@@ -199,7 +202,7 @@ public class MainWindow : Window, IDisposable
                             Chat.SendMessage(chatMessageChannelType.ChannelShortCut + " " + msg.Message);
                         break;
                     case MessageType.Instrument:
-                        PerformActions.PerformAction(Convert.ToUInt32(msg.Message));
+                        PerformActions.DoPerformActionOnTick(Convert.ToUInt32(msg.Message));
                         break;
                     case MessageType.StartEnsemble:
                         PerformActions.BeginReadyCheck();
@@ -207,6 +210,15 @@ public class MainWindow : Window, IDisposable
                         break;
                     case MessageType.AcceptReply:
                         PerformActions.ConfirmReceiveReadyCheck();
+                        break;
+                    case MessageType.PartyInvite:
+                        Party.PartyInvite(msg.Message);
+                        break;
+                    case MessageType.PartyInviteAccept:
+                        Party.AcceptPartyInviteEnable();
+                        break;
+                    case MessageType.PartyPromote:
+                        Party.PromoteCharacter(msg.Message);
                         break;
                     case MessageType.SetGfx:
                         var lowGfx = Convert.ToBoolean(msg.Message);

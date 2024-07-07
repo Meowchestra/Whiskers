@@ -16,6 +16,9 @@ public class Api
     [PluginService]
     public static IDalamudPluginInterface? PluginInterface { get; private set; }
 
+    [PluginService] 
+    public static IAddonLifecycle? AddonLifecycle { get; private set; }
+
     [PluginService]
     public static IBuddyList? BuddyList { get; private set; }
 
