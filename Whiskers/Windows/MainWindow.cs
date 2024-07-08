@@ -148,6 +148,7 @@ public class MainWindow : Window, IDisposable
             case MessageType.PartyInviteAccept:
             case MessageType.PartyPromote:
             case MessageType.PartyEnterHouse:
+            case MessageType.PartyTeleport:
             case MessageType.SetGfx:
             case MessageType.MasterSoundState:
             case MessageType.MasterVolume:
@@ -225,6 +226,9 @@ public class MainWindow : Window, IDisposable
                         break;
                     case MessageType.PartyEnterHouse:
                         Party.EnterHouse();
+                        break;
+                    case MessageType.PartyTeleport:
+                        Party.Teleport(Convert.ToBoolean(msg.Message));
                         break;
                     case MessageType.SetGfx:
                         var lowGfx = Convert.ToBoolean(msg.Message);

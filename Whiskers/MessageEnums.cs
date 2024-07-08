@@ -28,6 +28,7 @@ public enum MessageType
     PartyInviteAccept     = 41,
     PartyPromote          = 42, //Set
     PartyEnterHouse       = 43,
+    PartyTeleport         = 44, //Set           (host?show menu : accept TP)
 
     SetGfx                = 50, //Get<->Set
     MasterSoundState      = 60, //Set<->Get

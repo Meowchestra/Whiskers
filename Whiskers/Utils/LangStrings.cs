@@ -42,4 +42,10 @@ public static class LangStrings
         new Regex(@"Entrer dans la maison \?"),
         new Regex(@"Enter the estate hall\?")
     ];
+
+    internal static readonly List<Regex> ConfirmGroupTeleport =
+    [
+        new Regex(@"Accept Teleport to .*\？"),
+        new Regex(@"Zum Ätheryten .* teleportieren lassen\?")
+    ];
 }

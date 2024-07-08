@@ -70,6 +70,20 @@ public static class Party
         AutoSelect.AutoSelectYes.Enable();
     }
 
+    public static unsafe void Teleport(bool showMenu)
+    {
+        if (showMenu)
+            AgentTeleport.Instance()->Show();
+        else
+        {
+            if (YesNoAddon != null)
+                return;
+            Api.PluginLog?.Debug("Create new AcceptPartyInviteEnable");
+            YesNoAddon = new AutoSelect.AutoSelectYes();
+            AutoSelect.AutoSelectYes.Enable();
+        }
+    }
+
     public static void AcceptDisable()
     {
         if (YesNoAddon == null)
