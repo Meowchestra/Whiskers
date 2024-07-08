@@ -10,7 +10,9 @@ using System.Timers;
 using Dalamud.Interface.Windowing;
 using H.Pipes.Args;
 using ImGuiNET;
+using Whiskers.GameFunctions;
 using Whiskers.Offsets;
+using Chat = Whiskers.GameFunctions.Chat;
 using Timer = System.Timers.Timer;
 
 namespace Whiskers.Windows;
@@ -145,6 +147,7 @@ public class MainWindow : Window, IDisposable
             case MessageType.PartyInvite:
             case MessageType.PartyInviteAccept:
             case MessageType.PartyPromote:
+            case MessageType.PartyEnterHouse:
             case MessageType.SetGfx:
             case MessageType.MasterSoundState:
             case MessageType.MasterVolume:
@@ -219,6 +222,9 @@ public class MainWindow : Window, IDisposable
                         break;
                     case MessageType.PartyPromote:
                         Party.PromoteCharacter(msg.Message);
+                        break;
+                    case MessageType.PartyEnterHouse:
+                        Party.EnterHouse();
                         break;
                     case MessageType.SetGfx:
                         var lowGfx = Convert.ToBoolean(msg.Message);

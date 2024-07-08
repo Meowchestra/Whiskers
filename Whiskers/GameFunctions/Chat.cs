@@ -29,13 +29,14 @@ using System.Text;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Client.System.String;
+using Whiskers.Offsets;
 
-namespace Whiskers.Offsets;
+namespace Whiskers.GameFunctions;
 
 /// <summary>
 /// A class containing chat functionality
 /// </summary>
-public static partial class Chat
+public static class Chat
 {
     private delegate void ProcessChatBoxDelegate(nint uiModule, nint message, nint unused, byte a4);
 
@@ -45,14 +46,14 @@ public static partial class Chat
 
     static Chat()
     {
-        if (Api.SigScanner != null && Api.SigScanner.TryScanText(Signatures.SendChat, out var processChatBoxPtr))
+        if (Api.SigScanner != null && Api.SigScanner.TryScanText(Offsets.Chat.Signatures.SendChat, out var processChatBoxPtr))
         {
             ProcessChatBox = Marshal.GetDelegateForFunctionPointer<ProcessChatBoxDelegate>(processChatBoxPtr);
         }
 
         unsafe
         {
-            if (Api.SigScanner != null && Api.SigScanner.TryScanText(Signatures.SanitiseString, out var sanitisePtr))
+            if (Api.SigScanner != null && Api.SigScanner.TryScanText(Offsets.Chat.Signatures.SanitiseString, out var sanitisePtr))
             {
                 SanitizeString = (delegate* unmanaged<Utf8String*, int, nint, void>)sanitisePtr;
             }

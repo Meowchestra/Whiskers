@@ -87,4 +87,10 @@ public class Api
 
     [PluginService]
     public static IGameLifecycle? GameLifecycle { get; private set; }
+
+    [PluginService]
+    public static IObjectTable? Objects { get; private set; }
+
+    [PluginService]
+    public static ITargetManager? Targets { get; private set; }
 }

@@ -27,6 +27,7 @@ public enum MessageType
     PartyInvite           = 40, //Set           (name;HomeWorldId)
     PartyInviteAccept     = 41,
     PartyPromote          = 42, //Set
+    PartyEnterHouse       = 43,
 
     SetGfx                = 50, //Get<->Set
     MasterSoundState      = 60, //Set<->Get

@@ -10,9 +10,9 @@ namespace Whiskers.Offsets;
 
 [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
 
-public static partial class Chat
+public static class Chat
 {
-    private static class Signatures
+    internal static class Signatures
     {
         internal const string SendChat = "48 89 5C 24 ?? 57 48 83 EC 20 48 8B FA 48 8B D9 45 84 C9";
         internal const string SanitiseString = "E8 ?? ?? ?? ?? 48 8D 4C 24 ?? 0F B6 F0 E8 ?? ?? ?? ?? 48 8D 4D C0";
