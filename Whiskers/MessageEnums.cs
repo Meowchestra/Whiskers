@@ -29,6 +29,7 @@ public enum MessageType
     PartyPromote          = 42, //Set
     PartyEnterHouse       = 43,
     PartyTeleport         = 44, //Set           (host?show menu : accept TP)
+    PartyFollow           = 45, //Set           (name;HomeWorldId) | "" unfollow
 
     SetGfx                = 50, //Get<->Set
     MasterSoundState      = 60, //Set<->Get

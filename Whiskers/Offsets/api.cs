@@ -62,9 +62,6 @@ public class Api
     public static IKeyState? KeyState { get; private set; }
 
     [PluginService]
-    public static IObjectTable? ObjectTable { get; private set; }
-
-    [PluginService]
     public static IPartyFinderGui? PartyFinderGui { get; private set; }
 
     [PluginService]

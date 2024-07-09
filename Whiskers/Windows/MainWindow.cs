@@ -22,6 +22,7 @@ public class MainWindow : Window, IDisposable
     private Timer ReconnectTimer { get; set; } = new();
     private Queue<IpcMessage> Qt { get; set; } = new();
     private Configuration Configuration { get; init; }
+    private FollowSystem? FollowSystem { get; set; }
 
     // this extra bool exists for ImGui, since you can't ref a property
     private bool _visible;
@@ -149,6 +150,7 @@ public class MainWindow : Window, IDisposable
             case MessageType.PartyPromote:
             case MessageType.PartyEnterHouse:
             case MessageType.PartyTeleport:
+            case MessageType.PartyFollow:
             case MessageType.SetGfx:
             case MessageType.MasterSoundState:
             case MessageType.MasterVolume:
@@ -188,6 +190,12 @@ public class MainWindow : Window, IDisposable
         Pipe.Dispose();
     }
 
+    private void StopFollow()
+    {
+        FollowSystem?.Dispose();
+        FollowSystem = null;
+    }
+
     public override void Update()
     {
         //Do the in queue
@@ -225,10 +233,27 @@ public class MainWindow : Window, IDisposable
                         Party.PromoteCharacter(msg.Message);
                         break;
                     case MessageType.PartyEnterHouse:
+                        StopFollow();
                         Party.EnterHouse();
                         break;
                     case MessageType.PartyTeleport:
+                        StopFollow();
                         Party.Teleport(Convert.ToBoolean(msg.Message));
+                        break;
+                    case MessageType.PartyFollow:
+                        if (msg.Message == "")
+                            StopFollow();
+                        else
+                        {
+                            if (FollowSystem != null)
+                            {
+                                StopFollow();
+                            }
+
+                            FollowSystem = new FollowSystem(msg.Message.Split(';')[0], Convert.ToUInt16(msg.Message.Split(';')[1]));
+
+                            FollowSystem.Follow = true;
+                        }
                         break;
                     case MessageType.SetGfx:
                         var lowGfx = Convert.ToBoolean(msg.Message);
