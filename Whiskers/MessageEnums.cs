@@ -58,7 +58,7 @@ public enum MessageType
     ExitGame              = 100
 }
 
-public readonly struct ChatMessageChannelType
+public readonly record struct ChatMessageChannelType
 {
     public static readonly  ChatMessageChannelType None        = new("None",         0x0000, "");
     private static readonly ChatMessageChannelType Say         = new("Say",          0x000A, "/s");

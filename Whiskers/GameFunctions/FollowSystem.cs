@@ -19,26 +19,24 @@ public static class FollowSystem
     public static void FollowCharacter(string targetName, uint homeWorldId)
     {
         MovementFactory.Instance.StopMovement();
-        if (_followSystem == null)
-            _followSystem = new FollowSystemInternal(targetName, homeWorldId);
-        else
+        if (_followSystem != null)
         {
             _followSystem.Follow = false;
-            _followSystem        = new FollowSystemInternal(targetName, homeWorldId);
         }
+
+        _followSystem        = new FollowSystemInternal(targetName, homeWorldId);
         _followSystem.Follow = true;
     }
 
     public static void FollowCharacter(ulong goId, string targetName, uint homeWorldId)
     {
         MovementFactory.Instance.StopMovement();
-        if (_followSystem == null)
-            _followSystem = new FollowSystemInternal(goId, targetName, homeWorldId);
-        else
+        if (_followSystem != null)
         {
             _followSystem.Follow = false;
-            _followSystem        = new FollowSystemInternal(goId, targetName, homeWorldId);
         }
+
+        _followSystem        = new FollowSystemInternal(goId, targetName, homeWorldId);
         _followSystem.Follow = true;
     }
 
@@ -58,7 +56,7 @@ public class FollowSystemInternal : IDisposable
     internal bool Follow;
     internal bool Following;
     internal int FollowDistance = 1;
-    internal ulong GameObjectId = 0;
+    internal ulong GameObjectId;
     internal string FollowTarget = "";
     internal uint HomeWorldId { get; set; }
     internal IGameObject? FollowTargetObject;
@@ -70,24 +68,26 @@ public class FollowSystemInternal : IDisposable
         FollowTarget      = targetName;
         HomeWorldId       = homeWorldId;
         _overrideMovement = new OverrideMovement();
-        if (Api.Framework != null) Api.Framework.Update += OnGameFrameworkUpdate;
+        if (Api.Framework != null) 
+            Api.Framework.Update += OnGameFrameworkUpdate;
     }
 
     public FollowSystemInternal(ulong goId, string targetName, uint homeWorldId)
     {
-        GameObjectId         =  goId;
-        FollowTarget         =  targetName;
-        HomeWorldId          =  homeWorldId;
-        _overrideMovement    =  new OverrideMovement();
-        Api.Framework.Update += OnGameFrameworkUpdate;
+        GameObjectId      = goId;
+        FollowTarget      = targetName;
+        HomeWorldId       = homeWorldId;
+        _overrideMovement = new OverrideMovement();
+        if (Api.Framework != null) 
+            Api.Framework.Update += OnGameFrameworkUpdate;
     }
 
-    private static IGameObject GetGameObjectFromName(string _objectName, uint _worldId, ulong goId = 0)
+    private static IGameObject? GetGameObjectFromName(string objectName, uint worldId, ulong goId = 0)
     {
-        Api.PluginLog.Debug(goId.ToString());
+        Api.PluginLog?.Debug(goId.ToString());
         if (Api.Objects != null)
         {
-            var obj = Api.Objects.AsEnumerable().FirstOrDefault(s => s.Name.ToString().Equals(_objectName));
+            var obj = Api.Objects.AsEnumerable().FirstOrDefault(s => s.Name.ToString().Equals(objectName));
             if (obj is not IPlayerCharacter f)
                 return null;
 
@@ -96,7 +96,7 @@ public class FollowSystemInternal : IDisposable
                 if (f.GameObjectId != goId)
                     return null;
 
-            if (f.HomeWorld.Id == _worldId)
+            if (f.HomeWorld.Id == worldId)
                 return obj;
         }
 
@@ -120,16 +120,13 @@ public class FollowSystemInternal : IDisposable
 
     private void MoveTo(Vector3 position, float precision = 0.1f)
     {
-        if (_overrideMovement.Precision != precision)
-            _overrideMovement.Precision = precision;
-
+        _overrideMovement.Precision       = precision;
         _overrideMovement.DesiredPosition = position;
     }
 
     private void OnGameFrameworkUpdate(IFramework framework)
     {
-        if (_overrideMovement != null)
-            _overrideMovement.Enabled = Follow;
+        _overrideMovement.Enabled = Follow;
 
         //If follow is not enabled clear TextColored's and return
         if (!Follow)
@@ -215,7 +212,8 @@ public class FollowSystemInternal : IDisposable
     public void Dispose()
     {
         StopAllMovement();
-        if (Api.Framework != null) Api.Framework.Update -= OnGameFrameworkUpdate;
+        if (Api.Framework != null) 
+            Api.Framework.Update -= OnGameFrameworkUpdate;
         _overrideMovement.Dispose();
     }
 

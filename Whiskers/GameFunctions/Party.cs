@@ -15,10 +15,11 @@ namespace Whiskers.GameFunctions;
 
 public class Party : IDisposable
 {
+    [Flags]
     public enum AcceptFlags
     { 
-        Accept_Teleport = 0b00000001,
-        Accept_GroupInv = 0b00000010,
+        AcceptTeleport = 0b00000001,
+        AcceptGroupInv = 0b00000010,
     }
 
     private static readonly Lazy<Party> LazyInstance = new(static () => new Party());
@@ -30,7 +31,7 @@ public class Party : IDisposable
 
     private AutoSelect.AutoSelectYes? YesNoAddon { get; set; }
 
-    private byte AcceptLock { get; set; } = 0;
+    private byte AcceptLock { get; set; }
 
     public void Initialize()
     {
@@ -49,7 +50,7 @@ public class Party : IDisposable
 
     public void SetFlag(AcceptFlags flag) => AcceptLock |= (byte)flag;
 
-    public unsafe void PartyInvite(string message)
+    public void PartyInvite(string message)
     {
         if (message == "")
         {
@@ -61,7 +62,7 @@ public class Party : IDisposable
         PartyInvite(character, homeWorldId);
     }
 
-    public unsafe void PartyInvite(string character, ushort homeWorldId)
+    public static unsafe void PartyInvite(string character, ushort homeWorldId)
     {
         InfoProxyPartyInvite.Instance()->InviteToParty(0, character, homeWorldId);
     }
@@ -102,19 +103,19 @@ public class Party : IDisposable
             YesNoAddon?.Enable();
     }
 
-    public unsafe void PartyLeave()
+    public void PartyLeave()
     {
         YesNoAddon?.Enable();
 
         Api.Framework?.RunOnTick(delegate
         {
             Chat.SendMessage("/leave");
-        }, default(TimeSpan), 10, default(CancellationToken));
+        }, default, 10);
     }
 
     public void AcceptDisable()
     {
         //if (AcceptLock == 0)
-            YesNoAddon?.Disable();
+        YesNoAddon?.Disable();
     }
 }

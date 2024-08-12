@@ -1,13 +1,18 @@
-﻿using Dalamud.Hooking;
+﻿/*
+ * Copyright(c) 2024 Meowchestra, GiR-Zippo
+ * Licensed under the GPL v3 license. See https://github.com/Meowchestra/MeowMusic/blob/main/LICENSE for full license information.
+ */
+
+using System.Runtime.InteropServices;
+using Dalamud.Hooking;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using Whiskers.Offsets;
-using System.Runtime.InteropServices;
 
 namespace Whiskers.Utils;
 
 [StructLayout(LayoutKind.Explicit, Size = 0x2B0)]
-public unsafe struct CameraEx
+public struct CameraEx
 {
     [FieldOffset(0x130)] public float DirH; // 0 is north, increases CW
     [FieldOffset(0x134)] public float DirV; // 0 is horizontal, positive is looking up, negative looking down
@@ -23,13 +28,13 @@ public unsafe class CameraUtil : IDisposable
 {
     public bool Enabled
     {
-        get => _rmiCameraHook.IsEnabled;
+        get => _rmiCameraHook is { IsEnabled: true };
         set
         {
             if (value)
-                _rmiCameraHook.Enable();
+                _rmiCameraHook?.Enable();
             else
-                _rmiCameraHook.Disable();
+                _rmiCameraHook?.Disable();
         }
     }
 
@@ -39,24 +44,25 @@ public unsafe class CameraUtil : IDisposable
     public Angle SpeedH = 360.Degrees(); // per second
     public Angle SpeedV = 360.Degrees(); // per second
 
-    private delegate void RMICameraDelegate(CameraEx* self, int inputMode, float speedH, float speedV);
+    private delegate void RmiCameraDelegate(CameraEx* self, int inputMode, float speedH, float speedV);
     [Signature("40 53 48 83 EC 70 44 0F 29 44 24 ?? 48 8B D9")]
-    private Hook<RMICameraDelegate> _rmiCameraHook = null!;
+    private Hook<RmiCameraDelegate>? _rmiCameraHook = null;
 
     public CameraUtil()
     {
-        Api.GameInteropProvider.InitializeFromAttributes(this);
-        Api.PluginLog.Information($"RMICamera address: 0x{_rmiCameraHook.Address:X}");
+        Api.GameInteropProvider?.InitializeFromAttributes(this);
+        if (_rmiCameraHook != null)
+            Api.PluginLog?.Information($"RMICamera address: 0x{_rmiCameraHook.Address:X}");
     }
 
     public void Dispose()
     {
-        _rmiCameraHook.Dispose();
+        _rmiCameraHook?.Dispose();
     }
 
-    private void RMICameraDetour(CameraEx* self, int inputMode, float speedH, float speedV)
+    private void RmiCameraDetour(CameraEx* self, int inputMode, float speedH, float speedV)
     {
-        _rmiCameraHook.Original(self, inputMode, speedH, speedV);
+        _rmiCameraHook?.Original(self, inputMode, speedH, speedV);
         if (IgnoreUserInput || inputMode == 0) // let user override...
         {
             var dt = Framework.Instance()->FrameDeltaTime;

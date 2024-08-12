@@ -9,7 +9,7 @@ namespace Whiskers.Utils;
 
 // wrapper around float, stores angle in radians, provides type-safety and convenience
 // when describing rotation in world, common convention is 0 for 'south'/'down'/(0, -1) and increasing counterclockwise - so +90 is 'east'/'right'/(1, 0)
-public struct Angle
+public struct Angle : IEquatable<Angle>
 {
     public const float RadToDeg = 180 / MathF.PI;
     public const float DegToRad = MathF.PI / 180;
@@ -54,6 +54,8 @@ public struct Angle
     public override bool Equals(object? obj) => obj is Angle angle && this == angle;
     public override int GetHashCode() => Rad.GetHashCode();
     public override string ToString() => Deg.ToString("f0");
+
+    public bool Equals(Angle other) => Rad.Equals(other.Rad);
 }
 
 public static class AngleExtensions

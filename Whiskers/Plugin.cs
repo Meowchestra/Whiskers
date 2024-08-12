@@ -33,7 +33,7 @@ public class Whiskers : IDalamudPlugin
     internal static EnsembleManager? EnsembleManager { get; set; }
 
     public Api? Api { get; set; }
-    private readonly IPCProvider _ipc;
+    private readonly IpcProvider _ipc;
 
     public Whiskers(IDalamudPluginInterface? pluginInterface, IDataManager? data, ICommandManager commandManager, IClientState? clientState, IPartyList? partyList)
     {
@@ -76,7 +76,7 @@ public class Whiskers : IDalamudPlugin
             Api.ClientState.Logout += OnLogout;
         }
 
-        _ipc = new IPCProvider(this);
+        _ipc = new IpcProvider(this);
     }
 
     private static void OnLogin()

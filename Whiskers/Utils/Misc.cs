@@ -12,11 +12,11 @@ namespace Whiskers.Utils;
 
 internal static class Misc
 {
-    internal unsafe static void SetGameRenderSize(uint width, uint height)
+    internal static unsafe void SetGameRenderSize(uint width, uint height)
     {
-        Device* dev = Device.Instance();
-        dev->NewWidth                = (uint)width;
-        dev->NewHeight               = (uint)height;
+        var dev = Device.Instance();
+        dev->NewWidth                = width;
+        dev->NewHeight               = height;
         dev->RequestResolutionChange = 1;
     }
 

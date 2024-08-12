@@ -155,13 +155,6 @@ internal static class GameSettings
             }
         }
 
-        public static unsafe bool AreConfigsEqual(GameSettingsVarTable start, GameSettingsVarTable current)
-        {
-            if (start == current)
-                return true;
-            return false;
-        }
-
         /// <summary>
         /// Restore the GFX settings
         /// </summary>

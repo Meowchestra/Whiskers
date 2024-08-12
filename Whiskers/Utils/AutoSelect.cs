@@ -94,7 +94,6 @@ public abstract class AutoSelect
             {
                 SelectYes(addon);
                 Party.Instance.AcceptDisable();
-                return;
             }
         }
 
