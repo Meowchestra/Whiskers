@@ -8,6 +8,9 @@ using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using Whiskers.Config;
+using Whiskers.GameFunctions;
+using Whiskers.IPC;
 using Whiskers.Offsets;
 using Whiskers.Windows;
 using static Whiskers.Offsets.GameSettings;
@@ -30,6 +33,7 @@ public class Whiskers : IDalamudPlugin
     internal static EnsembleManager? EnsembleManager { get; set; }
 
     public Api? Api { get; set; }
+    private readonly IPCProvider _ipc;
 
     public Whiskers(IDalamudPluginInterface? pluginInterface, IDataManager? data, ICommandManager commandManager, IClientState? clientState, IPartyList? partyList)
     {
@@ -47,6 +51,7 @@ public class Whiskers : IDalamudPlugin
 
         AgentPerformance = new AgentPerformance(AgentId.PerformanceMode);
         EnsembleManager  = new EnsembleManager();
+        Party.Instance.Initialize();
 
         Collector.Instance.Initialize(data, clientState, partyList);
 
@@ -70,6 +75,8 @@ public class Whiskers : IDalamudPlugin
             Api.ClientState.Login  += OnLogin;
             Api.ClientState.Logout += OnLogout;
         }
+
+        _ipc = new IPCProvider(this);
     }
 
     private static void OnLogin()
@@ -84,6 +91,10 @@ public class Whiskers : IDalamudPlugin
 
     public void Dispose()
     {
+        _ipc.Dispose();
+        MovementFactory.Instance.Dispose();
+        Party.Instance.Dispose();
+
         if (Api.ClientState != null)
         {
             Api.ClientState.Login  -= OnLogin;

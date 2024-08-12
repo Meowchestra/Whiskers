@@ -44,7 +44,7 @@ public class PerformActions
         {
             fixed (ulong* u = param)
             {
-                AtkUnitBase.MemberFunctionPointers.FireCallback((AtkUnitBase*)ptr, (uint)pairCount, (AtkValue*)u, true); // (void*)1);
+                AtkUnitBase.MemberFunctionPointers.FireCallback((AtkUnitBase*)ptr, (uint)pairCount, (AtkValue*)u, true);
             }
         }
     }

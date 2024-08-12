@@ -19,20 +19,35 @@ namespace Whiskers.Utils;
 
 public abstract class AutoSelect
 {
-    public class AutoSelectYes
+    public class AutoSelectYes : IDisposable
     {
-        public static void Enable()
+        public AutoSelectYes()
         {
             Api.AddonLifecycle?.RegisterListener(AddonEvent.PostSetup, "SelectYesNo", AddonSetup);
         }
 
-        public static void Disable()
+        public void Dispose()
         {
             Api.AddonLifecycle?.UnregisterListener(AddonSetup);
         }
 
-        private static unsafe void AddonSetup(AddonEvent eventType, AddonArgs addonInfo)
+        public void Enable()
         {
+            Listen = true;
+        }
+
+        public void Disable()
+        {
+            Listen = false;
+        }
+
+        private bool Listen { get; set; }
+
+        private unsafe void AddonSetup(AddonEvent eventType, AddonArgs addonInfo)
+        {
+            if (!Listen)
+                return;
+
             var addon = (AtkUnitBase*)addonInfo.Addon;
             var dataPtr = (AddonSelectYesNoOnSetupData*)addon;
             if (dataPtr == null)
@@ -42,22 +57,44 @@ public abstract class AutoSelect
             if (LangStrings.LfgPatterns.Any(r => r.IsMatch(text)))
             {
                 SelectYes(addon);
-                Party.AcceptDisable();
+                Party.Instance.AcceptDisable();
+                return;
             }
-            else if (LangStrings.PromotePatterns.Any(r => r.IsMatch(text)))
+            if (LangStrings.LeavePartyPatterns.Any(r => r.IsMatch(text)))
             {
                 SelectYes(addon);
-                Party.AcceptDisable();
+                Party.Instance.AcceptDisable();
+                return;
             }
-            else if (LangStrings.ConfirmHouseEntrance.Any(r => r.IsMatch(text)))
+            if (LangStrings.PromotePatterns.Any(r => r.IsMatch(text)))
             {
                 SelectYes(addon);
-                Party.AcceptDisable();
+                Party.Instance.AcceptDisable();
+                return;
             }
-            else if (LangStrings.ConfirmGroupTeleport.Any(r => r.IsMatch(text)))
+            if (LangStrings.ConfirmHouseEntrance.Any(r => r.IsMatch(text)))
             {
                 SelectYes(addon);
-                Party.AcceptDisable();
+                Party.Instance.AcceptDisable();
+                return;
+            }
+            if (LangStrings.ConfirmGroupTeleport.Any(r => r.IsMatch(text)))
+            {
+                SelectYes(addon);
+                Party.Instance.AcceptDisable();
+                return;
+            }
+            if (LangStrings.ConfirmLogout.Any(r => r.IsMatch(text)))
+            {
+                SelectYes(addon);
+                Party.Instance.AcceptDisable();
+                return;
+            }
+            if (LangStrings.ConfirmShutdown.Any(r => r.IsMatch(text)))
+            {
+                SelectYes(addon);
+                Party.Instance.AcceptDisable();
+                return;
             }
         }
 

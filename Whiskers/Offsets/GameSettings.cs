@@ -49,8 +49,11 @@ public class GameSettingsVarTable
     public uint TessellationDx11 { get; set; }
     public uint GlareRepresentationDx11 { get; set; }
     public uint UiAssetType { get; set; }
+    public uint GraphicsRezoScale { get; set; }
+    public uint GraphicsRezoUpscaleType { get; set; }
     public uint ScreenWidth { get; set; }
     public uint ScreenHeight { get; set; }
+
     //Sound
     public uint SoundEnabled { get; set; }
 }
@@ -85,6 +88,19 @@ internal static class GameSettings
     /// </summary>
     internal class AgentConfigSystem
     {
+        public static void SetGfx(bool low)
+        {
+            if (low)
+            {
+                GetSettings(GameSettingsTables.Instance.CustomTable);
+                SetMinimalGfx();
+            }
+            else
+            {
+                RestoreSettings(GameSettingsTables.Instance.CustomTable);
+            }
+        }
+
         #region Get/Restore config
         /// <summary>
         /// Get the gfx settings and save them
@@ -130,11 +146,20 @@ internal static class GameSettings
                 varTable.TessellationDx11              = configEntry[(int)ConfigOption.Tessellation_DX11].Value.UInt;
                 varTable.GlareRepresentationDx11       = configEntry[(int)ConfigOption.GlareRepresentation_DX11].Value.UInt;
                 varTable.UiAssetType                   = configEntry[(int)ConfigOption.UiAssetType].Value.UInt;
+                varTable.GraphicsRezoScale             = configEntry[(int)ConfigOption.GraphicsRezoScale].Value.UInt;
+                varTable.GraphicsRezoUpscaleType       = configEntry[(int)ConfigOption.GraphicsRezoUpscaleType].Value.UInt;
                 varTable.ScreenWidth                   = configEntry[(int)ConfigOption.ScreenWidth].Value.UInt;
                 varTable.ScreenHeight                  = configEntry[(int)ConfigOption.ScreenHeight].Value.UInt;
 
                 varTable.SoundEnabled                  = configEntry[(int)ConfigOption.IsSndMaster].Value.UInt;
             }
+        }
+
+        public static unsafe bool AreConfigsEqual(GameSettingsVarTable start, GameSettingsVarTable current)
+        {
+            if (start == current)
+                return true;
+            return false;
         }
 
         /// <summary>
@@ -181,6 +206,8 @@ internal static class GameSettings
                 configEntry[(int)ConfigOption.Tessellation_DX11].SetValueUInt(varTable.TessellationDx11);
                 configEntry[(int)ConfigOption.GlareRepresentation_DX11].SetValueUInt(varTable.GlareRepresentationDx11);
                 configEntry[(int)ConfigOption.UiAssetType].SetValueUInt(varTable.UiAssetType);
+                configEntry[(int)ConfigOption.GraphicsRezoScale].SetValueUInt(varTable.GraphicsRezoScale);
+                configEntry[(int)ConfigOption.GraphicsRezoUpscaleType].SetValueUInt(varTable.GraphicsRezoUpscaleType);
                 configEntry[(int)ConfigOption.ScreenWidth].SetValueUInt(varTable.ScreenWidth);
                 configEntry[(int)ConfigOption.ScreenHeight].SetValueUInt(varTable.ScreenHeight);
                 
@@ -241,6 +268,8 @@ internal static class GameSettings
             configEntry[(int)ConfigOption.Tessellation_DX11].SetValueUInt(0);
             configEntry[(int)ConfigOption.GlareRepresentation_DX11].SetValueUInt(0);
             configEntry[(int)ConfigOption.UiAssetType].SetValueUInt(0);
+            configEntry[(int)ConfigOption.GraphicsRezoScale].SetValueUInt(50);
+            configEntry[(int)ConfigOption.GraphicsRezoUpscaleType].SetValueUInt(0);
             configEntry[(int)ConfigOption.ScreenWidth].SetValueUInt(1024);
             configEntry[(int)ConfigOption.ScreenHeight].SetValueUInt(720);
         }

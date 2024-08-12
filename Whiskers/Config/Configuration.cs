@@ -6,7 +6,7 @@
 using Dalamud.Configuration;
 using Dalamud.Plugin;
 
-namespace Whiskers;
+namespace Whiskers.Config;
 
 [Serializable]
 public class Configuration : IPluginConfiguration

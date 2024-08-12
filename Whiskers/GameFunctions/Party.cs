@@ -13,43 +13,71 @@ using Whiskers.Utils;
 
 namespace Whiskers.GameFunctions;
 
-public static class Party
+public class Party : IDisposable
 {
-    private static AutoSelect.AutoSelectYes? YesNoAddon { get; set; }
-    public static unsafe void PartyInvite(string message)
+    public enum AcceptFlags
+    { 
+        Accept_Teleport = 0b00000001,
+        Accept_GroupInv = 0b00000010,
+    }
+
+    private static readonly Lazy<Party> LazyInstance = new(static () => new Party());
+
+    private Party()
+    {}
+
+    public static Party Instance => LazyInstance.Value;
+
+    private AutoSelect.AutoSelectYes? YesNoAddon { get; set; }
+
+    private byte AcceptLock { get; set; } = 0;
+
+    public void Initialize()
+    {
+        YesNoAddon = new AutoSelect.AutoSelectYes();
+    }
+
+    public void Dispose()
+    {
+        YesNoAddon?.Dispose();
+        YesNoAddon = null;
+    }
+
+    public bool IsAcceptFlagSet(AcceptFlags flag) => ((AcceptFlags)AcceptLock & flag) == flag;
+
+    public void ClearFlags() => AcceptLock = 0;
+
+    public void SetFlag(AcceptFlags flag) => AcceptLock |= (byte)flag;
+
+    public unsafe void PartyInvite(string message)
     {
         if (message == "")
         {
-            AcceptPartyInviteEnable();
+            YesNoAddon?.Enable();
             return;
         }
         var character = message.Split(';')[0];
         var homeWorldId = Convert.ToUInt16(message.Split(';')[1]);
+        PartyInvite(character, homeWorldId);
+    }
+
+    public unsafe void PartyInvite(string character, ushort homeWorldId)
+    {
         InfoProxyPartyInvite.Instance()->InviteToParty(0, character, homeWorldId);
     }
 
-    public static void AcceptPartyInviteEnable()
+    public void AcceptPartyInviteEnable()
     {
-        if (YesNoAddon != null)
-            return;
-        Api.PluginLog?.Debug("Create new AcceptPartyInviteEnable");
-        YesNoAddon = new AutoSelect.AutoSelectYes();
-        AutoSelect.AutoSelectYes.Enable();
+        YesNoAddon?.Enable();
     }
 
-    public static unsafe void PromoteCharacter(string message)
+    public unsafe void PromoteCharacter(string message)
     {
-        Api.PluginLog?.Debug(message);
-        if (YesNoAddon != null)
-            return;
-        Api.PluginLog?.Debug("Create new AcceptPromote");
-        YesNoAddon = new AutoSelect.AutoSelectYes();
-        AutoSelect.AutoSelectYes.Enable();
+        YesNoAddon?.Enable();
 
-        Api.PluginLog?.Debug(message);
         foreach (var i in GroupManager.Instance()->GetGroup()->PartyMembers)
         {
-            if (i.NameString.StartsWith(message))
+            if (i.NameString.StartsWith(message) || i.NameString == message)
             {
                 AgentPartyMember.Instance()->Promote(message, 0, i.ContentId);
                 return;
@@ -57,38 +85,36 @@ public static class Party
         }
     }
 
-    public static unsafe void EnterHouse()
+    public unsafe void EnterHouse()
     {
         var entrance = Misc.GetNearestEntrance(out var distance);
         if (entrance != null && distance < 4.8f)
             TargetSystem.Instance()->InteractWithObject((GameObject*)entrance.Address, false);
 
-        if (YesNoAddon != null)
-            return;
-        Api.PluginLog?.Debug("Create new AcceptPartyInviteEnable");
-        YesNoAddon = new AutoSelect.AutoSelectYes();
-        AutoSelect.AutoSelectYes.Enable();
+        YesNoAddon?.Enable();
     }
 
-    public static unsafe void Teleport(bool showMenu)
+    public unsafe void Teleport(bool showMenu)
     {
         if (showMenu)
             AgentTeleport.Instance()->Show();
         else
-        {
-            if (YesNoAddon != null)
-                return;
-            Api.PluginLog?.Debug("Create new AcceptPartyInviteEnable");
-            YesNoAddon = new AutoSelect.AutoSelectYes();
-            AutoSelect.AutoSelectYes.Enable();
-        }
+            YesNoAddon?.Enable();
     }
 
-    public static void AcceptDisable()
+    public unsafe void PartyLeave()
     {
-        if (YesNoAddon == null)
-            return;
-        AutoSelect.AutoSelectYes.Disable();
-        YesNoAddon = null;
+        YesNoAddon?.Enable();
+
+        Api.Framework?.RunOnTick(delegate
+        {
+            Chat.SendMessage("/leave");
+        }, default(TimeSpan), 10, default(CancellationToken));
+    }
+
+    public void AcceptDisable()
+    {
+        //if (AcceptLock == 0)
+            YesNoAddon?.Disable();
     }
 }

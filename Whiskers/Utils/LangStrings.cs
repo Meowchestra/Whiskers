@@ -17,10 +17,17 @@ public static class LangStrings
         new Regex(@"Rejoindre l'équipe de .*\?")
     ];
 
+    public static readonly List<Regex> LeavePartyPatterns =
+    [
+        new Regex(@"Die Gruppe verlassen\?"),
+        new Regex(@"Leave party\?")
+    ];
+
     public static readonly List<Regex> PromotePatterns =
     [
         new Regex(@"Promote .* to party leader\?"),
-        new Regex(@".* zum Gruppenanführer machen\?")
+        new Regex(@".* zum Gruppenanführer machen\?"),
+        new Regex(@"Promouvoir .* au rang de chef d'équipe \?")
     ];
 
     internal static readonly List<Regex> Entrance =
@@ -29,8 +36,8 @@ public static class LangStrings
         new Regex(@"进入房屋"),
         new Regex(@"進入房屋"),
         new Regex(@"Eingang"),
-        new Regex(@"Entrée"),
-        new Regex(@"Entrance")
+        new Regex(@"Entrance"),
+        new Regex(@"Entrée")
     ];
 
     internal static readonly List<Regex> ConfirmHouseEntrance =
@@ -45,7 +52,22 @@ public static class LangStrings
 
     internal static readonly List<Regex> ConfirmGroupTeleport =
     [
-        new Regex(@"Accept Teleport to .*\？"),
-        new Regex(@"Zum Ätheryten .* teleportieren lassen\?")
+        new Regex(@"Accept Teleport to .*\?"),
+        new Regex(@"Zum Ätheryten .* teleportieren lassen\?"),
+        new Regex(@"Voulez-vous vous téléporter vers la destination .* \?")
+    ];
+
+    internal static readonly List<Regex> ConfirmLogout =
+    [
+        new Regex(@"Zum Titelbildschirm zurückkehren\?"),
+        new Regex(@"Se déconnecter et retourner à l'écram titre \?"),
+        new Regex(@"Log out and return to the title screen\?")
+    ];
+
+    internal static readonly List<Regex> ConfirmShutdown =
+    [
+        new Regex(@"Das Spiel beenden\?"),
+        new Regex(@"Se déconnecter et quitter le jeu \?"),
+        new Regex(@"Log out and exit the game\?")
     ];
 }

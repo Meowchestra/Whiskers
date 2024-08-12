@@ -32,6 +32,7 @@ public enum MessageType
     PartyFollow           = 45, //Set           (name;HomeWorldId) | "" unfollow
 
     SetGfx                = 50, //Get<->Set
+    SetWindowRenderSize   = 51,
     MasterSoundState      = 60, //Set<->Get
     MasterVolume          = 61, //Set<->Get
     BgmSoundState         = 62, //Set<->Get
@@ -47,8 +48,13 @@ public enum MessageType
     PerformanceSoundState = 72, //Set<->Get
     PerformanceVolume     = 73, //Set<->Get
 
+    MoveCharToPosition    = 80,
+    StopMovement          = 81,
+
     Chat                  = 85,
     NetworkPacket         = 90,
+    ClientLogout          = 98,
+    GameShutdown          = 99,
     ExitGame              = 100
 }
 

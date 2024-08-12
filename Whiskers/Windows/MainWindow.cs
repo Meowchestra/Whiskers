@@ -10,8 +10,10 @@ using System.Timers;
 using Dalamud.Interface.Windowing;
 using H.Pipes.Args;
 using ImGuiNET;
+using Whiskers.Config;
 using Whiskers.GameFunctions;
 using Whiskers.Offsets;
+using Whiskers.Utils;
 using Chat = Whiskers.GameFunctions.Chat;
 using Timer = System.Timers.Timer;
 
@@ -22,7 +24,6 @@ public class MainWindow : Window, IDisposable
     private Timer ReconnectTimer { get; set; } = new();
     private Queue<IpcMessage> Qt { get; set; } = new();
     private Configuration Configuration { get; init; }
-    private FollowSystem? FollowSystem { get; set; }
 
     // this extra bool exists for ImGui, since you can't ref a property
     private bool _visible;
@@ -132,6 +133,7 @@ public class MainWindow : Window, IDisposable
                     Api.PluginLog?.Error("Whiskers is out of date and cannot work with the running bard program.");
                 }*/
                 break;
+            case MessageType.Instrument:
             case MessageType.NoteOn:
                 PerformActions.PlayNote(Convert.ToInt16(inMsg.Message), true);
                 break;
@@ -141,8 +143,6 @@ public class MainWindow : Window, IDisposable
             case MessageType.ProgramChange:
                 PerformActions.GuitarSwitchTone(Convert.ToInt32(inMsg.Message));
                 break;
-            case MessageType.Chat:
-            case MessageType.Instrument:
             case MessageType.StartEnsemble:
             case MessageType.AcceptReply:
             case MessageType.PartyInvite:
@@ -152,6 +152,7 @@ public class MainWindow : Window, IDisposable
             case MessageType.PartyTeleport:
             case MessageType.PartyFollow:
             case MessageType.SetGfx:
+            case MessageType.SetWindowRenderSize:
             case MessageType.MasterSoundState:
             case MessageType.MasterVolume:
             case MessageType.BgmSoundState:
@@ -166,6 +167,9 @@ public class MainWindow : Window, IDisposable
             case MessageType.SystemVolume:
             case MessageType.PerformanceSoundState:
             case MessageType.PerformanceVolume:
+            case MessageType.Chat:
+            case MessageType.ClientLogout:
+            case MessageType.GameShutdown:
             case MessageType.ExitGame:
                 Qt.Enqueue(inMsg);
                 break;
@@ -190,12 +194,6 @@ public class MainWindow : Window, IDisposable
         Pipe.Dispose();
     }
 
-    private void StopFollow()
-    {
-        FollowSystem?.Dispose();
-        FollowSystem = null;
-    }
-
     public override void Update()
     {
         //Do the in queue
@@ -206,13 +204,6 @@ public class MainWindow : Window, IDisposable
                 var msg = Qt.Dequeue();
                 switch (msg.MsgType)
                 {
-                    case MessageType.Chat:
-                        var chatMessageChannelType = ChatMessageChannelType.ParseByChannelCode(msg.MsgChannel);
-                        if (chatMessageChannelType.Equals(ChatMessageChannelType.None))
-                            Chat.SendMessage(msg.Message);
-                        else
-                            Chat.SendMessage(chatMessageChannelType.ChannelShortCut + " " + msg.Message);
-                        break;
                     case MessageType.Instrument:
                         PerformActions.DoPerformActionOnTick(Convert.ToUInt32(msg.Message));
                         break;
@@ -224,48 +215,33 @@ public class MainWindow : Window, IDisposable
                         PerformActions.ConfirmReceiveReadyCheck();
                         break;
                     case MessageType.PartyInvite:
-                        Party.PartyInvite(msg.Message);
+                        Party.Instance.PartyInvite(msg.Message);
                         break;
                     case MessageType.PartyInviteAccept:
-                        Party.AcceptPartyInviteEnable();
+                        Party.Instance.AcceptPartyInviteEnable();
                         break;
                     case MessageType.PartyPromote:
-                        Party.PromoteCharacter(msg.Message);
+                        Party.Instance.PromoteCharacter(msg.Message);
                         break;
                     case MessageType.PartyEnterHouse:
-                        StopFollow();
-                        Party.EnterHouse();
+                        FollowSystem.StopFollow();
+                        Party.Instance.EnterHouse();
                         break;
                     case MessageType.PartyTeleport:
-                        StopFollow();
-                        Party.Teleport(Convert.ToBoolean(msg.Message));
+                        FollowSystem.StopFollow();
+                        Party.Instance.Teleport(Convert.ToBoolean(msg.Message));
                         break;
                     case MessageType.PartyFollow:
                         if (msg.Message == "")
-                            StopFollow();
+                            FollowSystem.StopFollow();
                         else
-                        {
-                            if (FollowSystem != null)
-                            {
-                                StopFollow();
-                            }
-
-                            FollowSystem = new FollowSystem(msg.Message.Split(';')[0], Convert.ToUInt16(msg.Message.Split(';')[1]));
-
-                            FollowSystem.Follow = true;
-                        }
+                            FollowSystem.FollowCharacter(msg.Message.Split(';')[0], Convert.ToUInt16(msg.Message.Split(';')[1]));
                         break;
                     case MessageType.SetGfx:
-                        var lowGfx = Convert.ToBoolean(msg.Message);
-                        if (lowGfx)
-                        {
-                            GameSettings.AgentConfigSystem.GetSettings(GameSettingsTables.Instance?.CustomTable);
-                            GameSettings.AgentConfigSystem.SetMinimalGfx();
-                        }
-                        else
-                        {
-                            GameSettings.AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance?.CustomTable);
-                        }
+                        GameSettings.AgentConfigSystem.SetGfx(Convert.ToBoolean(msg.Message));
+                        break;
+                    case MessageType.SetWindowRenderSize:
+                        Misc.SetGameRenderSize(Convert.ToUInt32(msg.Message.Split(';')[0]), Convert.ToUInt32(msg.Message.Split(';')[1]));
                         break;
                     case MessageType.MasterSoundState:
                         GameSettings.AgentConfigSystem.SetMasterSoundEnable(Convert.ToBoolean(msg.Message));
@@ -351,6 +327,20 @@ public class MainWindow : Window, IDisposable
                         else
                             GameSettings.AgentConfigSystem.SetPerformanceSoundVolume(Convert.ToInt16(msg.Message));
                         break;
+                    case MessageType.Chat:
+                        var chatMessageChannelType = ChatMessageChannelType.ParseByChannelCode(msg.MsgChannel);
+                        if (chatMessageChannelType.Equals(ChatMessageChannelType.None))
+                            Chat.SendMessage(msg.Message);
+                        else
+                            Chat.SendMessage(chatMessageChannelType.ChannelShortCut + " " + msg.Message);
+                        break;
+                    case MessageType.ClientLogout:
+                        MiscGameFunctions.CharacterLogout();
+                        break;
+                    case MessageType.GameShutdown:
+                        MiscGameFunctions.GameShutdown();
+                        break;
+
                     case MessageType.ExitGame:
                         Process.GetCurrentProcess().Kill();
                         break;

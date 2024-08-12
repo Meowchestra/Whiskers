@@ -12,18 +12,60 @@ using Whiskers.Utils;
 
 namespace Whiskers.GameFunctions;
 
-public class FollowSystem : IDisposable
+public static class FollowSystem
+{
+    private static FollowSystemInternal? _followSystem;
+
+    public static void FollowCharacter(string targetName, uint homeWorldId)
+    {
+        MovementFactory.Instance.StopMovement();
+        if (_followSystem == null)
+            _followSystem = new FollowSystemInternal(targetName, homeWorldId);
+        else
+        {
+            _followSystem.Follow = false;
+            _followSystem        = new FollowSystemInternal(targetName, homeWorldId);
+        }
+        _followSystem.Follow = true;
+    }
+
+    public static void FollowCharacter(ulong goId, string targetName, uint homeWorldId)
+    {
+        MovementFactory.Instance.StopMovement();
+        if (_followSystem == null)
+            _followSystem = new FollowSystemInternal(goId, targetName, homeWorldId);
+        else
+        {
+            _followSystem.Follow = false;
+            _followSystem        = new FollowSystemInternal(goId, targetName, homeWorldId);
+        }
+        _followSystem.Follow = true;
+    }
+
+    public static void StopFollow()
+    {
+        if (_followSystem != null)
+        {
+            _followSystem.Follow = false;
+            _followSystem.Dispose();
+            _followSystem = null;
+        }
+    }
+}
+
+public class FollowSystemInternal : IDisposable
 {
     internal bool Follow;
     internal bool Following;
-    internal int FollowDistance = 2;
+    internal int FollowDistance = 1;
+    internal ulong GameObjectId = 0;
     internal string FollowTarget = "";
     internal uint HomeWorldId { get; set; }
     internal IGameObject? FollowTargetObject;
     internal IPlayerCharacter? TChar = null;
     private readonly OverrideMovement _overrideMovement;
 
-    public FollowSystem(string targetName, uint homeWorldId)
+    public FollowSystemInternal(string targetName, uint homeWorldId)
     {
         FollowTarget      = targetName;
         HomeWorldId       = homeWorldId;
@@ -31,14 +73,30 @@ public class FollowSystem : IDisposable
         if (Api.Framework != null) Api.Framework.Update += OnGameFrameworkUpdate;
     }
 
-    private static IGameObject? GetGameObjectFromName(string objectName, uint worldId)
+    public FollowSystemInternal(ulong goId, string targetName, uint homeWorldId)
     {
+        GameObjectId         =  goId;
+        FollowTarget         =  targetName;
+        HomeWorldId          =  homeWorldId;
+        _overrideMovement    =  new OverrideMovement();
+        Api.Framework.Update += OnGameFrameworkUpdate;
+    }
+
+    private static IGameObject GetGameObjectFromName(string _objectName, uint _worldId, ulong goId = 0)
+    {
+        Api.PluginLog.Debug(goId.ToString());
         if (Api.Objects != null)
         {
-            var obj = Api.Objects.AsEnumerable().FirstOrDefault(s => s.Name.ToString().Equals(objectName));
+            var obj = Api.Objects.AsEnumerable().FirstOrDefault(s => s.Name.ToString().Equals(_objectName));
             if (obj is not IPlayerCharacter f)
                 return null;
-            if (f.HomeWorld.Id == worldId)
+
+            //check if we got a goId
+            if (goId != 0)
+                if (f.GameObjectId != goId)
+                    return null;
+
+            if (f.HomeWorld.Id == _worldId)
                 return obj;
         }
 
@@ -47,7 +105,7 @@ public class FollowSystem : IDisposable
 
     private bool GetFollowTargetObject()
     {
-        var ftarget = GetGameObjectFromName(FollowTarget, HomeWorldId);
+        var ftarget = GetGameObjectFromName(FollowTarget, HomeWorldId, GameObjectId);
         if (ftarget == null)
         {
             FollowTargetObject = null;
@@ -70,6 +128,9 @@ public class FollowSystem : IDisposable
 
     private void OnGameFrameworkUpdate(IFramework framework)
     {
+        if (_overrideMovement != null)
+            _overrideMovement.Enabled = Follow;
+
         //If follow is not enabled clear TextColored's and return
         if (!Follow)
         {
@@ -147,8 +208,8 @@ public class FollowSystem : IDisposable
 
     private void Stop()
     {
-        if (_overrideMovement.DesiredPosition != null)
-            _overrideMovement.DesiredPosition = null;
+        if (_overrideMovement.Enabled)
+            _overrideMovement.Enabled = false;
     }
 
     public void Dispose()
