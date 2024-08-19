@@ -20,7 +20,7 @@ public class GameSettingsVarTable
 
     //DX11
     public uint AntiAliasing_DX11 { get; set; }
-    public uint TextureFilterQuality_DX11 { get; set; }
+    //public uint TextureFilterQuality_DX11 { get; set; } // Hidden / Removed Setting?
     public uint TextureAnisotropicQuality_DX11 { get; set; }
     public uint SSAO_DX11 { get; set; }
     public uint Glare_DX11 { get; set; }
@@ -125,7 +125,7 @@ internal static class GameSettings
                 varTable.DisplayObjectLimitType         = configEntry[(int)ConfigOption.DisplayObjectLimitType].Value.UInt;
 
                 varTable.AntiAliasing_DX11              = configEntry[(int)ConfigOption.AntiAliasing_DX11].Value.UInt;
-                varTable.TextureFilterQuality_DX11      = configEntry[(int)ConfigOption.TextureFilterQuality_DX11].Value.UInt;
+                //varTable.TextureFilterQuality_DX11      = configEntry[(int)ConfigOption.TextureFilterQuality_DX11].Value.UInt; // Hidden / Removed Setting?
                 varTable.TextureAnisotropicQuality_DX11 = configEntry[(int)ConfigOption.TextureAnisotropicQuality_DX11].Value.UInt;
                 varTable.SSAO_DX11                      = configEntry[(int)ConfigOption.SSAO_DX11].Value.UInt;
                 varTable.Glare_DX11                     = configEntry[(int)ConfigOption.Glare_DX11].Value.UInt;
@@ -185,7 +185,7 @@ internal static class GameSettings
                 configEntry[(int)ConfigOption.DisplayObjectLimitType].SetValueUInt(varTable.DisplayObjectLimitType);
 
                 configEntry[(int)ConfigOption.AntiAliasing_DX11].SetValueUInt(varTable.AntiAliasing_DX11);
-                configEntry[(int)ConfigOption.TextureFilterQuality_DX11].SetValueUInt(varTable.TextureFilterQuality_DX11);
+                //configEntry[(int)ConfigOption.TextureFilterQuality_DX11].SetValueUInt(varTable.TextureFilterQuality_DX11); // Hidden / Removed Setting?
                 configEntry[(int)ConfigOption.TextureAnisotropicQuality_DX11].SetValueUInt(varTable.TextureAnisotropicQuality_DX11);
                 configEntry[(int)ConfigOption.SSAO_DX11].SetValueUInt(varTable.SSAO_DX11);
                 configEntry[(int)ConfigOption.Glare_DX11].SetValueUInt(varTable.Glare_DX11);
@@ -254,7 +254,7 @@ internal static class GameSettings
             configEntry[(int)ConfigOption.DisplayObjectLimitType].SetValueUInt(4);
 
             configEntry[(int)ConfigOption.AntiAliasing_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.TextureFilterQuality_DX11].SetValueUInt(0);
+            //configEntry[(int)ConfigOption.TextureFilterQuality_DX11].SetValueUInt(2); // Hidden / Removed Setting?
             configEntry[(int)ConfigOption.TextureAnisotropicQuality_DX11].SetValueUInt(0);
             configEntry[(int)ConfigOption.SSAO_DX11].SetValueUInt(0);
             configEntry[(int)ConfigOption.Glare_DX11].SetValueUInt(1);
