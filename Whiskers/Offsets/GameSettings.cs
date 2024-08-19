@@ -257,7 +257,7 @@ internal static class GameSettings
             configEntry[(int)ConfigOption.TextureFilterQuality_DX11].SetValueUInt(0);
             configEntry[(int)ConfigOption.TextureAnisotropicQuality_DX11].SetValueUInt(0);
             configEntry[(int)ConfigOption.SSAO_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.Glare_DX11].SetValueUInt(0);
+            configEntry[(int)ConfigOption.Glare_DX11].SetValueUInt(1);
             configEntry[(int)ConfigOption.DistortionWater_DX11].SetValueUInt(0);
             configEntry[(int)ConfigOption.DepthOfField_DX11].SetValueUInt(0);
             configEntry[(int)ConfigOption.RadialBlur_DX11].SetValueUInt(0);
