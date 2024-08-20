@@ -44,7 +44,9 @@ jobs:
         TIME="${{ steps.current-time.outputs.formattedTime }}"
         sed -i "s/\"AssemblyVersion\": \".*\"/\"AssemblyVersion\": \"$VERSION\"/g" ./data/pluginmaster.json
         sed -i "s/\"LastUpdate\": \".*\"/\"LastUpdate\": \"$TIME\"/g" ./data/pluginmaster.json
-        sed -i "s|https://github.com/Meowchestra/Whiskers/releases/download/[^/]+/latest.zip|https://github.com/Meowchestra/Whiskers/releases/download/$VERSION/latest.zip|g" ./data/pluginmaster.json
+        sed -i "s|\"DownloadLinkInstall\": \".*\"|\"DownloadLinkInstall\": \"https://github.com/Meowchestra/Whiskers/releases/download/$VERSION/latest.zip\"|g" ./data/pluginmaster.json
+        sed -i "s|\"DownloadLinkTesting\": \".*\"|\"DownloadLinkTesting\": \"https://github.com/Meowchestra/Whiskers/releases/download/$VERSION/latest.zip\"|g" ./data/pluginmaster.json
+        sed -i "s|\"DownloadLinkUpdate\": \".*\"|\"DownloadLinkUpdate\": \"https://github.com/Meowchestra/Whiskers/releases/download/$VERSION/latest.zip\"|g" ./data/pluginmaster.json
 
     - name: Create and upload release
       id: create-new-release
