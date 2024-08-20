@@ -15,7 +15,7 @@
         "LoadRequiredState": 0,
         "LoadPriority": 0,
         "LoadSync": "false",
-        "IconUrl": "https://raw.githubusercontent.com/Meowchestra/Whiskers/develop/data/icon.png",
+        "IconUrl": "https://raw.githubusercontent.com/Meowchestra/Whiskers/main/data/icon.png",
         "Punchline": "Companion plugin for enhanced functionality.",
         "IsHide": "false",
         "IsTestingExclusive": "false",
