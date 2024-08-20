@@ -40,8 +40,8 @@ jobs:
     - name: Update repository
       shell: pwsh
       run: |
-        VERSION = "${{ steps.get-version.outputs.version }}"
-        TIME = "${{ steps.current-time.outputs.time }}"
+        $VERSION = "${{ steps.get-version.outputs.version }}"
+        $TIME = "${{ steps.current-time.outputs.time }}"
         $content = Get-Content ./data/pluginmaster.json
         $content = $content -replace '"AssemblyVersion": ".*"', '"AssemblyVersion": "' + $VERSION + '"'
         $content = $content -replace '"LastUpdate": ".*"', '"LastUpdate": "' + $TIME + '"'
@@ -53,7 +53,7 @@ jobs:
       with:
         commit_message: "Update Build"
         file_pattern: "./data/*.json"
-          
+
     - name: Create and upload release
       id: create-new-release
       uses: softprops/action-gh-release@v2
