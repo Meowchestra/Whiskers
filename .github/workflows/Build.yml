@@ -38,15 +38,13 @@ jobs:
       run: dotnet build --configuration Release
 
     - name: Update repository
-      shell: pwsh
+      shell: bash
       run: |
-        $VERSION = "${{ steps.get-version.outputs.version }}"
-        $TIME = "${{ steps.current-time.outputs.time }}"
-        $content = Get-Content ./data/pluginmaster.json
-        $content = $content -replace '"AssemblyVersion": ".*"', '"AssemblyVersion": "' + $VERSION + '"'
-        $content = $content -replace '"LastUpdate": ".*"', '"LastUpdate": "' + $TIME + '"'
-        $content = $content -replace 'https://github.com/Meowchestra/Whiskers/releases/download/[^/]+/latest.zip', 'https://github.com/Meowchestra/Whiskers/releases/download/' + $VERSION + '/latest.zip'
-        $content | Set-Content ./data/pluginmaster.json
+        VERSION="${{ steps.get-version.outputs.version }}"
+        TIME="${{ steps.current-time.outputs.time }}"
+        sed -i 's/"AssemblyVersion": ".*"/"AssemblyVersion": "'$VERSION'"/g' ./data/pluginmaster.json
+        sed -i 's/"LastUpdate": ".*"/"LastUpdate": "'$TIME'"/g' ./data/pluginmaster.json
+        sed -i 's|https://github.com/Meowchestra/Whiskers/releases/download/[^/]+/latest.zip|https://github.com/Meowchestra/Whiskers/releases/download/'$VERSION'/latest.zip|g' ./data/pluginmaster.json
 
     - name: Commit latest build
       uses: stefanzweifel/git-auto-commit-action@v5
