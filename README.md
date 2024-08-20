@@ -1,6 +1,6 @@
 # Whiskers
 
-[MeowMusic](https://github.com/Meowchestra/MeowMusic/) can be used with my custom <a href="https://github.com/Meowchestra/Whiskers">Whiskers</a> companion plugin for enhanced functionality.
+[Whiskers](https://github.com/Meowchestra/Whiskers) is a companion plugin that can be used with <a href="https://github.com/Meowchestra/MeowMusic">MeowMusic</a> for enhanced functionality.
 
 _Personal fork based on <a href="https://github.com/GiR-Zippo/LightAmp">LightAmp's</a> <a href="https://github.com/GiR-Zippo/Hypnotoad-Plugin">Hypnotoad</a> plugin._
 
@@ -18,8 +18,12 @@ _Personal fork based on <a href="https://github.com/GiR-Zippo/LightAmp">LightAmp
     And much more!
 </details>
 
+For extended controls, <a href="https://github.com/Meowchestra/ToyBox">ToyBox</a> can be used in conjunction with Whiskers.
+
 ## How to Install
 
-Copy this url to your dalamud settings experimental custom plugin repositories and search for the Whiskers plugin.
+**Dalamud Settings　➜　Experimental　➜　Custom Plugin Repositories**
 
-`https://raw.githubusercontent.com/Meowchestra/Whiskers/develop/data/pluginmaster.json`
+Add the following URL repository and search for `Whiskers` in **Dalamud Plugins**.
+
+> https://raw.githubusercontent.com/Meowchestra/xivplugins/main/repo.json

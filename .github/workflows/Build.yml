@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ main ]
 
 jobs:
 
@@ -16,6 +16,19 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+    - name: Get version
+    - uses: kzrnm/get-net-sdk-project-versions-action@v2
+      id: get-version
+      with:
+        proj-path: Whiskers/Whiskers.csproj
+
+    - name: Get current time
+      uses: josStorer/get-current-time@v2
+      id: current-time
+      with:
+        format: X
+        utcOffset: "-08:00"
+
     - name: Download Dalamud
       run: |
         Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/stg/latest.zip -OutFile latest.zip
@@ -24,11 +37,30 @@ jobs:
     - name: Build with dotnet
       run: dotnet build --configuration Release
 
-    - name: Move latest build to Release
-      run: Move-Item -Path ./Whiskers/bin/x64/Release/Whiskers/* -Destination ./data -Force
+    - name: Update repository
+      run: |
+        VERSION="${{ steps.get-version.outputs.version }}"
+        TIME="${{ steps.current-time.outputs.time }}"
+        sed -i 's/"AssemblyVersion": ".*"/"AssemblyVersion": "'$VERSION'"/g' ./data/pluginmaster.json
+        sed -i 's/"LastUpdate": ".*"/"LastUpdate": "'$TIME'"/g' ./data/pluginmaster.json
+        sed -i 's|https://github.com/Meowchestra/Whiskers/releases/download/[^/]+/latest.zip|https://github.com/Meowchestra/Whiskers/releases/download/'$VERSION'/latest.zip|g' ./data/pluginmaster.json
 
     - name: Commit latest build
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: "Update Build"
-        file_pattern: "./data/*.json ./data/*.zip"
+        file_pattern: "./data/*.json"
+          
+    - name: Create and upload release
+      id: create-new-release
+      uses: softprops/action-gh-release@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.get-version.outputs.version }}
+        name: Release ${{ steps.get-version.outputs.version }}
+        body: |
+          ${{ steps.Changelog.outputs.changelog }}
+        draft: false
+        prerelease: false
+        files: ./Whiskers/bin/x64/Release/Whiskers/latest.zip

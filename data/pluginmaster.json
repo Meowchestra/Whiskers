@@ -21,8 +21,8 @@
         "IsTestingExclusive": "false",
         "AcceptsFeedback": "false",
         "LastUpdate": "0",
-        "DownloadLinkInstall": "https://raw.githubusercontent.com/Meowchestra/Whiskers/develop/data/latest.zip",
-        "DownloadLinkTesting": "https://raw.githubusercontent.com/Meowchestra/Whiskers/develop/data/latest.zip",
-        "DownloadLinkUpdate": "https://raw.githubusercontent.com/Meowchestra/Whiskers/develop/data/latest.zip"
+        "DownloadLinkInstall": "https://github.com/Meowchestra/Whiskers/releases/download/0.0.1.30/latest.zip",
+        "DownloadLinkTesting": "https://github.com/Meowchestra/Whiskers/releases/download/0.0.1.30/latest.zip",
+        "DownloadLinkUpdate": "https://github.com/Meowchestra/Whiskers/releases/download/0.0.1.30/latest.zip"
     }
 ]
