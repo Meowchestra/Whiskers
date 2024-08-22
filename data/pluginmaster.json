@@ -3,7 +3,7 @@
         "Author": "GiR-Zippo, Meowchestra, MoogleTroupe",
         "Name": "Whiskers",
         "InternalName": "Whiskers",
-        "AssemblyVersion": "0.0.1.32",
+        "AssemblyVersion": "0.0.1.33",
         "Description": "MeowMusic companion for enhanced functionality.",
         "ApplicableVersion": "any",
         "Tags": [
@@ -20,9 +20,9 @@
         "IsHide": "false",
         "IsTestingExclusive": "false",
         "AcceptsFeedback": "false",
-        "LastUpdate": "1724149287",
-        "DownloadLinkInstall": "https://github.com/Meowchestra/Whiskers/releases/download/0.0.1.32/latest.zip",
-        "DownloadLinkTesting": "https://github.com/Meowchestra/Whiskers/releases/download/0.0.1.32/latest.zip",
-        "DownloadLinkUpdate": "https://github.com/Meowchestra/Whiskers/releases/download/0.0.1.32/latest.zip"
+        "LastUpdate": "1724305963",
+        "DownloadLinkInstall": "https://github.com/Meowchestra/Whiskers/releases/download/0.0.1.33/latest.zip",
+        "DownloadLinkTesting": "https://github.com/Meowchestra/Whiskers/releases/download/0.0.1.33/latest.zip",
+        "DownloadLinkUpdate": "https://github.com/Meowchestra/Whiskers/releases/download/0.0.1.33/latest.zip"
     }
 ]
