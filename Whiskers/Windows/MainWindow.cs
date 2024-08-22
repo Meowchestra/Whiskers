@@ -133,7 +133,6 @@ public class MainWindow : Window, IDisposable
                     Api.PluginLog?.Error("Whiskers is out of date and cannot work with the running bard program.");
                 }*/
                 break;
-            case MessageType.Instrument:
             case MessageType.NoteOn:
                 PerformActions.PlayNote(Convert.ToInt16(inMsg.Message), true);
                 break;
@@ -143,6 +142,7 @@ public class MainWindow : Window, IDisposable
             case MessageType.ProgramChange:
                 PerformActions.GuitarSwitchTone(Convert.ToInt32(inMsg.Message));
                 break;
+            case MessageType.Instrument:
             case MessageType.StartEnsemble:
             case MessageType.AcceptReply:
             case MessageType.PartyInvite:
