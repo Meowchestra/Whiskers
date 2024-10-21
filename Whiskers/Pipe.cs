@@ -3,7 +3,6 @@
  * Licensed under the GPL v3 license. See https://github.com/Meowchestra/MeowMusic/blob/main/LICENSE for full license information.
  */
 
-using H.Formatters;
 using H.Pipes;
 
 namespace Whiskers;
