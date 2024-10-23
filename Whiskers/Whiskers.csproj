@@ -15,7 +15,7 @@
 
     <Description>MeowMusic companion for enhanced functionality.</Description>
     <PackageProjectUrl>https://github.com/Meowchestra/Whiskers</PackageProjectUrl>
-    <Version>0.0.1.34</Version>
+    <Version>0.0.1.35</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
@@ -42,7 +42,8 @@
 
   <ItemGroup>
     <PackageReference Include="DalamudPackager" Version="2.1.13" />
-    <PackageReference Include="H.Pipes.AccessControl" Version="2.2.1" />
+    <PackageReference Include="H.Formatters.Newtonsoft.Json" Version="14.0.0" />
+    <PackageReference Include="H.Pipes.AccessControl" Version="14.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
