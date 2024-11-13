@@ -77,9 +77,9 @@ public class Collector
     private void ClientState_Login()
     {
         var name = ClientState?.LocalPlayer?.Name.TextValue;
-        if (ClientState?.LocalPlayer?.HomeWorld.GameData != null)
+        if (ClientState?.LocalPlayer?.HomeWorld.Value != null)
         {
-            var homeWorld = ClientState?.LocalPlayer?.HomeWorld.GameData.RowId;
+            var homeWorld = ClientState?.LocalPlayer?.HomeWorld.Value.RowId;
 
             if (Pipe.Client != null && Pipe.Client.IsConnected)
             {
@@ -92,7 +92,7 @@ public class Collector
         }
     }
 
-    private static void ClientState_Logout()
+    private static void ClientState_Logout(int _, int __)
     {
     }
 

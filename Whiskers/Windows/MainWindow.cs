@@ -414,12 +414,12 @@ public class MainWindow : Window, IDisposable
         ImGui.BeginGroup();
         if (ImGui.Button("Save"))
         {
-            GameSettings.AgentConfigSystem.SaveConfig();
+            //GameSettings.AgentConfigSystem.SaveConfig();
         }
         ImGui.SameLine();
         if (ImGui.Button("Erase"))
         {
-            File.Delete($"{Api.PluginInterface?.GetPluginConfigDirectory()}\\{Api.ClientState?.LocalPlayer?.Name}-({Api.ClientState?.LocalPlayer?.HomeWorld.GameData?.Name}).json");
+            File.Delete($"{Api.PluginInterface?.GetPluginConfigDirectory()}\\{Api.ClientState?.LocalPlayer?.Name}-({Api.ClientState?.LocalPlayer?.HomeWorld.Value.Name}).json");
         }
         ImGui.EndGroup();
     }

@@ -482,7 +482,7 @@ internal static class GameSettings
         }
         #endregion
 
-        private static string GetCharConfigFilename()
+        /*private static string GetCharConfigFilename()
         {
             if (Api.ClientState != null && !Api.ClientState.IsLoggedIn) return "";
 
@@ -492,8 +492,11 @@ internal static class GameSettings
             if (player == null)
                 return "";
 
-            var world = player.HomeWorld.GameData;
-            return world == null ? "" : $"{Api.PluginInterface?.GetPluginConfigDirectory()}\\{player.Name.TextValue}-({world.Name.RawString}).json";
+            var world = player.HomeWorld;
+            if (world.RowId == 0 || string.IsNullOrEmpty(world.Value.Name.ToString()))
+                return "";
+
+            return $"{Api.PluginInterface?.GetPluginConfigDirectory()}\\{player.Name.TextValue}-({world.Value.Name.ToString()}).json";
         }
 
         public static void LoadConfig()
@@ -519,6 +522,6 @@ internal static class GameSettings
             GetSettings(GameSettingsTables.Instance?.CustomTable);
             var jsonString = JsonConvert.SerializeObject(GameSettingsTables.Instance?.CustomTable);
             File.WriteAllText(file, JsonConvert.SerializeObject(GameSettingsTables.Instance?.CustomTable));
-        }
+        }*/
     }
 }
