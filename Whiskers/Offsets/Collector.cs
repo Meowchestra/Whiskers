@@ -76,11 +76,10 @@ public class Collector
     /// </summary>
     private void ClientState_Login()
     {
-        var name = ClientState?.LocalPlayer?.Name.TextValue;
-        if (ClientState?.LocalPlayer?.HomeWorld.Value != null)
+        if (ClientState?.LocalPlayer != null)
         {
-            var homeWorld = ClientState?.LocalPlayer?.HomeWorld.Value.RowId;
-
+            var name = ClientState?.LocalPlayer?.Name.TextValue;
+            var homeWorld = ClientState?.LocalPlayer?.HomeWorld.ValueNullable?.RowId;
             if (Pipe.Client != null && Pipe.Client.IsConnected)
             {
                 Pipe.Client.WriteAsync(new IpcMessage
@@ -92,7 +91,7 @@ public class Collector
         }
     }
 
-    private static void ClientState_Logout(int _, int __)
+    private static void ClientState_Logout(int type, int code)
     {
     }
 

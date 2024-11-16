@@ -66,29 +66,29 @@ public class Whiskers : IDalamudPlugin
         if (PluginInterface != null)
         {
             PluginInterface.UiBuilder.Draw         += DrawUi;
-            PluginInterface.UiBuilder.OpenMainUi   += OpenMainUi;
+            //PluginInterface.UiBuilder.OpenMainUi   += OpenMainUi;
             PluginInterface.UiBuilder.OpenConfigUi += OpenMainUi;
         }
 
-        //AgentConfigSystem.LoadConfig();
-        // if (Api.ClientState != null)
-        // {
-        //     Api.ClientState.Login  += OnLogin;
-        //     Api.ClientState.Logout += OnLogout;
-        // }
+        AgentConfigSystem.LoadConfig();
+        if (Api.ClientState != null)
+        {
+            Api.ClientState.Login  += OnLogin;
+            Api.ClientState.Logout += OnLogout;
+        }
 
         _ipc = new IpcProvider(this);
     }
 
-    // private static void OnLogin()
-    // {
-    //     AgentConfigSystem.LoadConfig();
-    // }
-    //
-    // private static void OnLogout(int _, int __)
-    // {
-    //     AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance.StartupTable);
-    // }
+    private static void OnLogin()
+    {
+        AgentConfigSystem.LoadConfig();
+    }
+    
+    private static void OnLogout(int type, int code)
+    {
+        AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance.StartupTable);
+    }
 
     public void Dispose()
     {
@@ -96,14 +96,14 @@ public class Whiskers : IDalamudPlugin
         MovementFactory.Instance.Dispose();
         Party.Instance.Dispose();
 
-        // if (Api.ClientState != null)
-        // {
-        //     Api.ClientState.Login  -= OnLogin;
-        //     Api.ClientState.Logout -= OnLogout;
-        // }
+        if (Api.ClientState != null)
+        {
+            Api.ClientState.Login  -= OnLogin;
+            Api.ClientState.Logout -= OnLogout;
+        }
 
         //NetworkReader.Dispose();
-        // AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance.StartupTable);
+        AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance.StartupTable);
 
         // Force dispose the EnsembleManager even if null
         if (EnsembleManager != null)

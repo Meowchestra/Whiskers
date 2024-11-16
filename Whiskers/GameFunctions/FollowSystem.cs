@@ -96,7 +96,7 @@ public class FollowSystemInternal : IDisposable
                 if (f.GameObjectId != goId)
                     return null;
 
-            if (f.HomeWorld.RowId == worldId)
+            if (f.HomeWorld.ValueNullable?.RowId == worldId)
                 return obj;
         }
 

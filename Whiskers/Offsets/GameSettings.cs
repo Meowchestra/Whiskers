@@ -4,6 +4,7 @@
  */
 
 using Dalamud.Game.Config;
+using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Newtonsoft.Json;
@@ -482,21 +483,15 @@ internal static class GameSettings
         }
         #endregion
 
-        /*private static string GetCharConfigFilename()
+        private static string GetCharConfigFilename()
         {
             if (Api.ClientState != null && !Api.ClientState.IsLoggedIn) return "";
 
             if (Api.ClientState?.LocalPlayer is null) return "";
 
             var player = Api.ClientState.LocalPlayer;
-            if (player == null)
-                return "";
-
-            var world = player.HomeWorld;
-            if (world.RowId == 0 || string.IsNullOrEmpty(world.Value.Name.ToString()))
-                return "";
-
-            return $"{Api.PluginInterface?.GetPluginConfigDirectory()}\\{player.Name.TextValue}-({world.Value.Name.ToString()}).json";
+            var world = player?.HomeWorld.ValueNullable;
+            return world == null ? "" : $"{Api.PluginInterface?.GetPluginConfigDirectory()}\\{player?.Name.TextValue}-({world.Value.Name.ToDalamudString().TextValue}).json";
         }
 
         public static void LoadConfig()
@@ -522,6 +517,6 @@ internal static class GameSettings
             GetSettings(GameSettingsTables.Instance?.CustomTable);
             var jsonString = JsonConvert.SerializeObject(GameSettingsTables.Instance?.CustomTable);
             File.WriteAllText(file, JsonConvert.SerializeObject(GameSettingsTables.Instance?.CustomTable));
-        }*/
+        }
     }
 }
