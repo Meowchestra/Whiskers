@@ -7,6 +7,7 @@ using Dalamud.Game.Config;
 using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using Lumina.Excel.Sheets;
 using Newtonsoft.Json;
 
 namespace Whiskers.Offsets;
@@ -485,13 +486,16 @@ internal static class GameSettings
 
         private static string GetCharConfigFilename()
         {
-            if (Api.ClientState != null && !Api.ClientState.IsLoggedIn) return "";
-
-            if (Api.ClientState?.LocalPlayer is null) return "";
+            if (Api.ClientState?.IsLoggedIn != true) 
+                return "";
 
             var player = Api.ClientState.LocalPlayer;
             var world = player?.HomeWorld.ValueNullable;
-            return world == null ? "" : $"{Api.PluginInterface?.GetPluginConfigDirectory()}\\{player?.Name.TextValue}-({world.Value.Name.ToDalamudString().TextValue}).json";
+
+            if (player == null || world == null) 
+                return "";
+
+            return $"{Api.PluginInterface?.GetPluginConfigDirectory()}\\{player.Name.TextValue}-({world.Value.Name.ToDalamudString().TextValue}).json";
         }
 
         public static void LoadConfig()
@@ -514,9 +518,9 @@ internal static class GameSettings
                 return;
 
             //Save the config
-            GetSettings(GameSettingsTables.Instance?.CustomTable);
-            var jsonString = JsonConvert.SerializeObject(GameSettingsTables.Instance?.CustomTable);
-            File.WriteAllText(file, JsonConvert.SerializeObject(GameSettingsTables.Instance?.CustomTable));
+            GetSettings(GameSettingsTables.Instance.CustomTable);
+            var jsonString = JsonConvert.SerializeObject(GameSettingsTables.Instance.CustomTable);
+            File.WriteAllText(file, JsonConvert.SerializeObject(GameSettingsTables.Instance.CustomTable));
         }
     }
 }
