@@ -70,6 +70,8 @@ public class Whiskers : IDalamudPlugin
             PluginInterface.UiBuilder.OpenConfigUi += OpenMainUi;
         }
 
+        AgentConfigSystem.LoadConfig();
+
         if (Api.ClientState != null)
         {
             Api.ClientState.Login  += OnLogin;
