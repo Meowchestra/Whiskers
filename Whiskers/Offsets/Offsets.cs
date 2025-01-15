@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright(c) 2024 Meowchestra, GiR-Zippo, akira0245 @MidiBard, Ori @MidiBard2
+ * Copyright(c) 2025 Meowchestra, GiR-Zippo, akira0245 @MidiBard, Ori @MidiBard2
  * Licensed under the GPL v3 license. See https://github.com/Meowchestra/MeowMusic/blob/main/LICENSE for full license information.
  */
 

@@ -1,5 +1,5 @@
 /*
- * Copyright(c) 2024 Meowchestra, GiR-Zippo, 2024 awgil
+ * Copyright(c) 2025 Meowchestra, GiR-Zippo, 2024 awgil
  * Licensed under the GPL v3 license. See https://github.com/Meowchestra/MeowMusic/blob/main/LICENSE for full license information.
  * Licensed under the BSD 3-Clause license. See https://github.com/awgil/ffxiv_bossmod/blob/master/LICENSE for full license information.
  */
