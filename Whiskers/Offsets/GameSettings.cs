@@ -7,8 +7,8 @@ using Dalamud.Game.Config;
 using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using Lumina.Excel.Sheets;
 using Newtonsoft.Json;
+using Whiskers.Utils;
 
 namespace Whiskers.Offsets;
 
@@ -61,6 +61,8 @@ public class GameSettingsVarTable
     public uint ShadowLightValidType { get; set; }
     public uint DynamicRezoType { get; set; }
     public uint UiAssetType { get; set; }
+    public uint ScreenLeft { get; set; }
+    public uint ScreenTop { get; set; }
     public uint ScreenWidth { get; set; }
     public uint ScreenHeight { get; set; }
 
@@ -166,6 +168,8 @@ internal static class GameSettings
                 varTable.ShadowLightValidType           = configEntry[(int)ConfigOption.ShadowLightValidType].Value.UInt;
                 varTable.DynamicRezoType                = configEntry[(int)ConfigOption.DynamicRezoType].Value.UInt;
                 varTable.UiAssetType                    = configEntry[(int)ConfigOption.UiAssetType].Value.UInt;
+                varTable.ScreenLeft                     = configEntry[(int)ConfigOption.ScreenLeft].Value.UInt;
+                varTable.ScreenTop                      = configEntry[(int)ConfigOption.ScreenTop].Value.UInt;
                 varTable.ScreenWidth                    = configEntry[(int)ConfigOption.ScreenWidth].Value.UInt;
                 varTable.ScreenHeight                   = configEntry[(int)ConfigOption.ScreenHeight].Value.UInt;
 
@@ -226,10 +230,14 @@ internal static class GameSettings
                 configEntry[(int)ConfigOption.ShadowLightValidType].SetValueUInt(varTable.ShadowLightValidType);
                 configEntry[(int)ConfigOption.DynamicRezoType].SetValueUInt(varTable.DynamicRezoType);
                 configEntry[(int)ConfigOption.UiAssetType].SetValueUInt(varTable.UiAssetType);
+                configEntry[(int)ConfigOption.ScreenLeft].SetValueUInt(varTable.ScreenLeft);
+                configEntry[(int)ConfigOption.ScreenTop].SetValueUInt(varTable.ScreenTop);
                 configEntry[(int)ConfigOption.ScreenWidth].SetValueUInt(varTable.ScreenWidth);
                 configEntry[(int)ConfigOption.ScreenHeight].SetValueUInt(varTable.ScreenHeight);
-                
+
                 configEntry[(int)ConfigOption.IsSndMaster].SetValueUInt(varTable.SoundEnabled);
+
+                Misc.SetGameRenderSize(varTable.ScreenWidth, varTable.ScreenHeight, varTable.ScreenLeft, varTable.ScreenTop);
             }
         }
         #endregion
@@ -297,6 +305,7 @@ internal static class GameSettings
             configEntry[(int)ConfigOption.UiAssetType].SetValueUInt(0);
             configEntry[(int)ConfigOption.ScreenWidth].SetValueUInt(1024);
             configEntry[(int)ConfigOption.ScreenHeight].SetValueUInt(720);
+            Misc.SetGameRenderSize(1024, 720);
         }
         #endregion
 
@@ -506,8 +515,7 @@ internal static class GameSettings
             if (!File.Exists(file))
                 return;
 
-            GameSettingsTables.Instance.CustomTable =
-                JsonConvert.DeserializeObject<GameSettingsVarTable>(File.ReadAllText(file));
+            GameSettingsTables.Instance.CustomTable = JsonConvert.DeserializeObject<GameSettingsVarTable>(File.ReadAllText(file));
             RestoreSettings(GameSettingsTables.Instance.CustomTable);
         }
 
