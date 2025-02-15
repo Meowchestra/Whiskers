@@ -13,20 +13,22 @@ namespace Whiskers.Utils;
 
 internal static class Misc
 {
+    /*
     [DllImport("user32.dll")]
     private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
 
     private const uint SWP_NOMOVE = 0x0002;
     private const uint SWP_NOZORDER = 0x0004;
+    */
 
-    internal static unsafe void SetGameRenderSize(uint width, uint height, uint left = 0, uint top = 0)
+    internal static unsafe void SetGameRenderSize(uint width, uint height)
     {
         var dev = Device.Instance();
         dev->NewWidth                = width;
         dev->NewHeight               = height;
         dev->RequestResolutionChange = 1;
 
-        if (dev->hWnd != null)
+        /*if (dev->hWnd != null)
         {
             SetWindowPos(
                 (IntPtr)dev->hWnd,
@@ -34,7 +36,7 @@ internal static class Misc
                 (int)left, (int)top,
                 (int)width, (int)height, 
                 SWP_NOZORDER);
-        }
+        }*/
     }
 
     internal static IGameObject? GetNearestEntrance(out float distance, bool bypassPredefined = false)

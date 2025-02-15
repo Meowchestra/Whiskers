@@ -61,10 +61,10 @@ public class GameSettingsVarTable
     public uint ShadowLightValidType { get; set; }
     public uint DynamicRezoType { get; set; }
     public uint UiAssetType { get; set; }
-    public uint ScreenLeft { get; set; }
-    public uint ScreenTop { get; set; }
-    public uint ScreenWidth { get; set; }
-    public uint ScreenHeight { get; set; }
+    //public uint ScreenLeft { get; set; }
+    //public uint ScreenTop { get; set; }
+    //public uint ScreenWidth { get; set; }
+    //public uint ScreenHeight { get; set; }
 
     //Sound
     public uint SoundEnabled { get; set; }
@@ -168,10 +168,10 @@ internal static class GameSettings
                 varTable.ShadowLightValidType           = configEntry[(int)ConfigOption.ShadowLightValidType].Value.UInt;
                 varTable.DynamicRezoType                = configEntry[(int)ConfigOption.DynamicRezoType].Value.UInt;
                 varTable.UiAssetType                    = configEntry[(int)ConfigOption.UiAssetType].Value.UInt;
-                varTable.ScreenLeft                     = configEntry[(int)ConfigOption.ScreenLeft].Value.UInt;
-                varTable.ScreenTop                      = configEntry[(int)ConfigOption.ScreenTop].Value.UInt;
-                varTable.ScreenWidth                    = configEntry[(int)ConfigOption.ScreenWidth].Value.UInt;
-                varTable.ScreenHeight                   = configEntry[(int)ConfigOption.ScreenHeight].Value.UInt;
+                //varTable.ScreenLeft                     = configEntry[(int)ConfigOption.ScreenLeft].Value.UInt;
+                //varTable.ScreenTop                      = configEntry[(int)ConfigOption.ScreenTop].Value.UInt;
+                //varTable.ScreenWidth                    = configEntry[(int)ConfigOption.ScreenWidth].Value.UInt;
+                //varTable.ScreenHeight                   = configEntry[(int)ConfigOption.ScreenHeight].Value.UInt;
 
                 varTable.SoundEnabled                   = configEntry[(int)ConfigOption.IsSndMaster].Value.UInt;
             }
@@ -230,14 +230,14 @@ internal static class GameSettings
                 configEntry[(int)ConfigOption.ShadowLightValidType].SetValueUInt(varTable.ShadowLightValidType);
                 configEntry[(int)ConfigOption.DynamicRezoType].SetValueUInt(varTable.DynamicRezoType);
                 configEntry[(int)ConfigOption.UiAssetType].SetValueUInt(varTable.UiAssetType);
-                configEntry[(int)ConfigOption.ScreenLeft].SetValueUInt(varTable.ScreenLeft);
-                configEntry[(int)ConfigOption.ScreenTop].SetValueUInt(varTable.ScreenTop);
-                configEntry[(int)ConfigOption.ScreenWidth].SetValueUInt(varTable.ScreenWidth);
-                configEntry[(int)ConfigOption.ScreenHeight].SetValueUInt(varTable.ScreenHeight);
+                //configEntry[(int)ConfigOption.ScreenLeft].SetValueUInt(varTable.ScreenLeft);
+                //configEntry[(int)ConfigOption.ScreenTop].SetValueUInt(varTable.ScreenTop);
+                //configEntry[(int)ConfigOption.ScreenWidth].SetValueUInt(varTable.ScreenWidth);
+                //configEntry[(int)ConfigOption.ScreenHeight].SetValueUInt(varTable.ScreenHeight);
 
                 configEntry[(int)ConfigOption.IsSndMaster].SetValueUInt(varTable.SoundEnabled);
 
-                Misc.SetGameRenderSize(varTable.ScreenWidth, varTable.ScreenHeight, varTable.ScreenLeft, varTable.ScreenTop);
+                //Misc.SetGameRenderSize(varTable.ScreenWidth, varTable.ScreenHeight, varTable.ScreenLeft, varTable.ScreenTop);
             }
         }
         #endregion
@@ -303,9 +303,9 @@ internal static class GameSettings
             configEntry[(int)ConfigOption.ShadowLightValidType].SetValueUInt(0);
             configEntry[(int)ConfigOption.DynamicRezoType].SetValueUInt(0);
             configEntry[(int)ConfigOption.UiAssetType].SetValueUInt(0);
-            configEntry[(int)ConfigOption.ScreenWidth].SetValueUInt(1024);
-            configEntry[(int)ConfigOption.ScreenHeight].SetValueUInt(720);
-            Misc.SetGameRenderSize(1024, 720);
+            //configEntry[(int)ConfigOption.ScreenWidth].SetValueUInt(1024);
+            //configEntry[(int)ConfigOption.ScreenHeight].SetValueUInt(720);
+            //Misc.SetGameRenderSize(1024, 720);
         }
         #endregion
 
