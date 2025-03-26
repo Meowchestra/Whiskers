@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net9.0": {
+      "DalamudPackager": {
+        "type": "Direct",
+        "requested": "[12.0.0, )",
+        "resolved": "12.0.0",
+        "contentHash": "J5TJLV3f16T/E2H2P17ClWjtfEBPpq3yxvqW46eN36JCm6wR+EaoaYkqG9Rm5sHqs3/nK/vKjWWyvEs/jhKoXw=="
+      },
+      "DotNet.ReproducibleBuilds": {
+        "type": "Direct",
+        "requested": "[1.2.25, )",
+        "resolved": "1.2.25",
+        "contentHash": "xCXiw7BCxHJ8pF6wPepRUddlh2dlQlbr81gXA72hdk4FLHkKXas7EH/n+fk5UCA/YfMqG1Z6XaPiUjDbUNBUzg=="
+      },
+      "H.Formatters.Newtonsoft.Json": {
+        "type": "Direct",
+        "requested": "[15.0.1-dev.3, )",
+        "resolved": "15.0.1-dev.3",
+        "contentHash": "Y/98ATydy94tZAdA1AsLx7EcWc/WGDwOq7C0zLo1XijlR0PtT9G5s79RDJsJV1CmFobM/e+qUIrbZkU0uHAYkA==",
+        "dependencies": {
+          "H.Formatters": "15.0.1-dev.3",
+          "Newtonsoft.Json": "13.0.3"
+        }
+      },
+      "H.Pipes.AccessControl": {
+        "type": "Direct",
+        "requested": "[15.0.1-dev.3, )",
+        "resolved": "15.0.1-dev.3",
+        "contentHash": "yCKepyya6KqDStHAawRpe/pg4ftVGcRSZajQkEHUoN1sslwdApaHaKgU+u1mGI2fsbFSyK6n+5b7QVQwsodbkg==",
+        "dependencies": {
+          "H.Pipes": "15.0.1-dev.3",
+          "NamedPipeServerStream.NetFrameworkVersion": "1.1.13"
+        }
+      },
+      "H.Formatters": {
+        "type": "Transitive",
+        "resolved": "15.0.1-dev.3",
+        "contentHash": "JuuRez804Xz4ooqxG1e9C+y9fslR8nAPvmXNJa4KbHnVyt6FwAgEJhXNh3XeapxqXhB1HFHc1DQk3oHc34cHhA=="
+      },
+      "H.Formatters.System.Text.Json": {
+        "type": "Transitive",
+        "resolved": "15.0.1-dev.3",
+        "contentHash": "+cPkcaERvi7CL35/z6BytxjtkRt05hpnGbxnB25Fq8WRT7w0opgbsQKZiUq2/mfuBSSxJFo87Kdghu/jGX4EPQ==",
+        "dependencies": {
+          "H.Formatters": "15.0.1-dev.3"
+        }
+      },
+      "H.Pipes": {
+        "type": "Transitive",
+        "resolved": "15.0.1-dev.3",
+        "contentHash": "T1tKro9/+P0gIRr5K+7i6ijJ56VRaUqe5UmQodhKjSUFWUl1lpH9InB6g9peSEmRos7s/6O17WYaUSA80LvciA==",
+        "dependencies": {
+          "H.Formatters.System.Text.Json": "15.0.1-dev.3"
+        }
+      },
+      "NamedPipeServerStream.NetFrameworkVersion": {
+        "type": "Transitive",
+        "resolved": "1.1.13",
+        "contentHash": "F/j8Vs2CkK9BT6gOAJNmcUuf1DfCB7jF+rg6yiYMV1au8WDpuaasaehph/FFfN/2H+8hkXptEDWo1Ts24EVmPg=="
+      },
+      "Newtonsoft.Json": {
+        "type": "Transitive",
+        "resolved": "13.0.3",
+        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Dalamud.NET.SDK/12.0.2">
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <LangVersion>latest</LangVersion>
@@ -15,7 +15,7 @@
 
     <Description>MeowMusic companion for enhanced functionality.</Description>
     <PackageProjectUrl>https://github.com/Meowchestra/Whiskers</PackageProjectUrl>
-    <Version>0.0.1.44</Version>
+    <Version>0.0.1.45</Version>
 
     <NoWarn>CA1416</NoWarn>
   </PropertyGroup>
@@ -33,30 +33,13 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
-    <IsPublishable>True</IsPublishable>
-  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="H.Formatters.Newtonsoft.Json" Version="15.0.1-dev.3" />
+    <PackageReference Include="H.Pipes.AccessControl" Version="15.0.1-dev.3" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="..\data\icon.png" CopyToOutputDirectory="PreserveNewest" Visible="false" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="DalamudPackager" Version="11.0.0" />
-    <PackageReference Include="H.Formatters.Newtonsoft.Json" Version="15.0.1-dev.3" />
-    <PackageReference Include="H.Pipes.AccessControl" Version="15.0.1-dev.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Dalamud" HintPath="$(AppData)\XIVLauncher\addon\Hooks\dev\Dalamud.dll" Private="false" />
-    <Reference Include="FFXIVClientStructs" HintPath="$(AppData)\XIVLauncher\addon\Hooks\dev\FFXIVClientStructs.dll" Private="false" />
-    <Reference Include="ImGui.NET" HintPath="$(AppData)\XIVLauncher\addon\Hooks\dev\ImGui.NET.dll" Private="false" />
-    <Reference Include="ImGuiScene" HintPath="$(AppData)\XIVLauncher\addon\Hooks\dev\ImGuiScene.dll" Private="false" />
-    <Reference Include="Lumina" HintPath="$(AppData)\XIVLauncher\addon\Hooks\dev\Lumina.dll" Private="false" />
-    <Reference Include="Lumina.Excel" HintPath="$(AppData)\XIVLauncher\addon\Hooks\dev\Lumina.Excel.dll" Private="false" />
-    <Reference Include="Newtonsoft.Json" HintPath="$(AppData)\XIVLauncher\addon\Hooks\dev\Newtonsoft.Json.dll" Private="false" />
   </ItemGroup>
 
   <Target Name="PackagePlugin" Condition="'$(Configuration)' == 'Release'">
