@@ -14,8 +14,8 @@ public static class Chat
 {
     internal static class Signatures
     {
-        internal const string SendChat = "48 89 5C 24 ?? 48 89 74 24 10 57 48 83 EC 20 48 8B F2 48 8B F9 45 84 C9";
-        internal const string SanitiseString = "E8 ?? ?? ?? ?? 48 8D 4C 24 ?? 0F B6 F8 E8 ?? ?? ?? ?? 48 8D 4D D0";
+        internal const string SendChat = "48 89 5C 24 ?? 48 89 74 24 10 57 48 83 EC 20 48 8B F2 48 8B F9 45 84 C9"; //Client::UI::UIModule_ProcessChatBoxEntry
+        internal const string SanitiseString = "E8 ?? ?? ?? ?? 48 8D 4C 24 ?? 0F B6 F8 E8 ?? ?? ?? ?? 48 8D 4D D0"; //Client::System::String::Utf8String_SanitizeString
     }
 }
 

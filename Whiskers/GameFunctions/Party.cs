@@ -3,9 +3,11 @@
  * Licensed under the GPL v3 license. See https://github.com/Meowchestra/MeowMusic/blob/main/LICENSE for full license information.
  */
 
+using System.Text;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using FFXIVClientStructs.FFXIV.Client.Game.Group;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
+using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Client.UI.Info;
 using Whiskers.Offsets;
@@ -117,5 +119,22 @@ public class Party : IDisposable
     {
         //if (AcceptLock == 0)
         YesNoAddon?.Disable();
+    }
+
+    public unsafe void Kick(string name, ulong contentId)
+    {
+        Framework.Instance()->GetUIModule()->GetAgentModule()->GetAgentPartyMember()->Kick(name, 0,contentId);
+    }
+}
+ 
+internal static class StringUtil
+{
+    internal static byte[] ToTerminatedBytes(this string s)
+    {
+        var utf8 = Encoding.UTF8;
+        var bytes = new byte[utf8.GetByteCount(s) + 1];
+        utf8.GetBytes(s, 0, s.Length, bytes, 0);
+        bytes[^1] = 0;
+        return bytes;
     }
 }
