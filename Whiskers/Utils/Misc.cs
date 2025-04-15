@@ -3,7 +3,6 @@
  * Licensed under the GPL v3 license. See https://github.com/Meowchestra/MeowMusic/blob/main/LICENSE for full license information.
  */
 
-using System.Runtime.InteropServices;
 using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Graphics.Kernel;
 using FFXIVClientStructs.FFXIV.Common.Math;
@@ -34,7 +33,7 @@ internal static class Misc
                 (IntPtr)dev->hWnd,
                 IntPtr.Zero,
                 (int)left, (int)top,
-                (int)width, (int)height, 
+                (int)width, (int)height,
                 SWP_NOZORDER);
         }*/
     }

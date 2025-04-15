@@ -74,7 +74,7 @@ public class MainWindow : Window, IDisposable
             Message    = Environment.ProcessId + ":" + Assembly.GetExecutingAssembly().GetName().Version
         });
 
-        Pipe.Write(MessageType.SetGfx, 0, GameSettings.AgentConfigSystem.CheckLowSettings(GameSettingsTables.Instance?.CustomTable));
+        Pipe.Write(MessageType.SetGfx, 0, GameSettings.AgentConfigSystem.CheckLowSettings(GameSettingsTables.Instance.CustomTable));
         Pipe.Write(MessageType.MasterSoundState, 0, GameSettings.AgentConfigSystem.GetMasterSoundEnable());
         Pipe.Write(MessageType.MasterVolume, 0, GameSettings.AgentConfigSystem.GetMasterSoundVolume());
         Pipe.Write(MessageType.BgmSoundState, 0, GameSettings.AgentConfigSystem.GetBgmSoundEnable());

@@ -91,7 +91,7 @@ public class Party : IDisposable
     public unsafe void EnterHouse()
     {
         var entrance = Misc.GetNearestEntrance(out var distance);
-        if (entrance != null && distance < 4.8f)
+        if (entrance != null && distance < 5.8f)
             TargetSystem.Instance()->InteractWithObject((GameObject*)entrance.Address, false);
 
         YesNoAddon?.Enable();

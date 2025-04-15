@@ -21,28 +21,26 @@ public class Whiskers : IDalamudPlugin
 {
     public static string Name => "Whiskers";
 
-    private readonly WindowSystem _windowSystem = new("Whiskers");
+    private WindowSystem WindowSystem { get; init; } = new("Whiskers");
     private MainWindow PluginUi { get; init; }
 
     private const string CommandName = "/purr";
-
     private static IDalamudPluginInterface? PluginInterface { get; set; }
 
     private Configuration Configuration { get; }
     internal static AgentPerformance? AgentPerformance { get; private set; }
     internal static EnsembleManager? EnsembleManager { get; set; }
 
-    public Api? Api { get; set; }
     private readonly IpcProvider _ipc;
 
     public Whiskers(IDalamudPluginInterface? pluginInterface, IDataManager? data, ICommandManager commandManager, IClientState? clientState, IPartyList? partyList)
     {
-        Api             = pluginInterface?.Create<Api>();
-        PluginInterface = pluginInterface;
-
-        Configuration = PluginInterface?.GetPluginConfig() as Configuration ?? new Configuration();
-        Configuration.Initialize(PluginInterface);
+        Api.Safe(() => Api.Init(pluginInterface));
         OffsetManager.Setup(Api.SigScanner);
+
+        PluginInterface = pluginInterface;
+        Configuration   = PluginInterface?.GetPluginConfig() as Configuration ?? new Configuration();
+        Configuration.Initialize(PluginInterface);
 
         Api.CommandManager?.AddHandler(CommandName, new CommandInfo(OnCommand)
         {
@@ -58,10 +56,8 @@ public class Whiskers : IDalamudPlugin
         AgentConfigSystem.GetSettings(GameSettingsTables.Instance.StartupTable);
         AgentConfigSystem.GetSettings(GameSettingsTables.Instance.CustomTable);
 
-        //NetworkReader.Initialize();
-
         PluginUi = new MainWindow(this, Configuration);
-        _windowSystem.AddWindow(PluginUi);
+        WindowSystem.AddWindow(PluginUi);
 
         if (PluginInterface != null)
         {
@@ -71,7 +67,6 @@ public class Whiskers : IDalamudPlugin
         }
 
         AgentConfigSystem.LoadConfig();
-
         if (Api.ClientState != null)
         {
             Api.ClientState.Login  += OnLogin;
@@ -96,14 +91,12 @@ public class Whiskers : IDalamudPlugin
         _ipc.Dispose();
         MovementFactory.Instance.Dispose();
         Party.Instance.Dispose();
-
         if (Api.ClientState != null)
         {
             Api.ClientState.Login  -= OnLogin;
             Api.ClientState.Logout -= OnLogout;
         }
 
-        //NetworkReader.Dispose();
         AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance.StartupTable);
 
         // Force dispose the EnsembleManager even if null
@@ -115,7 +108,7 @@ public class Whiskers : IDalamudPlugin
 
         Collector.Instance.Dispose();
 
-        _windowSystem.RemoveAllWindows();
+        WindowSystem.RemoveAllWindows();
         PluginUi.Dispose();
 
         Api.CommandManager?.RemoveHandler(CommandName);
@@ -123,7 +116,7 @@ public class Whiskers : IDalamudPlugin
 
     private void DrawUi()
     {
-        _windowSystem.Draw();
+        WindowSystem.Draw();
         PluginUi.Update(); //update the main window... for the msg queue
     }
 

@@ -74,12 +74,13 @@ public class Collector
     /// Triggered by ClientState_Login
     /// Send the Name and WorldId to the LA
     /// </summary>
-    private void ClientState_Login()
+    private static void ClientState_Login()
     {
-        if (ClientState?.LocalPlayer != null)
+        var player = Api.GetLocalPlayer();
+        if (player != null)
         {
-            var name = ClientState?.LocalPlayer?.Name.TextValue;
-            var homeWorld = ClientState?.LocalPlayer?.HomeWorld.ValueNullable?.RowId;
+            var name = player.Name.TextValue;
+            var homeWorld = player.HomeWorld.ValueNullable?.RowId;
             if (Pipe.Client != null && Pipe.Client.IsConnected)
             {
                 Pipe.Client.WriteAsync(new IpcMessage

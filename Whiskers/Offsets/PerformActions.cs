@@ -152,6 +152,7 @@ public class PerformActions
 
     public static bool BeginReadyCheck() => SendAction("PerformanceMetronome", 3, 2, 2, 0);
     public static bool ConfirmBeginReadyCheck() => SendAction("PerformanceReadyCheck", 3, 2);
+    public static bool ClickYes() => SendAction("SelectYesNo", 2, 0);
     public static bool ConfirmReceiveReadyCheck() => SendAction("PerformanceReadyCheckReceive", 3, 2);
 
     public static string MainModuleRva(nint ptr)

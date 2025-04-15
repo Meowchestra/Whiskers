@@ -80,9 +80,9 @@ public unsafe class OverrideMovement : IDisposable
         Api.GameInteropProvider?.InitializeFromAttributes(this);
         if (_rmiWalkHook != null) 
             Api.PluginLog?.Information($"RMIWalk address: 0x{_rmiWalkHook.Address:X}");
-        if (_rmiFlyHook != null) 
+        if (_rmiFlyHook != null)
             Api.PluginLog?.Information($"RMIFly address: 0x{_rmiFlyHook.Address:X}");
-        if (Api.GameConfig != null) 
+        if (Api.GameConfig != null)
             Api.GameConfig.UiControlChanged += OnConfigChanged;
         UpdateLegacyMode();
     }

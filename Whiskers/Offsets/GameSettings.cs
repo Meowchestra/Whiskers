@@ -63,8 +63,8 @@ public class GameSettingsVarTable
     public uint UiAssetType { get; set; }
     //public uint ScreenLeft { get; set; }
     //public uint ScreenTop { get; set; }
-    //public uint ScreenWidth { get; set; }
-    //public uint ScreenHeight { get; set; }
+    public uint ScreenWidth { get; set; }
+    public uint ScreenHeight { get; set; }
 
     //Sound
     public uint SoundEnabled { get; set; }
@@ -170,8 +170,8 @@ internal static class GameSettings
                 varTable.UiAssetType                    = configEntry[(int)ConfigOption.UiAssetType].Value.UInt;
                 //varTable.ScreenLeft                     = configEntry[(int)ConfigOption.ScreenLeft].Value.UInt;
                 //varTable.ScreenTop                      = configEntry[(int)ConfigOption.ScreenTop].Value.UInt;
-                //varTable.ScreenWidth                    = configEntry[(int)ConfigOption.ScreenWidth].Value.UInt;
-                //varTable.ScreenHeight                   = configEntry[(int)ConfigOption.ScreenHeight].Value.UInt;
+                varTable.ScreenWidth                    = configEntry[(int)ConfigOption.ScreenWidth].Value.UInt;
+                varTable.ScreenHeight                   = configEntry[(int)ConfigOption.ScreenHeight].Value.UInt;
 
                 varTable.SoundEnabled                   = configEntry[(int)ConfigOption.IsSndMaster].Value.UInt;
             }
@@ -232,12 +232,12 @@ internal static class GameSettings
                 configEntry[(int)ConfigOption.UiAssetType].SetValueUInt(varTable.UiAssetType);
                 //configEntry[(int)ConfigOption.ScreenLeft].SetValueUInt(varTable.ScreenLeft);
                 //configEntry[(int)ConfigOption.ScreenTop].SetValueUInt(varTable.ScreenTop);
-                //configEntry[(int)ConfigOption.ScreenWidth].SetValueUInt(varTable.ScreenWidth);
-                //configEntry[(int)ConfigOption.ScreenHeight].SetValueUInt(varTable.ScreenHeight);
+                configEntry[(int)ConfigOption.ScreenWidth].SetValueUInt(varTable.ScreenWidth);
+                configEntry[(int)ConfigOption.ScreenHeight].SetValueUInt(varTable.ScreenHeight);
 
                 configEntry[(int)ConfigOption.IsSndMaster].SetValueUInt(varTable.SoundEnabled);
 
-                //Misc.SetGameRenderSize(varTable.ScreenWidth, varTable.ScreenHeight, varTable.ScreenLeft, varTable.ScreenTop);
+                Misc.SetGameRenderSize(varTable.ScreenWidth, varTable.ScreenHeight); // varTable.ScreenLeft, varTable.ScreenTop)
             }
         }
         #endregion
@@ -303,9 +303,9 @@ internal static class GameSettings
             configEntry[(int)ConfigOption.ShadowLightValidType].SetValueUInt(0);
             configEntry[(int)ConfigOption.DynamicRezoType].SetValueUInt(0);
             configEntry[(int)ConfigOption.UiAssetType].SetValueUInt(0);
-            //configEntry[(int)ConfigOption.ScreenWidth].SetValueUInt(1024);
-            //configEntry[(int)ConfigOption.ScreenHeight].SetValueUInt(720);
-            //Misc.SetGameRenderSize(1024, 720);
+            configEntry[(int)ConfigOption.ScreenWidth].SetValueUInt(1024);
+            configEntry[(int)ConfigOption.ScreenHeight].SetValueUInt(720);
+            Misc.SetGameRenderSize(1024, 720);
         }
         #endregion
 
@@ -495,10 +495,10 @@ internal static class GameSettings
 
         private static string GetCharConfigFilename()
         {
-            if (Api.ClientState?.IsLoggedIn != true) 
-                return "";
+            if (Api.ClientState is not { IsLoggedIn: true }) return "";
+            if (Api.GetLocalPlayer() == null) return "";
 
-            var player = Api.ClientState.LocalPlayer;
+            var player = Api.GetLocalPlayer();
             var world = player?.HomeWorld.ValueNullable;
 
             if (player == null || world == null) 
