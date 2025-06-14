@@ -5,8 +5,6 @@
 
 using Dalamud.Game.Config;
 using Dalamud.Utility;
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Newtonsoft.Json;
 using Whiskers.Utils;
 
@@ -22,7 +20,6 @@ public class GameSettingsVarTable
 
     //DX11
     public uint AntiAliasing_DX11 { get; set; }
-    //public uint TextureFilterQuality_DX11 { get; set; } // Hidden / Removed Setting?
     public uint TextureAnisotropicQuality_DX11 { get; set; }
     public uint SSAO_DX11 { get; set; }
     public uint Glare_DX11 { get; set; }
@@ -36,9 +33,7 @@ public class GameSettingsVarTable
     public uint ShadowTextureSizeType_DX11 { get; set; }
     public uint ShadowCascadeCountType_DX11 { get; set; }
     public uint LodType_DX11 { get; set; }
-    //public uint OcclusionCulling_DX11 { get; set; } // Hidden / Removed Setting?
     public uint ShadowLOD_DX11 { get; set; }
-    //public uint MapResolution_DX11 { get; set; } // Hidden / Removed Setting?
     public uint ShadowVisibilityTypeSelf_DX11 { get; set; }
     public uint ShadowVisibilityTypeParty_DX11 { get; set; }
     public uint ShadowVisibilityTypeOther_DX11 { get; set; }
@@ -48,7 +43,6 @@ public class GameSettingsVarTable
     public uint PhysicsTypeOther_DX11 { get; set; }
     public uint PhysicsTypeEnemy_DX11 { get; set; }
     public uint ReflectionType_DX11 { get; set; }
-    //public uint WaterWet_DX11 { get; set; } // Hidden / Removed Setting?
     public uint ParallaxOcclusion_DX11 { get; set; }
     public uint Tessellation_DX11 { get; set; }
     public uint GlareRepresentation_DX11 { get; set; }
@@ -118,127 +112,113 @@ internal static class GameSettings
         /// <summary>
         /// Get the gfx settings and save them
         /// </summary>
-        public static unsafe void GetSettings(GameSettingsVarTable? varTable)
+        public static void GetSettings(GameSettingsVarTable? varTable)
         {
-            var configEntry = Framework.Instance()->SystemConfig.SystemConfigBase.ConfigBase.ConfigEntry;
+            if (varTable == null || Api.GameConfig == null) return;
 
-            if (varTable != null)
-            {
-                varTable.Fps                    = configEntry[(int)ConfigOption.Fps].Value.UInt;
-                varTable.FPSInActive            = configEntry[(int)ConfigOption.FPSInActive].Value.UInt;
-                varTable.DisplayObjectLimitType = configEntry[(int)ConfigOption.DisplayObjectLimitType].Value.UInt;
+            Api.GameConfig.TryGet(SystemConfigOption.Fps, out uint fps); varTable.Fps = fps;
+            Api.GameConfig.TryGet(SystemConfigOption.FPSInActive, out uint fpsInActive); varTable.FPSInActive = fpsInActive;
+            Api.GameConfig.TryGet(SystemConfigOption.DisplayObjectLimitType, out uint displayObjectLimitType); varTable.DisplayObjectLimitType = displayObjectLimitType;
 
-                varTable.AntiAliasing_DX11              = configEntry[(int)ConfigOption.AntiAliasing_DX11].Value.UInt;
-                //varTable.TextureFilterQuality_DX11      = configEntry[(int)ConfigOption.TextureFilterQuality_DX11].Value.UInt; // Hidden / Removed Setting?
-                varTable.TextureAnisotropicQuality_DX11 = configEntry[(int)ConfigOption.TextureAnisotropicQuality_DX11].Value.UInt;
-                varTable.SSAO_DX11                      = configEntry[(int)ConfigOption.SSAO_DX11].Value.UInt;
-                varTable.Glare_DX11                     = configEntry[(int)ConfigOption.Glare_DX11].Value.UInt;
-                varTable.DistortionWater_DX11           = configEntry[(int)ConfigOption.DistortionWater_DX11].Value.UInt;
-                varTable.DepthOfField_DX11              = configEntry[(int)ConfigOption.DepthOfField_DX11].Value.UInt;
-                varTable.RadialBlur_DX11                = configEntry[(int)ConfigOption.RadialBlur_DX11].Value.UInt;
-                varTable.Vignetting_DX11                = configEntry[(int)ConfigOption.Vignetting_DX11].Value.UInt;
-                varTable.GrassQuality_DX11              = configEntry[(int)ConfigOption.GrassQuality_DX11].Value.UInt;
-                varTable.TranslucentQuality_DX11        = configEntry[(int)ConfigOption.TranslucentQuality_DX11].Value.UInt;
-                varTable.ShadowSoftShadowType_DX11      = configEntry[(int)ConfigOption.ShadowSoftShadowType_DX11].Value.UInt;
-                varTable.ShadowTextureSizeType_DX11     = configEntry[(int)ConfigOption.ShadowTextureSizeType_DX11].Value.UInt;
-                varTable.ShadowCascadeCountType_DX11    = configEntry[(int)ConfigOption.ShadowCascadeCountType_DX11].Value.UInt;
-                varTable.LodType_DX11                   = configEntry[(int)ConfigOption.LodType_DX11].Value.UInt;
-                //varTable.OcclusionCulling_DX11          = configEntry[(int)ConfigOption.OcclusionCulling_DX11].Value.UInt; // Hidden / Removed Setting?
-                varTable.ShadowLOD_DX11                 = configEntry[(int)ConfigOption.ShadowLOD_DX11].Value.UInt;
-                //varTable.MapResolution_DX11             = configEntry[(int)ConfigOption.MapResolution_DX11].Value.UInt; // Hidden / Removed Setting?
-                varTable.ShadowVisibilityTypeSelf_DX11  = configEntry[(int)ConfigOption.ShadowVisibilityTypeSelf_DX11].Value.UInt;
-                varTable.ShadowVisibilityTypeParty_DX11 = configEntry[(int)ConfigOption.ShadowVisibilityTypeParty_DX11].Value.UInt;
-                varTable.ShadowVisibilityTypeOther_DX11 = configEntry[(int)ConfigOption.ShadowVisibilityTypeOther_DX11].Value.UInt;
-                varTable.ShadowVisibilityTypeEnemy_DX11 = configEntry[(int)ConfigOption.ShadowVisibilityTypeEnemy_DX11].Value.UInt;
-                varTable.PhysicsTypeSelf_DX11           = configEntry[(int)ConfigOption.PhysicsTypeSelf_DX11].Value.UInt;
-                varTable.PhysicsTypeParty_DX11          = configEntry[(int)ConfigOption.PhysicsTypeParty_DX11].Value.UInt;
-                varTable.PhysicsTypeOther_DX11          = configEntry[(int)ConfigOption.PhysicsTypeOther_DX11].Value.UInt;
-                varTable.PhysicsTypeEnemy_DX11          = configEntry[(int)ConfigOption.PhysicsTypeEnemy_DX11].Value.UInt;
-                varTable.ReflectionType_DX11            = configEntry[(int)ConfigOption.ReflectionType_DX11].Value.UInt;
-                //varTable.WaterWet_DX11                  = configEntry[(int)ConfigOption.WaterWet_DX11].Value.UInt; // Hidden / Removed Setting?
-                varTable.ParallaxOcclusion_DX11         = configEntry[(int)ConfigOption.ParallaxOcclusion_DX11].Value.UInt;
-                varTable.Tessellation_DX11              = configEntry[(int)ConfigOption.Tessellation_DX11].Value.UInt;
-                varTable.GlareRepresentation_DX11       = configEntry[(int)ConfigOption.GlareRepresentation_DX11].Value.UInt;
-                varTable.DynamicRezoThreshold           = configEntry[(int)ConfigOption.DynamicRezoThreshold].Value.UInt;
-                varTable.GraphicsRezoScale              = configEntry[(int)ConfigOption.GraphicsRezoScale].Value.UInt;
-                varTable.GraphicsRezoUpscaleType        = configEntry[(int)ConfigOption.GraphicsRezoUpscaleType].Value.UInt;
-                varTable.GrassEnableDynamicInterference = configEntry[(int)ConfigOption.GrassEnableDynamicInterference].Value.UInt;
-                varTable.ShadowBgLOD                    = configEntry[(int)ConfigOption.ShadowBgLOD].Value.UInt;
-                varTable.TextureRezoType                = configEntry[(int)ConfigOption.TextureRezoType].Value.UInt;
-                varTable.ShadowLightValidType           = configEntry[(int)ConfigOption.ShadowLightValidType].Value.UInt;
-                varTable.DynamicRezoType                = configEntry[(int)ConfigOption.DynamicRezoType].Value.UInt;
-                varTable.UiAssetType                    = configEntry[(int)ConfigOption.UiAssetType].Value.UInt;
-                varTable.ScreenLeft                     = configEntry[(int)ConfigOption.ScreenLeft].Value.UInt;
-                varTable.ScreenTop                      = configEntry[(int)ConfigOption.ScreenTop].Value.UInt;
-                varTable.ScreenWidth                    = configEntry[(int)ConfigOption.ScreenWidth].Value.UInt;
-                varTable.ScreenHeight                   = configEntry[(int)ConfigOption.ScreenHeight].Value.UInt;
+            Api.GameConfig.TryGet(SystemConfigOption.AntiAliasing_DX11, out uint antiAliasingDx11); varTable.AntiAliasing_DX11 = antiAliasingDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.TextureAnisotropicQuality_DX11, out uint textureAnisotropicQualityDx11); varTable.TextureAnisotropicQuality_DX11 = textureAnisotropicQualityDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.SSAO_DX11, out uint ssaoDx11); varTable.SSAO_DX11 = ssaoDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.Glare_DX11, out uint glareDx11); varTable.Glare_DX11 = glareDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.DistortionWater_DX11, out uint distortionWaterDx11); varTable.DistortionWater_DX11 = distortionWaterDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.DepthOfField_DX11, out uint depthOfFieldDx11); varTable.DepthOfField_DX11 = depthOfFieldDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.RadialBlur_DX11, out uint radialBlurDx11); varTable.RadialBlur_DX11 = radialBlurDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.Vignetting_DX11, out uint vignettingDx11); varTable.Vignetting_DX11 = vignettingDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.GrassQuality_DX11, out uint grassQualityDx11); varTable.GrassQuality_DX11 = grassQualityDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.TranslucentQuality_DX11, out uint translucentQualityDx11); varTable.TranslucentQuality_DX11 = translucentQualityDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.ShadowSoftShadowType_DX11, out uint shadowSoftShadowTypeDx11); varTable.ShadowSoftShadowType_DX11 = shadowSoftShadowTypeDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.ShadowTextureSizeType_DX11, out uint shadowTextureSizeTypeDx11); varTable.ShadowTextureSizeType_DX11 = shadowTextureSizeTypeDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.ShadowCascadeCountType_DX11, out uint shadowCascadeCountTypeDx11); varTable.ShadowCascadeCountType_DX11 = shadowCascadeCountTypeDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.LodType_DX11, out uint lodTypeDx11); varTable.LodType_DX11 = lodTypeDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.ShadowLOD_DX11, out uint shadowLodDx11); varTable.ShadowLOD_DX11 = shadowLodDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.ShadowVisibilityTypeSelf_DX11, out uint shadowVisibilityTypeSelfDx11); varTable.ShadowVisibilityTypeSelf_DX11 = shadowVisibilityTypeSelfDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.ShadowVisibilityTypeParty_DX11, out uint shadowVisibilityTypePartyDx11); varTable.ShadowVisibilityTypeParty_DX11 = shadowVisibilityTypePartyDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.ShadowVisibilityTypeOther_DX11, out uint shadowVisibilityTypeOtherDx11); varTable.ShadowVisibilityTypeOther_DX11 = shadowVisibilityTypeOtherDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.ShadowVisibilityTypeEnemy_DX11, out uint shadowVisibilityTypeEnemyDx11); varTable.ShadowVisibilityTypeEnemy_DX11 = shadowVisibilityTypeEnemyDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.PhysicsTypeSelf_DX11, out uint physicsTypeSelfDx11); varTable.PhysicsTypeSelf_DX11 = physicsTypeSelfDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.PhysicsTypeParty_DX11, out uint physicsTypePartyDx11); varTable.PhysicsTypeParty_DX11 = physicsTypePartyDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.PhysicsTypeOther_DX11, out uint physicsTypeOtherDx11); varTable.PhysicsTypeOther_DX11 = physicsTypeOtherDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.PhysicsTypeEnemy_DX11, out uint physicsTypeEnemyDx11); varTable.PhysicsTypeEnemy_DX11 = physicsTypeEnemyDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.ReflectionType_DX11, out uint reflectionTypeDx11); varTable.ReflectionType_DX11 = reflectionTypeDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.ParallaxOcclusion_DX11, out uint parallaxOcclusionDx11); varTable.ParallaxOcclusion_DX11 = parallaxOcclusionDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.Tessellation_DX11, out uint tessellationDx11); varTable.Tessellation_DX11 = tessellationDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.GlareRepresentation_DX11, out uint glareRepresentationDx11); varTable.GlareRepresentation_DX11 = glareRepresentationDx11;
+            Api.GameConfig.TryGet(SystemConfigOption.DynamicRezoThreshold, out uint dynamicRezoThreshold); varTable.DynamicRezoThreshold = dynamicRezoThreshold;
+            Api.GameConfig.TryGet(SystemConfigOption.GraphicsRezoScale, out uint graphicsRezoScale); varTable.GraphicsRezoScale = graphicsRezoScale;
+            Api.GameConfig.TryGet(SystemConfigOption.GraphicsRezoUpscaleType, out uint graphicsRezoUpscaleType); varTable.GraphicsRezoUpscaleType = graphicsRezoUpscaleType;
+            Api.GameConfig.TryGet(SystemConfigOption.GrassEnableDynamicInterference, out uint grassEnableDynamicInterference); varTable.GrassEnableDynamicInterference = grassEnableDynamicInterference;
+            Api.GameConfig.TryGet(SystemConfigOption.ShadowBgLOD, out uint shadowBgLod); varTable.ShadowBgLOD = shadowBgLod;
+            Api.GameConfig.TryGet(SystemConfigOption.TextureRezoType, out uint textureRezoType); varTable.TextureRezoType = textureRezoType;
+            Api.GameConfig.TryGet(SystemConfigOption.ShadowLightValidType, out uint shadowLightValidType); varTable.ShadowLightValidType = shadowLightValidType;
+            Api.GameConfig.TryGet(SystemConfigOption.DynamicRezoType, out uint dynamicRezoType); varTable.DynamicRezoType = dynamicRezoType;
+            Api.GameConfig.TryGet(SystemConfigOption.UiAssetType, out uint uiAssetType); varTable.UiAssetType = uiAssetType;
+            Api.GameConfig.TryGet(SystemConfigOption.ScreenLeft, out uint screenLeft); varTable.ScreenLeft = screenLeft;
+            Api.GameConfig.TryGet(SystemConfigOption.ScreenTop, out uint screenTop); varTable.ScreenTop = screenTop;
+            Api.GameConfig.TryGet(SystemConfigOption.ScreenWidth, out uint screenWidth); varTable.ScreenWidth = screenWidth;
+            Api.GameConfig.TryGet(SystemConfigOption.ScreenHeight, out uint screenHeight); varTable.ScreenHeight = screenHeight;
 
-                varTable.SoundEnabled                   = configEntry[(int)ConfigOption.IsSndMaster].Value.UInt;
-            }
+            Api.GameConfig.TryGet(SystemConfigOption.IsSndMaster, out uint soundEnabled); varTable.SoundEnabled = soundEnabled;
         }
 
         /// <summary>
         /// Restore the GFX settings
         /// </summary>
-        public static unsafe void RestoreSettings(GameSettingsVarTable? varTable)
+        public static void RestoreSettings(GameSettingsVarTable? varTable)
         {
-            var configEntry = Framework.Instance()->SystemConfig.SystemConfigBase.ConfigBase.ConfigEntry;
+            if (varTable == null || Api.GameConfig == null) return;
 
-            if (varTable != null)
-            {
-                configEntry[(int)ConfigOption.Fps].SetValueUInt(varTable.Fps);
-                configEntry[(int)ConfigOption.FPSInActive].SetValueUInt(varTable.FPSInActive);
-                configEntry[(int)ConfigOption.DisplayObjectLimitType].SetValueUInt(varTable.DisplayObjectLimitType);
+            Api.GameConfig.Set(SystemConfigOption.Fps, varTable.Fps);
+            Api.GameConfig.Set(SystemConfigOption.FPSInActive, varTable.FPSInActive);
+            Api.GameConfig.Set(SystemConfigOption.DisplayObjectLimitType, varTable.DisplayObjectLimitType);
 
-                configEntry[(int)ConfigOption.AntiAliasing_DX11].SetValueUInt(varTable.AntiAliasing_DX11);
-                //configEntry[(int)ConfigOption.TextureFilterQuality_DX11].SetValueUInt(varTable.TextureFilterQuality_DX11); // Hidden / Removed Setting?
-                configEntry[(int)ConfigOption.TextureAnisotropicQuality_DX11].SetValueUInt(varTable.TextureAnisotropicQuality_DX11);
-                configEntry[(int)ConfigOption.SSAO_DX11].SetValueUInt(varTable.SSAO_DX11);
-                configEntry[(int)ConfigOption.Glare_DX11].SetValueUInt(varTable.Glare_DX11);
-                configEntry[(int)ConfigOption.DistortionWater_DX11].SetValueUInt(varTable.DistortionWater_DX11);
-                configEntry[(int)ConfigOption.DepthOfField_DX11].SetValueUInt(varTable.DepthOfField_DX11);
-                configEntry[(int)ConfigOption.RadialBlur_DX11].SetValueUInt(varTable.RadialBlur_DX11);
-                configEntry[(int)ConfigOption.Vignetting_DX11].SetValueUInt(varTable.Vignetting_DX11);
-                configEntry[(int)ConfigOption.GrassQuality_DX11].SetValueUInt(varTable.GrassQuality_DX11);
-                configEntry[(int)ConfigOption.TranslucentQuality_DX11].SetValueUInt(varTable.TranslucentQuality_DX11);
-                configEntry[(int)ConfigOption.ShadowSoftShadowType_DX11].SetValueUInt(varTable.ShadowSoftShadowType_DX11);
-                configEntry[(int)ConfigOption.ShadowTextureSizeType_DX11].SetValueUInt(varTable.ShadowTextureSizeType_DX11);
-                configEntry[(int)ConfigOption.ShadowCascadeCountType_DX11].SetValueUInt(varTable.ShadowCascadeCountType_DX11);
-                configEntry[(int)ConfigOption.LodType_DX11].SetValueUInt(varTable.LodType_DX11);
-                //configEntry[(int)ConfigOption.OcclusionCulling_DX11].SetValueUInt(varTable.OcclusionCulling_DX11); // Hidden / Removed Setting?
-                configEntry[(int)ConfigOption.ShadowLOD_DX11].SetValueUInt(varTable.ShadowLOD_DX11);
-                //configEntry[(int)ConfigOption.MapResolution_DX11].SetValueUInt(varTable.MapResolution_DX11); // Hidden / Removed Setting?
-                configEntry[(int)ConfigOption.ShadowVisibilityTypeSelf_DX11].SetValueUInt(varTable.ShadowVisibilityTypeSelf_DX11);
-                configEntry[(int)ConfigOption.ShadowVisibilityTypeParty_DX11].SetValueUInt(varTable.ShadowVisibilityTypeParty_DX11);
-                configEntry[(int)ConfigOption.ShadowVisibilityTypeOther_DX11].SetValueUInt(varTable.ShadowVisibilityTypeOther_DX11);
-                configEntry[(int)ConfigOption.ShadowVisibilityTypeEnemy_DX11].SetValueUInt(varTable.ShadowVisibilityTypeEnemy_DX11);
-                configEntry[(int)ConfigOption.PhysicsTypeSelf_DX11].SetValueUInt(varTable.PhysicsTypeSelf_DX11);
-                configEntry[(int)ConfigOption.PhysicsTypeParty_DX11].SetValueUInt(varTable.PhysicsTypeParty_DX11);
-                configEntry[(int)ConfigOption.PhysicsTypeOther_DX11].SetValueUInt(varTable.PhysicsTypeOther_DX11);
-                configEntry[(int)ConfigOption.PhysicsTypeEnemy_DX11].SetValueUInt(varTable.PhysicsTypeEnemy_DX11);
-                configEntry[(int)ConfigOption.ReflectionType_DX11].SetValueUInt(varTable.ReflectionType_DX11);
-                //configEntry[(int)ConfigOption.WaterWet_DX11].SetValueUInt(varTable.WaterWet_DX11); // Hidden / Removed Setting?
-                configEntry[(int)ConfigOption.ParallaxOcclusion_DX11].SetValueUInt(varTable.ParallaxOcclusion_DX11);
-                configEntry[(int)ConfigOption.Tessellation_DX11].SetValueUInt(varTable.Tessellation_DX11);
-                configEntry[(int)ConfigOption.GlareRepresentation_DX11].SetValueUInt(varTable.GlareRepresentation_DX11);
-                configEntry[(int)ConfigOption.DynamicRezoThreshold].SetValueUInt(varTable.DynamicRezoThreshold);
-                configEntry[(int)ConfigOption.GraphicsRezoScale].SetValueUInt(varTable.GraphicsRezoScale);
-                configEntry[(int)ConfigOption.GraphicsRezoUpscaleType].SetValueUInt(varTable.GraphicsRezoUpscaleType);
-                configEntry[(int)ConfigOption.GrassEnableDynamicInterference].SetValueUInt(varTable.GrassEnableDynamicInterference);
-                configEntry[(int)ConfigOption.ShadowBgLOD].SetValueUInt(varTable.ShadowBgLOD);
-                configEntry[(int)ConfigOption.TextureRezoType].SetValueUInt(varTable.TextureRezoType);
-                configEntry[(int)ConfigOption.ShadowLightValidType].SetValueUInt(varTable.ShadowLightValidType);
-                configEntry[(int)ConfigOption.DynamicRezoType].SetValueUInt(varTable.DynamicRezoType);
-                configEntry[(int)ConfigOption.UiAssetType].SetValueUInt(varTable.UiAssetType);
-                configEntry[(int)ConfigOption.ScreenLeft].SetValueUInt(varTable.ScreenLeft);
-                configEntry[(int)ConfigOption.ScreenTop].SetValueUInt(varTable.ScreenTop);
-                configEntry[(int)ConfigOption.ScreenWidth].SetValueUInt(varTable.ScreenWidth);
-                configEntry[(int)ConfigOption.ScreenHeight].SetValueUInt(varTable.ScreenHeight);
+            Api.GameConfig.Set(SystemConfigOption.AntiAliasing_DX11, varTable.AntiAliasing_DX11);
+            Api.GameConfig.Set(SystemConfigOption.TextureAnisotropicQuality_DX11, varTable.TextureAnisotropicQuality_DX11);
+            Api.GameConfig.Set(SystemConfigOption.SSAO_DX11, varTable.SSAO_DX11);
+            Api.GameConfig.Set(SystemConfigOption.Glare_DX11, varTable.Glare_DX11);
+            Api.GameConfig.Set(SystemConfigOption.DistortionWater_DX11, varTable.DistortionWater_DX11);
+            Api.GameConfig.Set(SystemConfigOption.DepthOfField_DX11, varTable.DepthOfField_DX11);
+            Api.GameConfig.Set(SystemConfigOption.RadialBlur_DX11, varTable.RadialBlur_DX11);
+            Api.GameConfig.Set(SystemConfigOption.Vignetting_DX11, varTable.Vignetting_DX11);
+            Api.GameConfig.Set(SystemConfigOption.GrassQuality_DX11, varTable.GrassQuality_DX11);
+            Api.GameConfig.Set(SystemConfigOption.TranslucentQuality_DX11, varTable.TranslucentQuality_DX11);
+            Api.GameConfig.Set(SystemConfigOption.ShadowSoftShadowType_DX11, varTable.ShadowSoftShadowType_DX11);
+            Api.GameConfig.Set(SystemConfigOption.ShadowTextureSizeType_DX11, varTable.ShadowTextureSizeType_DX11);
+            Api.GameConfig.Set(SystemConfigOption.ShadowCascadeCountType_DX11, varTable.ShadowCascadeCountType_DX11);
+            Api.GameConfig.Set(SystemConfigOption.LodType_DX11, varTable.LodType_DX11);
+            Api.GameConfig.Set(SystemConfigOption.ShadowLOD_DX11, varTable.ShadowLOD_DX11);
+            Api.GameConfig.Set(SystemConfigOption.ShadowVisibilityTypeSelf_DX11, varTable.ShadowVisibilityTypeSelf_DX11);
+            Api.GameConfig.Set(SystemConfigOption.ShadowVisibilityTypeParty_DX11, varTable.ShadowVisibilityTypeParty_DX11);
+            Api.GameConfig.Set(SystemConfigOption.ShadowVisibilityTypeOther_DX11, varTable.ShadowVisibilityTypeOther_DX11);
+            Api.GameConfig.Set(SystemConfigOption.ShadowVisibilityTypeEnemy_DX11, varTable.ShadowVisibilityTypeEnemy_DX11);
+            Api.GameConfig.Set(SystemConfigOption.PhysicsTypeSelf_DX11, varTable.PhysicsTypeSelf_DX11);
+            Api.GameConfig.Set(SystemConfigOption.PhysicsTypeParty_DX11, varTable.PhysicsTypeParty_DX11);
+            Api.GameConfig.Set(SystemConfigOption.PhysicsTypeOther_DX11, varTable.PhysicsTypeOther_DX11);
+            Api.GameConfig.Set(SystemConfigOption.PhysicsTypeEnemy_DX11, varTable.PhysicsTypeEnemy_DX11);
+            Api.GameConfig.Set(SystemConfigOption.ReflectionType_DX11, varTable.ReflectionType_DX11);
+            Api.GameConfig.Set(SystemConfigOption.ParallaxOcclusion_DX11, varTable.ParallaxOcclusion_DX11);
+            Api.GameConfig.Set(SystemConfigOption.Tessellation_DX11, varTable.Tessellation_DX11);
+            Api.GameConfig.Set(SystemConfigOption.GlareRepresentation_DX11, varTable.GlareRepresentation_DX11);
+            Api.GameConfig.Set(SystemConfigOption.DynamicRezoThreshold, varTable.DynamicRezoThreshold);
+            Api.GameConfig.Set(SystemConfigOption.GraphicsRezoScale, varTable.GraphicsRezoScale);
+            Api.GameConfig.Set(SystemConfigOption.GraphicsRezoUpscaleType, varTable.GraphicsRezoUpscaleType);
+            Api.GameConfig.Set(SystemConfigOption.GrassEnableDynamicInterference, varTable.GrassEnableDynamicInterference);
+            Api.GameConfig.Set(SystemConfigOption.ShadowBgLOD, varTable.ShadowBgLOD);
+            Api.GameConfig.Set(SystemConfigOption.TextureRezoType, varTable.TextureRezoType);
+            Api.GameConfig.Set(SystemConfigOption.ShadowLightValidType, varTable.ShadowLightValidType);
+            Api.GameConfig.Set(SystemConfigOption.DynamicRezoType, varTable.DynamicRezoType);
+            Api.GameConfig.Set(SystemConfigOption.UiAssetType, varTable.UiAssetType);
+            Api.GameConfig.Set(SystemConfigOption.ScreenLeft, varTable.ScreenLeft);
+            Api.GameConfig.Set(SystemConfigOption.ScreenTop, varTable.ScreenTop);
+            Api.GameConfig.Set(SystemConfigOption.ScreenWidth, varTable.ScreenWidth);
+            Api.GameConfig.Set(SystemConfigOption.ScreenHeight, varTable.ScreenHeight);
 
-                configEntry[(int)ConfigOption.IsSndMaster].SetValueUInt(varTable.SoundEnabled);
+            Api.GameConfig.Set(SystemConfigOption.IsSndMaster, varTable.SoundEnabled);
 
-                Misc.SetGameRenderSize(varTable.ScreenWidth, varTable.ScreenHeight, varTable.ScreenLeft, varTable.ScreenTop);
-            }
+            Misc.SetGameRenderSize(varTable.ScreenWidth, varTable.ScreenHeight, varTable.ScreenLeft, varTable.ScreenTop);
         }
         #endregion
 
@@ -255,56 +235,53 @@ internal static class GameSettings
         /// <summary>
         /// Set the GFX to minimal
         /// </summary>
-        public static unsafe void SetMinimalGfx()
+        public static void SetMinimalGfx()
         {
-            var configEntry = Framework.Instance()->SystemConfig.SystemConfigBase.ConfigBase.ConfigEntry;
+            if (Api.GameConfig == null) return;
+            
+            Api.GameConfig.Set(SystemConfigOption.Fps, 2u);
+            Api.GameConfig.Set(SystemConfigOption.FPSInActive, 0u);
+            Api.GameConfig.Set(SystemConfigOption.DisplayObjectLimitType, 4u);
 
-            configEntry[(int)ConfigOption.Fps].SetValueUInt(2);
-            configEntry[(int)ConfigOption.FPSInActive].SetValueUInt(0);
-            configEntry[(int)ConfigOption.DisplayObjectLimitType].SetValueUInt(4);
+            Api.GameConfig.Set(SystemConfigOption.AntiAliasing_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.TextureAnisotropicQuality_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.SSAO_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.Glare_DX11, 1u);
+            Api.GameConfig.Set(SystemConfigOption.DistortionWater_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.DepthOfField_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.RadialBlur_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.Vignetting_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.GrassQuality_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.TranslucentQuality_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.ShadowSoftShadowType_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.ShadowTextureSizeType_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.ShadowCascadeCountType_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.LodType_DX11, 1u);
+            Api.GameConfig.Set(SystemConfigOption.ShadowLOD_DX11, 1u);
+            Api.GameConfig.Set(SystemConfigOption.ShadowVisibilityTypeSelf_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.ShadowVisibilityTypeParty_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.ShadowVisibilityTypeOther_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.ShadowVisibilityTypeEnemy_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.PhysicsTypeSelf_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.PhysicsTypeParty_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.PhysicsTypeOther_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.PhysicsTypeEnemy_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.ReflectionType_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.ParallaxOcclusion_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.Tessellation_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.GlareRepresentation_DX11, 0u);
+            Api.GameConfig.Set(SystemConfigOption.DynamicRezoThreshold, 1u);
+            Api.GameConfig.Set(SystemConfigOption.GraphicsRezoScale, 50u);
+            Api.GameConfig.Set(SystemConfigOption.GraphicsRezoUpscaleType, 0u);
+            Api.GameConfig.Set(SystemConfigOption.GrassEnableDynamicInterference, 0u);
+            Api.GameConfig.Set(SystemConfigOption.ShadowBgLOD, 1u);
+            Api.GameConfig.Set(SystemConfigOption.TextureRezoType, 0u);
+            Api.GameConfig.Set(SystemConfigOption.ShadowLightValidType, 0u);
+            Api.GameConfig.Set(SystemConfigOption.DynamicRezoType, 0u);
+            Api.GameConfig.Set(SystemConfigOption.UiAssetType, 0u);
+            Api.GameConfig.Set(SystemConfigOption.ScreenWidth, 1024u);
+            Api.GameConfig.Set(SystemConfigOption.ScreenHeight, 720u);
 
-            configEntry[(int)ConfigOption.AntiAliasing_DX11].SetValueUInt(0);
-            //configEntry[(int)ConfigOption.TextureFilterQuality_DX11].SetValueUInt(2); // Hidden / Removed Setting?
-            configEntry[(int)ConfigOption.TextureAnisotropicQuality_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.SSAO_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.Glare_DX11].SetValueUInt(1);
-            configEntry[(int)ConfigOption.DistortionWater_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.DepthOfField_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.RadialBlur_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.Vignetting_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.GrassQuality_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.TranslucentQuality_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.ShadowSoftShadowType_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.ShadowTextureSizeType_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.ShadowCascadeCountType_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.LodType_DX11].SetValueUInt(1);
-            //configEntry[(int)ConfigOption.OcclusionCulling_DX11].SetValueUInt(1); // Hidden / Removed Setting?
-            configEntry[(int)ConfigOption.ShadowLOD_DX11].SetValueUInt(1);
-            //configEntry[(int)ConfigOption.MapResolution_DX11].SetValueUInt(1); // Hidden / Removed Setting?
-            configEntry[(int)ConfigOption.ShadowVisibilityTypeSelf_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.ShadowVisibilityTypeParty_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.ShadowVisibilityTypeOther_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.ShadowVisibilityTypeEnemy_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.PhysicsTypeSelf_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.PhysicsTypeParty_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.PhysicsTypeOther_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.PhysicsTypeEnemy_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.ReflectionType_DX11].SetValueUInt(0);
-            //configEntry[(int)ConfigOption.WaterWet_DX11].SetValueUInt(1); // Hidden / Removed Setting?
-            configEntry[(int)ConfigOption.ParallaxOcclusion_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.Tessellation_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.GlareRepresentation_DX11].SetValueUInt(0);
-            configEntry[(int)ConfigOption.DynamicRezoThreshold].SetValueUInt(1);
-            configEntry[(int)ConfigOption.GraphicsRezoScale].SetValueUInt(50);
-            configEntry[(int)ConfigOption.GraphicsRezoUpscaleType].SetValueUInt(0);
-            configEntry[(int)ConfigOption.GrassEnableDynamicInterference].SetValueUInt(0);
-            configEntry[(int)ConfigOption.ShadowBgLOD].SetValueUInt(1);
-            configEntry[(int)ConfigOption.TextureRezoType].SetValueUInt(0);
-            configEntry[(int)ConfigOption.ShadowLightValidType].SetValueUInt(0);
-            configEntry[(int)ConfigOption.DynamicRezoType].SetValueUInt(0);
-            configEntry[(int)ConfigOption.UiAssetType].SetValueUInt(0);
-            configEntry[(int)ConfigOption.ScreenWidth].SetValueUInt(1024);
-            configEntry[(int)ConfigOption.ScreenHeight].SetValueUInt(720);
             Misc.SetGameRenderSize(1024, 720, keepCurrentPosition: true);
         }
         #endregion
@@ -510,9 +487,7 @@ internal static class GameSettings
         public static void LoadConfig()
         {
             var file = GetCharConfigFilename();
-            if (file == "")
-                return;
-            if (!File.Exists(file))
+            if (string.IsNullOrEmpty(file) || !File.Exists(file))
                 return;
 
             GameSettingsTables.Instance.CustomTable = JsonConvert.DeserializeObject<GameSettingsVarTable>(File.ReadAllText(file));
@@ -522,13 +497,12 @@ internal static class GameSettings
         public static void SaveConfig()
         {
             var file = GetCharConfigFilename();
-            if (file == "")
+            if (string.IsNullOrEmpty(file))
                 return;
 
             //Save the config
             GetSettings(GameSettingsTables.Instance.CustomTable);
-            var jsonString = JsonConvert.SerializeObject(GameSettingsTables.Instance.CustomTable);
-            File.WriteAllText(file, JsonConvert.SerializeObject(GameSettingsTables.Instance.CustomTable));
+            File.WriteAllText(file, JsonConvert.SerializeObject(GameSettingsTables.Instance.CustomTable, Formatting.Indented));
         }
     }
 }
