@@ -92,26 +92,16 @@ internal static class Misc
         var windowHeight = rect.Bottom - rect.Top;
         
         // 4. Determine the final position and flags.
-        int windowX, windowY;
-        var flags = SWP_NOZORDER | SWP_NOACTIVATE;
+        const uint flags = SWP_NOZORDER | SWP_NOACTIVATE;
 
-        if (keepCurrentPosition)
-        {
-            flags   |= SWP_NOMOVE;
-            windowX =  0; // Ignored
-            windowY =  0; // Ignored
-        }
-        else
-        {
-            windowX = (int)left + rect.Left;
-            windowY = (int)top + rect.Top;
-        }
-        
+        var windowX = (int)left + rect.Left;
+        var windowY = (int)top + rect.Top;
+
         // 5. Apply the final size and position.
         SetWindowPos(hWnd, IntPtr.Zero, windowX, windowY, windowWidth, windowHeight, flags);
     }
 
-    internal static IGameObject? GetNearestEntrance(out float distance, bool bypassPredefined = false)
+    internal static IGameObject? GetNearestEntrance(out float distance)
     {
         var currentDistance = float.MaxValue;
         IGameObject? currentObject = null;

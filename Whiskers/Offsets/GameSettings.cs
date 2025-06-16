@@ -282,7 +282,7 @@ internal static class GameSettings
             Api.GameConfig.Set(SystemConfigOption.ScreenWidth, 1024u);
             Api.GameConfig.Set(SystemConfigOption.ScreenHeight, 720u);
 
-            Misc.SetGameRenderSize(1024, 720, keepCurrentPosition: true);
+            //Misc.SetGameRenderSize(1024, 720); // Causes crash, disabled for now?
         }
         #endregion
 
