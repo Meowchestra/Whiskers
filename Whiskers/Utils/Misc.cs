@@ -53,7 +53,7 @@ internal static class Misc
     /// <summary>
     /// Sets the game's internal render resolution and adjusts the window position and size.
     /// </summary>
-    internal static unsafe void SetGameRenderSize(uint width, uint height, uint left = 0, uint top = 0, bool keepCurrentPosition = false)
+    internal static unsafe void SetGameRenderSize(uint width, uint height, uint left = 0, uint top = 0)
     {
         var dev = Device.Instance();
         if (dev == null) return;
