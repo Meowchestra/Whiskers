@@ -33,6 +33,10 @@ public enum MessageType
 
     SetGfx                = 50, //Get<->Set
     SetWindowRenderSize   = 51,
+
+    BackgroundFpsState    = 55, //Set<->Get
+    BackgroundAudioState  = 56, //Set<->Get
+
     MasterSoundState      = 60, //Set<->Get
     MasterVolume          = 61, //Set<->Get
     BgmSoundState         = 62, //Set<->Get
@@ -41,10 +45,10 @@ public enum MessageType
     EffectsVolume         = 65, //Set<->Get
     VoiceSoundState       = 66, //Set<->Get
     VoiceVolume           = 67, //Set<->Get
-    AmbientSoundState     = 68, //Set<->Get
-    AmbientVolume         = 69, //Set<->Get
-    SystemSoundState      = 70, //Set<->Get
-    SystemVolume          = 71, //Set<->Get
+    SystemSoundState      = 68, //Set<->Get
+    SystemVolume          = 69, //Set<->Get
+    AmbientSoundState     = 70, //Set<->Get
+    AmbientVolume         = 71, //Set<->Get
     PerformanceSoundState = 72, //Set<->Get
     PerformanceVolume     = 73, //Set<->Get
 

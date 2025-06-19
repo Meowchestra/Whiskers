@@ -61,6 +61,7 @@ public class GameSettingsVarTable
     public uint ScreenHeight { get; set; }
 
     //Sound
+    public uint AudioBackground { get; set; }
     public uint SoundEnabled { get; set; }
 }
 // ReSharper restore InconsistentNaming
@@ -161,6 +162,7 @@ internal static class GameSettings
             Api.GameConfig.TryGet(SystemConfigOption.ScreenWidth, out uint screenWidth); varTable.ScreenWidth = screenWidth;
             Api.GameConfig.TryGet(SystemConfigOption.ScreenHeight, out uint screenHeight); varTable.ScreenHeight = screenHeight;
 
+            Api.GameConfig.TryGet(SystemConfigOption.IsSoundAlways, out uint audioBackground); varTable.AudioBackground = audioBackground;
             Api.GameConfig.TryGet(SystemConfigOption.IsSndMaster, out uint soundEnabled); varTable.SoundEnabled = soundEnabled;
         }
 
@@ -216,6 +218,7 @@ internal static class GameSettings
             Api.GameConfig.Set(SystemConfigOption.ScreenWidth, varTable.ScreenWidth);
             Api.GameConfig.Set(SystemConfigOption.ScreenHeight, varTable.ScreenHeight);
 
+            Api.GameConfig.Set(SystemConfigOption.IsSoundAlways, varTable.AudioBackground);
             Api.GameConfig.Set(SystemConfigOption.IsSndMaster, varTable.SoundEnabled);
 
             Misc.SetGameRenderSize(varTable.ScreenWidth, varTable.ScreenHeight, varTable.ScreenLeft, varTable.ScreenTop);
@@ -283,6 +286,34 @@ internal static class GameSettings
             Api.GameConfig.Set(SystemConfigOption.ScreenHeight, 720u);
 
             //Misc.SetGameRenderSize(1024, 720); // Causes crash, disabled for now?
+        }
+        #endregion
+
+        #region Background Fps/Audio
+        /// <summary>
+        /// Enables/Disables background fps when window is not active
+        /// </summary>
+        /// <param name="enabled"></param>
+        public static void SetBackgroundFpsEnable(bool enabled)
+        {
+            Api.GameConfig?.Set(SystemConfigOption.FPSInActive, !enabled);
+        }
+        public static bool GetBackgroundFpsEnable()
+        {
+            return Api.GameConfig != null && Api.GameConfig.TryGet(SystemConfigOption.FPSInActive, out bool fpsInActive) && fpsInActive;
+        }
+
+        /// <summary>
+        /// Enables/Disables background audio state when window is not active
+        /// </summary>
+        /// <param name="enabled"></param>
+        public static void SetBackgroundAudioEnable(bool enabled)
+        {
+            Api.GameConfig?.Set(SystemConfigOption.IsSoundAlways, !enabled);
+        }
+        public static bool GetBackgroundAudioEnable()
+        {
+            return Api.GameConfig != null && Api.GameConfig.TryGet(SystemConfigOption.IsSoundAlways, out bool isSoundAlways) && isSoundAlways;
         }
         #endregion
 

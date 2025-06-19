@@ -66,7 +66,6 @@ public class MainWindow : Window, IDisposable
             Message    = Environment.ProcessId.ToString()
         });
 
-
         Pipe.Client?.WriteAsync(new IpcMessage
         {
             MsgType    = MessageType.Version,
@@ -75,6 +74,8 @@ public class MainWindow : Window, IDisposable
         });
 
         Pipe.Write(MessageType.SetGfx, 0, GameSettings.AgentConfigSystem.CheckLowSettings(GameSettingsTables.Instance.CustomTable));
+        Pipe.Write(MessageType.BackgroundFpsState, 0, GameSettings.AgentConfigSystem.GetBackgroundFpsEnable());
+        Pipe.Write(MessageType.BackgroundAudioState, 0, GameSettings.AgentConfigSystem.GetBackgroundAudioEnable());
         Pipe.Write(MessageType.MasterSoundState, 0, GameSettings.AgentConfigSystem.GetMasterSoundEnable());
         Pipe.Write(MessageType.MasterVolume, 0, GameSettings.AgentConfigSystem.GetMasterSoundVolume());
         Pipe.Write(MessageType.BgmSoundState, 0, GameSettings.AgentConfigSystem.GetBgmSoundEnable());
@@ -83,10 +84,10 @@ public class MainWindow : Window, IDisposable
         Pipe.Write(MessageType.EffectsVolume, 0, GameSettings.AgentConfigSystem.GetEffectsSoundVolume());
         Pipe.Write(MessageType.VoiceSoundState, 0, GameSettings.AgentConfigSystem.GetVoiceSoundEnable());
         Pipe.Write(MessageType.VoiceVolume, 0, GameSettings.AgentConfigSystem.GetVoiceSoundVolume());
-        Pipe.Write(MessageType.AmbientSoundState, 0, GameSettings.AgentConfigSystem.GetAmbientSoundEnable());
-        Pipe.Write(MessageType.AmbientVolume, 0, GameSettings.AgentConfigSystem.GetAmbientSoundVolume());
         Pipe.Write(MessageType.SystemSoundState, 0, GameSettings.AgentConfigSystem.GetSystemSoundEnable());
         Pipe.Write(MessageType.SystemVolume, 0, GameSettings.AgentConfigSystem.GetSystemSoundVolume());
+        Pipe.Write(MessageType.AmbientSoundState, 0, GameSettings.AgentConfigSystem.GetAmbientSoundEnable());
+        Pipe.Write(MessageType.AmbientVolume, 0, GameSettings.AgentConfigSystem.GetAmbientSoundVolume());
         Pipe.Write(MessageType.PerformanceSoundState, 0, GameSettings.AgentConfigSystem.GetPerformanceSoundEnable());
         Pipe.Write(MessageType.PerformanceVolume, 0, GameSettings.AgentConfigSystem.GetPerformanceSoundVolume());
 
@@ -154,6 +155,8 @@ public class MainWindow : Window, IDisposable
             case MessageType.PartyFollow:
             case MessageType.SetGfx:
             case MessageType.SetWindowRenderSize:
+            case MessageType.BackgroundFpsState:
+            case MessageType.BackgroundAudioState:
             case MessageType.MasterSoundState:
             case MessageType.MasterVolume:
             case MessageType.BgmSoundState:
@@ -162,10 +165,10 @@ public class MainWindow : Window, IDisposable
             case MessageType.EffectsVolume:
             case MessageType.VoiceSoundState:
             case MessageType.VoiceVolume:
-            case MessageType.AmbientSoundState:
-            case MessageType.AmbientVolume:
             case MessageType.SystemSoundState:
             case MessageType.SystemVolume:
+            case MessageType.AmbientSoundState:
+            case MessageType.AmbientVolume:
             case MessageType.PerformanceSoundState:
             case MessageType.PerformanceVolume:
             case MessageType.Chat:
@@ -244,6 +247,12 @@ public class MainWindow : Window, IDisposable
                     case MessageType.SetWindowRenderSize:
                         Misc.SetGameRenderSize(Convert.ToUInt32(msg.Message.Split(';')[0]), Convert.ToUInt32(msg.Message.Split(';')[1]));
                         break;
+                    case MessageType.BackgroundFpsState:
+                        GameSettings.AgentConfigSystem.SetBackgroundFpsEnable(Convert.ToBoolean(msg.Message));
+                        break;
+                    case MessageType.BackgroundAudioState:
+                        GameSettings.AgentConfigSystem.SetBackgroundAudioEnable(Convert.ToBoolean(msg.Message));
+                        break;
                     case MessageType.MasterSoundState:
                         GameSettings.AgentConfigSystem.SetMasterSoundEnable(Convert.ToBoolean(msg.Message));
                         break;
@@ -292,18 +301,6 @@ public class MainWindow : Window, IDisposable
                         else
                             GameSettings.AgentConfigSystem.SetVoiceSoundVolume(Convert.ToInt16(msg.Message));
                         break;
-                    case MessageType.AmbientSoundState:
-                        GameSettings.AgentConfigSystem.SetAmbientSoundEnable(Convert.ToBoolean(msg.Message));
-                        break;
-                    case MessageType.AmbientVolume:
-                        if (Convert.ToInt16(msg.Message) == -1)
-                        {
-                            Pipe.Write(MessageType.AmbientVolume, 0, GameSettings.AgentConfigSystem.GetAmbientSoundVolume());
-                            Pipe.Write(MessageType.AmbientSoundState, 0, GameSettings.AgentConfigSystem.GetAmbientSoundEnable());
-                        }
-                        else
-                            GameSettings.AgentConfigSystem.SetAmbientSoundVolume(Convert.ToInt16(msg.Message));
-                        break;
                     case MessageType.SystemSoundState:
                         GameSettings.AgentConfigSystem.SetSystemSoundEnable(Convert.ToBoolean(msg.Message));
                         break;
@@ -315,6 +312,18 @@ public class MainWindow : Window, IDisposable
                         }
                         else
                             GameSettings.AgentConfigSystem.SetSystemSoundVolume(Convert.ToInt16(msg.Message));
+                        break;
+                    case MessageType.AmbientSoundState:
+                        GameSettings.AgentConfigSystem.SetAmbientSoundEnable(Convert.ToBoolean(msg.Message));
+                        break;
+                    case MessageType.AmbientVolume:
+                        if (Convert.ToInt16(msg.Message) == -1)
+                        {
+                            Pipe.Write(MessageType.AmbientVolume, 0, GameSettings.AgentConfigSystem.GetAmbientSoundVolume());
+                            Pipe.Write(MessageType.AmbientSoundState, 0, GameSettings.AgentConfigSystem.GetAmbientSoundEnable());
+                        }
+                        else
+                            GameSettings.AgentConfigSystem.SetAmbientSoundVolume(Convert.ToInt16(msg.Message));
                         break;
                     case MessageType.PerformanceSoundState:
                         GameSettings.AgentConfigSystem.SetPerformanceSoundEnable(Convert.ToBoolean(msg.Message));
