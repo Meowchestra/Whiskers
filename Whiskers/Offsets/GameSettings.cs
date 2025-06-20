@@ -334,7 +334,7 @@ internal static class GameSettings
         }
         public static bool GetMasterSoundEnable()
         {
-            return Api.GameConfig != null && Api.GameConfig.TryGet(SystemConfigOption.IsSndMaster, out bool isSndMaster) && isSndMaster;
+            return Api.GameConfig != null && Api.GameConfig.TryGet(SystemConfigOption.IsSndMaster, out bool isSndMaster) && !isSndMaster;
         }
 
         /// <summary>
@@ -360,7 +360,7 @@ internal static class GameSettings
         }
         public static bool GetBgmSoundEnable()
         {
-            return Api.GameConfig != null && Api.GameConfig.TryGet(SystemConfigOption.IsSndBgm, out bool isSndBgm) && isSndBgm;
+            return Api.GameConfig != null && Api.GameConfig.TryGet(SystemConfigOption.IsSndBgm, out bool isSndBgm) && !isSndBgm;
         }
 
         /// <summary>
@@ -386,7 +386,7 @@ internal static class GameSettings
         }
         public static bool GetEffectsSoundEnable()
         {
-            return Api.GameConfig != null && Api.GameConfig.TryGet(SystemConfigOption.IsSndSe, out bool isSndSe) && isSndSe;
+            return Api.GameConfig != null && Api.GameConfig.TryGet(SystemConfigOption.IsSndSe, out bool isSndSe) && !isSndSe;
         }
 
         /// <summary>
@@ -412,7 +412,7 @@ internal static class GameSettings
         }
         public static bool GetVoiceSoundEnable()
         {
-            return Api.GameConfig != null && Api.GameConfig.TryGet(SystemConfigOption.IsSndVoice, out bool isSndVoice) && isSndVoice;
+            return Api.GameConfig != null && Api.GameConfig.TryGet(SystemConfigOption.IsSndVoice, out bool isSndVoice) && !isSndVoice;
         }
 
         /// <summary>
@@ -438,7 +438,7 @@ internal static class GameSettings
         }
         public static bool GetAmbientSoundEnable()
         {
-            return Api.GameConfig != null && Api.GameConfig.TryGet(SystemConfigOption.IsSndEnv, out bool isSndEnv) && isSndEnv;
+            return Api.GameConfig != null && Api.GameConfig.TryGet(SystemConfigOption.IsSndEnv, out bool isSndEnv) && !isSndEnv;
         }
 
         /// <summary>
@@ -464,7 +464,7 @@ internal static class GameSettings
         }
         public static bool GetSystemSoundEnable()
         {
-            return Api.GameConfig != null && Api.GameConfig.TryGet(SystemConfigOption.IsSndSystem, out bool isSndSystem) && isSndSystem;
+            return Api.GameConfig != null && Api.GameConfig.TryGet(SystemConfigOption.IsSndSystem, out bool isSndSystem) && !isSndSystem;
         }
 
         /// <summary>
@@ -490,7 +490,7 @@ internal static class GameSettings
         }
         public static bool GetPerformanceSoundEnable()
         {
-            return Api.GameConfig != null && Api.GameConfig.TryGet(SystemConfigOption.IsSndPerform, out bool isSndPerform) && isSndPerform;
+            return Api.GameConfig != null && Api.GameConfig.TryGet(SystemConfigOption.IsSndPerform, out bool isSndPerform) && !isSndPerform;
         }
 
         /// <summary>
