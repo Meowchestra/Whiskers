@@ -105,7 +105,8 @@ internal static class GameSettings
             }
             else
             {
-                RestoreSettings(GameSettingsTables.Instance.CustomTable);
+                // Skip window resize to avoid black screen/corruption during restoration
+                RestoreSettings(GameSettingsTables.Instance.CustomTable, false);
             }
         }
 
@@ -167,9 +168,9 @@ internal static class GameSettings
         }
 
         /// <summary>
-        /// Restore the GFX settings
+        /// Restore the GFX settings with option to skip window resize
         /// </summary>
-        public static void RestoreSettings(GameSettingsVarTable? varTable)
+        public static void RestoreSettings(GameSettingsVarTable? varTable, bool includeWindowResize = true)
         {
             if (varTable == null || Api.GameConfig == null) return;
 
@@ -221,7 +222,12 @@ internal static class GameSettings
             Api.GameConfig.Set(SystemConfigOption.IsSoundAlways, varTable.AudioBackground);
             Api.GameConfig.Set(SystemConfigOption.IsSndMaster, varTable.SoundEnabled);
 
-            Misc.SetGameRenderSize(varTable.ScreenWidth, varTable.ScreenHeight, varTable.ScreenLeft, varTable.ScreenTop);
+            // Only resize window if requested (on initial login config load)
+            // this can cause black screen/temporary corruption artifacts
+            if (includeWindowResize)
+            {
+                Misc.SetGameRenderSize(varTable.ScreenWidth, varTable.ScreenHeight, varTable.ScreenLeft, varTable.ScreenTop);
+            }
         }
         #endregion
 
@@ -296,7 +302,7 @@ internal static class GameSettings
         /// <param name="enabled"></param>
         public static void SetBackgroundFpsEnable(bool enabled)
         {
-            Api.GameConfig?.Set(SystemConfigOption.FPSInActive, !enabled);
+            Api.GameConfig?.Set(SystemConfigOption.FPSInActive, enabled);
         }
         public static bool GetBackgroundFpsEnable()
         {
@@ -309,7 +315,7 @@ internal static class GameSettings
         /// <param name="enabled"></param>
         public static void SetBackgroundAudioEnable(bool enabled)
         {
-            Api.GameConfig?.Set(SystemConfigOption.IsSoundAlways, !enabled);
+            Api.GameConfig?.Set(SystemConfigOption.IsSoundAlways, enabled);
         }
         public static bool GetBackgroundAudioEnable()
         {

@@ -35,6 +35,7 @@ public class MainWindow : Window, IDisposable
     }
 
     private bool ManuallyDisconnected { get; set; }
+    private static bool? _lastKnownGfxState; // Track GFX state internally
 
     public MainWindow(Whiskers plugin, Configuration configuration) : base(
         "Whiskers", ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
@@ -73,7 +74,9 @@ public class MainWindow : Window, IDisposable
             Message    = Environment.ProcessId + ":" + Assembly.GetExecutingAssembly().GetName().Version
         });
 
-        Pipe.Write(MessageType.SetGfx, 0, GameSettings.AgentConfigSystem.CheckLowSettings(GameSettingsTables.Instance.CustomTable));
+        // Initialize tracked state if not set, otherwise use tracked state
+        _lastKnownGfxState ??= GameSettings.AgentConfigSystem.CheckLowSettings(GameSettingsTables.Instance.CustomTable);
+        Pipe.Write(MessageType.SetGfx, 0, _lastKnownGfxState.Value);
         Pipe.Write(MessageType.BackgroundFpsState, 0, GameSettings.AgentConfigSystem.GetBackgroundFpsEnable());
         Pipe.Write(MessageType.BackgroundAudioState, 0, GameSettings.AgentConfigSystem.GetBackgroundAudioEnable());
         Pipe.Write(MessageType.MasterSoundState, 0, GameSettings.AgentConfigSystem.GetMasterSoundEnable());
@@ -242,16 +245,41 @@ public class MainWindow : Window, IDisposable
                             FollowSystem.FollowCharacter(msg.Message.Split(';')[0], Convert.ToUInt16(msg.Message.Split(';')[1]));
                         break;
                     case MessageType.SetGfx:
-                        GameSettings.AgentConfigSystem.SetGfx(Convert.ToBoolean(msg.Message));
+                        if (msg.Message == "query")
+                        {
+                            _lastKnownGfxState ??= GameSettings.AgentConfigSystem.CheckLowSettings(GameSettingsTables.Instance.CustomTable);
+                            Pipe.Write(MessageType.SetGfx, 0, _lastKnownGfxState.Value);
+                        }
+                        else
+                        {
+                            var requestedState = Convert.ToBoolean(msg.Message);
+                            GameSettings.AgentConfigSystem.SetGfx(requestedState);
+                            _lastKnownGfxState = requestedState;
+                            Pipe.Write(MessageType.SetGfx, 0, requestedState);
+                        }
                         break;
                     case MessageType.SetWindowRenderSize:
                         Misc.SetGameRenderSize(Convert.ToUInt32(msg.Message.Split(';')[0]), Convert.ToUInt32(msg.Message.Split(';')[1]));
                         break;
                     case MessageType.BackgroundFpsState:
-                        GameSettings.AgentConfigSystem.SetBackgroundFpsEnable(Convert.ToBoolean(msg.Message));
+                        if (msg.Message == "query")
+                        {
+                            Pipe.Write(MessageType.BackgroundFpsState, 0, GameSettings.AgentConfigSystem.GetBackgroundFpsEnable());
+                        }
+                        else
+                        {
+                            GameSettings.AgentConfigSystem.SetBackgroundFpsEnable(Convert.ToBoolean(msg.Message));
+                        }
                         break;
                     case MessageType.BackgroundAudioState:
-                        GameSettings.AgentConfigSystem.SetBackgroundAudioEnable(Convert.ToBoolean(msg.Message));
+                        if (msg.Message == "query")
+                        {
+                            Pipe.Write(MessageType.BackgroundAudioState, 0, GameSettings.AgentConfigSystem.GetBackgroundAudioEnable());
+                        }
+                        else
+                        {
+                            GameSettings.AgentConfigSystem.SetBackgroundAudioEnable(Convert.ToBoolean(msg.Message));
+                        }
                         break;
                     case MessageType.MasterSoundState:
                         GameSettings.AgentConfigSystem.SetMasterSoundEnable(Convert.ToBoolean(msg.Message));
