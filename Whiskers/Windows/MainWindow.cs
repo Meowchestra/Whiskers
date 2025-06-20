@@ -247,8 +247,9 @@ public class MainWindow : Window, IDisposable
                     case MessageType.SetGfx:
                         if (msg.Message == "query")
                         {
-                            _lastKnownGfxState ??= GameSettings.AgentConfigSystem.CheckLowSettings(GameSettingsTables.Instance.CustomTable);
-                            Pipe.Write(MessageType.SetGfx, 0, _lastKnownGfxState.Value);
+                            var currentState = GameSettings.AgentConfigSystem.CheckLowSettings(GameSettingsTables.Instance.CustomTable);
+                            _lastKnownGfxState = currentState;
+                            Pipe.Write(MessageType.SetGfx, 0, currentState);
                         }
                         else
                         {
