@@ -268,7 +268,9 @@ public class MainWindow : Window, IDisposable
                         }
                         else
                         {
-                            GameSettings.AgentConfigSystem.SetBackgroundFpsEnable(Convert.ToBoolean(msg.Message));
+                            var requestedState = Convert.ToBoolean(msg.Message);
+                            GameSettings.AgentConfigSystem.SetBackgroundFpsEnable(requestedState);
+                            Pipe.Write(MessageType.BackgroundFpsState, 0, requestedState);
                         }
                         break;
                     case MessageType.BackgroundAudioState:
@@ -278,11 +280,15 @@ public class MainWindow : Window, IDisposable
                         }
                         else
                         {
-                            GameSettings.AgentConfigSystem.SetBackgroundAudioEnable(Convert.ToBoolean(msg.Message));
+                            var requestedAudioState = Convert.ToBoolean(msg.Message);
+                            GameSettings.AgentConfigSystem.SetBackgroundAudioEnable(requestedAudioState);
+                            Pipe.Write(MessageType.BackgroundAudioState, 0, requestedAudioState);
                         }
                         break;
                     case MessageType.MasterSoundState:
-                        GameSettings.AgentConfigSystem.SetMasterSoundEnable(Convert.ToBoolean(msg.Message));
+                        var requestedSoundState = Convert.ToBoolean(msg.Message);
+                        GameSettings.AgentConfigSystem.SetMasterSoundEnable(requestedSoundState);
+                        Pipe.Write(MessageType.MasterSoundState, 0, requestedSoundState);
                         break;
                     case MessageType.MasterVolume:
                         if (Convert.ToInt16(msg.Message) == -1)
