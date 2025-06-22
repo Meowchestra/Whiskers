@@ -35,7 +35,7 @@ public class MainWindow : Window, IDisposable
     }
 
     private bool ManuallyDisconnected { get; set; }
-    private static bool? _lastKnownGfxState; // Track GFX state internally
+    private bool? LastKnownGfxState { get; set; } // Track GFX state in memory for plugin session
 
     public MainWindow(Whiskers plugin, Configuration configuration) : base(
         "Whiskers", ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
@@ -58,7 +58,7 @@ public class MainWindow : Window, IDisposable
         Visible = false;
     }
 
-    private static void pipeClient_Connected(object? sender, ConnectionEventArgs<IpcMessage> e)
+    private void pipeClient_Connected(object? sender, ConnectionEventArgs<IpcMessage> e)
     {
         Pipe.Client?.WriteAsync(new IpcMessage
         {
@@ -73,10 +73,11 @@ public class MainWindow : Window, IDisposable
             MsgChannel = 0,
             Message    = Environment.ProcessId + ":" + Assembly.GetExecutingAssembly().GetName().Version
         });
-
-        // Initialize tracked state if not set, otherwise use tracked state
-        _lastKnownGfxState ??= GameSettings.AgentConfigSystem.CheckLowSettings(GameSettingsTables.Instance.CustomTable);
-        Pipe.Write(MessageType.SetGfx, 0, _lastKnownGfxState.Value);
+        
+        GameSettings.AgentConfigSystem.GetSettings(GameSettingsTables.Instance.CustomTable);
+        var currentGfxState = GameSettings.AgentConfigSystem.CheckLowSettings(GameSettingsTables.Instance.CustomTable);
+        LastKnownGfxState = currentGfxState;
+        Pipe.Write(MessageType.SetGfx, 0, currentGfxState);
         Pipe.Write(MessageType.BackgroundFpsState, 0, GameSettings.AgentConfigSystem.GetBackgroundFpsEnable());
         Pipe.Write(MessageType.BackgroundAudioState, 0, GameSettings.AgentConfigSystem.GetBackgroundAudioEnable());
         Pipe.Write(MessageType.MasterSoundState, 0, GameSettings.AgentConfigSystem.GetMasterSoundEnable());
@@ -247,15 +248,16 @@ public class MainWindow : Window, IDisposable
                     case MessageType.SetGfx:
                         if (msg.Message == "query")
                         {
+                            GameSettings.AgentConfigSystem.GetSettings(GameSettingsTables.Instance.CustomTable);
                             var currentState = GameSettings.AgentConfigSystem.CheckLowSettings(GameSettingsTables.Instance.CustomTable);
-                            _lastKnownGfxState = currentState;
+                            LastKnownGfxState = currentState;
                             Pipe.Write(MessageType.SetGfx, 0, currentState);
                         }
                         else
                         {
                             var requestedState = Convert.ToBoolean(msg.Message);
                             GameSettings.AgentConfigSystem.SetGfx(requestedState);
-                            _lastKnownGfxState = requestedState;
+                            LastKnownGfxState = requestedState;
                             Pipe.Write(MessageType.SetGfx, 0, requestedState);
                         }
                         break;

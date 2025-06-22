@@ -72,6 +72,7 @@ public sealed class GameSettingsTables
     private static readonly object Padlock = new();
     public GameSettingsVarTable? StartupTable { get; set; } = new();
     public GameSettingsVarTable? CustomTable { get; set; } = new();
+    public GameSettingsVarTable? BeforeLowGfxTable { get; set; } = new(); // Dedicated table for low graphics restoration
 
     private GameSettingsTables()
     {
@@ -100,13 +101,22 @@ internal static class GameSettings
         {
             if (low)
             {
-                GetSettings(GameSettingsTables.Instance.CustomTable);
+                // Only save current settings if we're not already in low graphics mode
+                // Use dedicated BeforeLowGfxTable that won't be corrupted by other operations
+                var currentGameState = new GameSettingsVarTable();
+                GetSettings(currentGameState);
+                if (!CheckLowSettings(currentGameState))
+                {
+                    // We're not in low graphics mode, so save current settings to BeforeLowGfxTable
+                    GetSettings(GameSettingsTables.Instance.BeforeLowGfxTable);
+                }
                 SetMinimalGfx();
             }
             else
             {
+                // Restore from dedicated BeforeLowGfxTable
                 // Skip window resize to avoid black screen/corruption during restoration
-                RestoreSettings(GameSettingsTables.Instance.CustomTable, false);
+                RestoreSettings(GameSettingsTables.Instance.BeforeLowGfxTable, false);
             }
         }
 
