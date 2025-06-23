@@ -15,7 +15,7 @@
 
     <Description>MeowMusic companion for enhanced functionality.</Description>
     <PackageProjectUrl>https://github.com/Meowchestra/Whiskers</PackageProjectUrl>
-    <Version>0.0.2.6</Version>
+    <Version>0.0.2.7</Version>
 
     <NoWarn>CA1416</NoWarn>
   </PropertyGroup>

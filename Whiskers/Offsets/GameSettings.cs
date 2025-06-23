@@ -257,9 +257,11 @@ internal static class GameSettings
         public static void SetMinimalGfx()
         {
             if (Api.GameConfig == null) return;
-            
+
             Api.GameConfig.Set(SystemConfigOption.Fps, 2u);
-            Api.GameConfig.Set(SystemConfigOption.FPSInActive, 0u);
+            //Api.GameConfig.Set(SystemConfigOption.FPSInActive, 0u);
+            // Note: FPSInActive (background FPS) is managed separately by the background FPS toggle system
+            // and should not be modified by the Low Graphics setting to avoid conflicts
             Api.GameConfig.Set(SystemConfigOption.DisplayObjectLimitType, 4u);
 
             Api.GameConfig.Set(SystemConfigOption.AntiAliasing_DX11, 0u);
