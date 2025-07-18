@@ -68,7 +68,7 @@ jobs:
         files: ./Whiskers/bin/x64/Release/Whiskers/latest.zip
 
     - name: Commit latest build
-      uses: stefanzweifel/git-auto-commit-action@v5
+      uses: stefanzweifel/git-auto-commit-action@v6
       with:
         commit_message: "Update Build"
         file_pattern: "./data/*.json"
