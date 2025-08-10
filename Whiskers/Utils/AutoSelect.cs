@@ -42,7 +42,7 @@ public static class AutoSelect
             if (!Listen)
                 return;
 
-            var addon = (AtkUnitBase*)addonInfo.Addon;
+            var addon = (AtkUnitBase*)addonInfo.Addon.Address;
             var text = addon->AtkValues[0].GetValueAsString();
             if (LangStrings.LfgPatterns.Any(r => r.IsMatch(text)) ||
                 LangStrings.LeavePartyPatterns.Any(r => r.IsMatch(text)) ||
