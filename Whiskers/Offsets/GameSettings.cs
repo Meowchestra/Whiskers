@@ -16,7 +16,8 @@ public class GameSettingsVarTable
 {
     public uint Fps { get; set; }
     public uint FPSInActive { get; set; }
-    public uint DisplayObjectLimitType { get; set; }
+    public uint DisplayObjectLimitType2 { get; set; }
+    public uint DynamicAroundRangeMode { get; set; }
 
     //DX11
     public uint AntiAliasing_DX11 { get; set; }
@@ -130,7 +131,8 @@ internal static class GameSettings
 
             Api.GameConfig.TryGet(SystemConfigOption.Fps, out uint fps); varTable.Fps = fps;
             Api.GameConfig.TryGet(SystemConfigOption.FPSInActive, out uint fpsInActive); varTable.FPSInActive = fpsInActive;
-            Api.GameConfig.TryGet(SystemConfigOption.DisplayObjectLimitType, out uint displayObjectLimitType); varTable.DisplayObjectLimitType = displayObjectLimitType;
+            Api.GameConfig.TryGet(SystemConfigOption.DisplayObjectLimitType2, out uint displayObjectLimitType2); varTable.DisplayObjectLimitType2 = displayObjectLimitType2;
+            Api.GameConfig.TryGet(SystemConfigOption.DynamicAroundRangeMode, out uint dynamicAroundRangeMode); varTable.DynamicAroundRangeMode = dynamicAroundRangeMode;
 
             Api.GameConfig.TryGet(SystemConfigOption.AntiAliasing_DX11, out uint antiAliasingDx11); varTable.AntiAliasing_DX11 = antiAliasingDx11;
             Api.GameConfig.TryGet(SystemConfigOption.TextureAnisotropicQuality_DX11, out uint textureAnisotropicQualityDx11); varTable.TextureAnisotropicQuality_DX11 = textureAnisotropicQualityDx11;
@@ -186,8 +188,9 @@ internal static class GameSettings
 
             Api.GameConfig.Set(SystemConfigOption.Fps, varTable.Fps);
             Api.GameConfig.Set(SystemConfigOption.FPSInActive, varTable.FPSInActive);
-            Api.GameConfig.Set(SystemConfigOption.DisplayObjectLimitType, varTable.DisplayObjectLimitType);
-
+            Api.GameConfig.Set(SystemConfigOption.DisplayObjectLimitType2, varTable.DisplayObjectLimitType2);
+            Api.GameConfig.Set(SystemConfigOption.DynamicAroundRangeMode, varTable.DynamicAroundRangeMode);
+            
             Api.GameConfig.Set(SystemConfigOption.AntiAliasing_DX11, varTable.AntiAliasing_DX11);
             Api.GameConfig.Set(SystemConfigOption.TextureAnisotropicQuality_DX11, varTable.TextureAnisotropicQuality_DX11);
             Api.GameConfig.Set(SystemConfigOption.SSAO_DX11, varTable.SSAO_DX11);
@@ -248,7 +251,7 @@ internal static class GameSettings
         /// <returns></returns>
         public static bool CheckLowSettings(GameSettingsVarTable? varTable)
         {
-            return varTable is { DisplayObjectLimitType: 4, ReflectionType_DX11: 0, GrassQuality_DX11: 0, SSAO_DX11: 0 };
+            return varTable is { DisplayObjectLimitType2: 5, ReflectionType_DX11: 0, GrassQuality_DX11: 0, SSAO_DX11: 0 };
         }
 
         /// <summary>
@@ -262,7 +265,8 @@ internal static class GameSettings
             //Api.GameConfig.Set(SystemConfigOption.FPSInActive, 0u);
             // Note: FPSInActive (background FPS) is managed separately by the background FPS toggle system
             // and should not be modified by the Low Graphics setting to avoid conflicts
-            Api.GameConfig.Set(SystemConfigOption.DisplayObjectLimitType, 4u);
+            Api.GameConfig.Set(SystemConfigOption.DisplayObjectLimitType2, 5u);
+            Api.GameConfig.Set(SystemConfigOption.DynamicAroundRangeMode, 0u);
 
             Api.GameConfig.Set(SystemConfigOption.AntiAliasing_DX11, 0u);
             Api.GameConfig.Set(SystemConfigOption.TextureAnisotropicQuality_DX11, 0u);
