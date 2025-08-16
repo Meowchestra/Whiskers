@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright(c) 2025 Meowchestra, GiR-Zippo
  * Licensed under the GPL v3 license. See https://github.com/Meowchestra/MeowMusic/blob/main/LICENSE for full license information.
  */
@@ -414,8 +414,8 @@ public class MainWindow : Window, IDisposable
 
     public override void Draw()
     {
-        ImGui.SetNextWindowSize(new Vector2(250, 150), ImGuiCond.FirstUseEver);
-        ImGui.SetNextWindowSizeConstraints(new Vector2(250, 150), new Vector2(float.MaxValue, float.MaxValue));
+        ImGui.SetNextWindowSize(new Vector2(300, 250));
+        ImGui.SetNextWindowSizeConstraints(new Vector2(300, 250), new Vector2(float.MaxValue, float.MaxValue));
         if (ImGui.Begin("Whiskers", ref _visible))
         {
             if (ImGui.BeginTabBar("WhiskersTabs"))
@@ -467,7 +467,7 @@ public class MainWindow : Window, IDisposable
         ImGui.Text($"Is connected: {Pipe.Client is { IsConnected: true }}");
     }
 
-    private static void DrawSettingsTab()
+    private void DrawSettingsTab()
     {
         ImGui.Text("Player Configuration");
         ImGui.BeginGroup();
@@ -476,10 +476,67 @@ public class MainWindow : Window, IDisposable
             GameSettings.AgentConfigSystem.SaveConfig();
         }
         ImGui.SameLine();
+        if (ImGui.Button("Load"))
+        {
+            GameSettings.AgentConfigSystem.LoadConfig();
+        }
+        ImGui.SameLine();
         if (ImGui.Button("Erase"))
         {
             File.Delete($"{Api.PluginInterface?.GetPluginConfigDirectory()}\\{Api.ClientState?.LocalPlayer?.Name}-({Api.ClientState?.LocalPlayer?.HomeWorld.ValueNullable?.Name.ToDalamudString().TextValue}).json");
         }
+        ImGui.SameLine();
+        if (ImGui.Button("Restore"))
+        {
+            GameSettings.AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance.StartupTable, true, Configuration.PreserveFullscreenResolution);
+        }
         ImGui.EndGroup();
+
+        ImGui.Separator();
+        ImGui.Text("Graphics Settings");
+        
+        var loadOnLogin = Configuration.LoadGraphicsOnLogin;
+        if (ImGui.Checkbox("Load graphics on login", ref loadOnLogin))
+        {
+            Configuration.LoadGraphicsOnLogin = loadOnLogin;
+            Configuration.Save();
+        }
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip("When enabled, saved graphics settings will automatically be loaded when logging in.");
+        }
+
+        var restoreOnLogout = Configuration.RestoreGraphicsOnLogout;
+        if (ImGui.Checkbox("Restore graphics on logout", ref restoreOnLogout))
+        {
+            Configuration.RestoreGraphicsOnLogout = restoreOnLogout;
+            Configuration.Save();
+        }
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip("When enabled, graphics settings will be restored to startup values when logging out.\nKeep disabled if causing crashes.");
+        }
+
+        var restoreOnPluginUnload = Configuration.RestoreGraphicsOnPluginUnload;
+        if (ImGui.Checkbox("Restore graphics on plugin shutdown", ref restoreOnPluginUnload))
+        {
+            Configuration.RestoreGraphicsOnPluginUnload = restoreOnPluginUnload;
+            Configuration.Save();
+        }
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip("When enabled, graphics settings will be restored to startup values when the plugin is disabled or unloaded.");
+        }
+
+        var skipWindowPositioning = Configuration.PreserveFullscreenResolution;
+        if (ImGui.Checkbox("Preserve fullscreen resolution", ref skipWindowPositioning))
+        {
+            Configuration.PreserveFullscreenResolution = skipWindowPositioning;
+            Configuration.Save();
+        }
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip("When enabled, window position, size, & resolution will be skipped during graphics handling if the game is fullscreen.\nThis prevents the window from being moved out of the top-snapped state.");
+        }
     }
 }

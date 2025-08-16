@@ -71,17 +71,17 @@ public unsafe class OverrideMovement : IDisposable
         {
             var rmiWalkIsInputEnabled1Addr = Api.SigScanner.ScanText("E8 ?? ?? ?? ?? 84 C0 75 10 38 43 3C");
             var rmiWalkIsInputEnabled2Addr = Api.SigScanner.ScanText("E8 ?? ?? ?? ?? 84 C0 75 03 88 47 3F");
-            Api.PluginLog?.Information($"RMIWalkIsInputEnabled1 address: 0x{rmiWalkIsInputEnabled1Addr:X}");
-            Api.PluginLog?.Information($"RMIWalkIsInputEnabled2 address: 0x{rmiWalkIsInputEnabled2Addr:X}");
+            Api.PluginLog?.Debug($"RMIWalkIsInputEnabled1 address: 0x{rmiWalkIsInputEnabled1Addr:X}");
+            Api.PluginLog?.Debug($"RMIWalkIsInputEnabled2 address: 0x{rmiWalkIsInputEnabled2Addr:X}");
             _rmiWalkIsInputEnabled1 = Marshal.GetDelegateForFunctionPointer<RmiWalkIsInputEnabled>(rmiWalkIsInputEnabled1Addr);
             _rmiWalkIsInputEnabled2 = Marshal.GetDelegateForFunctionPointer<RmiWalkIsInputEnabled>(rmiWalkIsInputEnabled2Addr);
         }
 
         Api.GameInteropProvider?.InitializeFromAttributes(this);
         if (_rmiWalkHook != null) 
-            Api.PluginLog?.Information($"RMIWalk address: 0x{_rmiWalkHook.Address:X}");
+            Api.PluginLog?.Debug($"RMIWalk address: 0x{_rmiWalkHook.Address:X}");
         if (_rmiFlyHook != null)
-            Api.PluginLog?.Information($"RMIFly address: 0x{_rmiFlyHook.Address:X}");
+            Api.PluginLog?.Debug($"RMIFly address: 0x{_rmiFlyHook.Address:X}");
         if (Api.GameConfig != null)
             Api.GameConfig.UiControlChanged += OnConfigChanged;
         UpdateLegacyMode();
@@ -147,6 +147,6 @@ public unsafe class OverrideMovement : IDisposable
     {
         if (Api.GameConfig != null)
             _legacyMode = Api.GameConfig.UiControl.TryGetUInt("MoveMode", out var mode) && mode == 1;
-        Api.PluginLog?.Info($"Legacy mode is now {(_legacyMode ? "enabled" : "disabled")}");
+        Api.PluginLog?.Debug($"Legacy mode is now {(_legacyMode ? "enabled" : "disabled")}");
     }
 }

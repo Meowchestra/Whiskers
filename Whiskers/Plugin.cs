@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright(c) 2025 Meowchestra, GiR-Zippo
  * Licensed under the GPL v3 license. See https://github.com/Meowchestra/MeowMusic/blob/main/LICENSE for full license information.
  */
@@ -78,12 +78,20 @@ public class Whiskers : IDalamudPlugin
 
     private static void OnLogin()
     {
-        AgentConfigSystem.LoadConfig();
+        var config = PluginInterface?.GetPluginConfig() as Configuration ?? new Configuration();
+        if (config.LoadGraphicsOnLogin)
+        {
+            AgentConfigSystem.LoadConfig();
+        }
     }
-    
+
     private static void OnLogout(int type, int code)
     {
-        AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance.StartupTable);
+        var config = PluginInterface?.GetPluginConfig() as Configuration ?? new Configuration();
+        if (config.RestoreGraphicsOnLogout)
+        {
+            AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance.StartupTable, true, config.PreserveFullscreenResolution);
+        }
     }
 
     public void Dispose()
@@ -97,7 +105,12 @@ public class Whiskers : IDalamudPlugin
             Api.ClientState.Logout -= OnLogout;
         }
 
-        AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance.StartupTable);
+        // Only restore graphics on dispose if the config option is enabled
+        var config = PluginInterface?.GetPluginConfig() as Configuration ?? new Configuration();
+        if (config.RestoreGraphicsOnPluginUnload)
+        {
+            AgentConfigSystem.RestoreSettings(GameSettingsTables.Instance.StartupTable, true, config.PreserveFullscreenResolution);
+        }
 
         // Force dispose the EnsembleManager even if null
         if (EnsembleManager != null)

@@ -52,7 +52,7 @@ public unsafe class CameraUtil : IDisposable
     {
         Api.GameInteropProvider?.InitializeFromAttributes(this);
         if (_rmiCameraHook != null)
-            Api.PluginLog?.Information($"RMICamera address: 0x{_rmiCameraHook.Address:X}");
+            Api.PluginLog?.Debug($"RMICamera address: 0x{_rmiCameraHook.Address:X}");
     }
 
     public void Dispose()

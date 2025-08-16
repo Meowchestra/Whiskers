@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright(c) 2025 Meowchestra, GiR-Zippo, Ori @MidiBard2
  * Licensed under the GPL v3 license. See https://github.com/Meowchestra/MeowMusic/blob/main/LICENSE for full license information.
  */
@@ -182,7 +182,7 @@ internal static class GameSettings
         /// <summary>
         /// Restore the GFX settings with option to skip window resize
         /// </summary>
-        public static void RestoreSettings(GameSettingsVarTable? varTable, bool includeWindowResize = true)
+        public static void RestoreSettings(GameSettingsVarTable? varTable, bool includeWindowResize = true, bool preserveFullscreenResolution = true)
         {
             if (varTable == null || Api.GameConfig == null) return;
 
@@ -239,7 +239,17 @@ internal static class GameSettings
             // this can cause black screen/temporary corruption artifacts
             if (includeWindowResize)
             {
-                Misc.SetGameRenderSize(varTable.ScreenWidth, varTable.ScreenHeight, varTable.ScreenLeft, varTable.ScreenTop);
+                // Use Framework.RunOnTick to defer DirectX operations until safe
+                // This ensures we're not manipulating DirectX during logout/shutdown
+                Api.Framework?.RunOnTick(() =>
+                {
+                    // Only proceed if we're still logged in and not shutting down
+                    if (Api.ClientState?.IsLoggedIn == true && !Api.Framework.IsFrameworkUnloading)
+                    {
+                        Misc.SetGameRenderSize(varTable.ScreenWidth, varTable.ScreenHeight, varTable.ScreenLeft, varTable.ScreenTop, 
+                            skipDirectXOperations: false, skipWindowPositioning: false, preserveFullscreenResolution: preserveFullscreenResolution);
+                    }
+                }, delayTicks: 1); // Wait 1 tick to ensure stable state
             }
         }
         #endregion
@@ -307,7 +317,18 @@ internal static class GameSettings
             Api.GameConfig.Set(SystemConfigOption.ScreenWidth, 1024u);
             Api.GameConfig.Set(SystemConfigOption.ScreenHeight, 720u);
 
-            //Misc.SetGameRenderSize(1024, 720); // Causes crash, disabled for now?
+            // TODO: Currently disabled, only set graphic options not windows resolution / size.
+            // // Apply the resolution change safely using Framework.RunOnTick
+            // // This ensures DirectX operations happen at a safe time, just like RestoreSettings
+            // Api.Framework?.RunOnTick(() =>
+            // {
+            //     // Only proceed if we're still logged in and not shutting down
+            //     if (Api.ClientState?.IsLoggedIn == true && !Api.Framework.IsFrameworkUnloading)
+            //     {
+            //         // Skip window positioning for SetMinimalGfx - only change internal resolution
+            //         Misc.SetGameRenderSize(1024, 720, skipWindowPositioning: true);
+            //     }
+            // }, delayTicks: 1); // Wait 1 tick to ensure stable state
         }
         #endregion
 
@@ -543,8 +564,19 @@ internal static class GameSettings
             if (string.IsNullOrEmpty(file) || !File.Exists(file))
                 return;
 
-            GameSettingsTables.Instance.CustomTable = JsonConvert.DeserializeObject<GameSettingsVarTable>(File.ReadAllText(file));
-            RestoreSettings(GameSettingsTables.Instance.CustomTable);
+            try
+            {
+                var jsonContent = File.ReadAllText(file);
+                GameSettingsTables.Instance.CustomTable = JsonConvert.DeserializeObject<GameSettingsVarTable>(jsonContent);
+                
+                // Get the configuration to check if we should skip window positioning when fullscreen
+                var config = Api.PluginInterface?.GetPluginConfig() as Config.Configuration ?? new Config.Configuration();
+                RestoreSettings(GameSettingsTables.Instance.CustomTable, true, config.PreserveFullscreenResolution);
+            }
+            catch (Exception ex)
+            {
+                Api.PluginLog?.Error($"LoadConfig: Failed to load config - {ex.Message}");
+            }
         }
 
         public static void SaveConfig()

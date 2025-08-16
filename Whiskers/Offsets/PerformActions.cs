@@ -16,7 +16,7 @@ public class PerformActions
 
     private static void DoPerformAction(uint instrumentId)
     {
-        Api.PluginLog?.Information($"[DoPerformAction] instrumentId: {instrumentId}");
+        Api.PluginLog?.Debug($"[DoPerformAction] instrumentId: {instrumentId}");
         PerformAction(Offsets.PerformanceStructPtr, instrumentId);
     }
 
