@@ -1,4 +1,4 @@
-﻿<Project Sdk="Dalamud.NET.SDK/13.0.0">
+﻿<Project Sdk="Dalamud.NET.SDK/13.1.0">
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <LangVersion>latest</LangVersion>
@@ -15,7 +15,7 @@
 
     <Description>MeowMusic companion for enhanced functionality.</Description>
     <PackageProjectUrl>https://github.com/Meowchestra/Whiskers</PackageProjectUrl>
-    <Version>0.0.2.9</Version>
+    <Version>0.0.2.10</Version>
 
     <NoWarn>CA1416</NoWarn>
   </PropertyGroup>
