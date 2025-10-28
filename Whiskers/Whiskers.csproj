@@ -15,7 +15,7 @@
 
     <Description>MeowMusic companion for enhanced functionality.</Description>
     <PackageProjectUrl>https://github.com/Meowchestra/Whiskers</PackageProjectUrl>
-    <Version>0.0.2.10</Version>
+    <Version>0.0.2.11</Version>
 
     <NoWarn>CA1416</NoWarn>
   </PropertyGroup>
@@ -36,6 +36,8 @@
   <ItemGroup>
     <PackageReference Include="H.Formatters.Newtonsoft.Json" Version="15.0.1-dev.3" />
     <PackageReference Include="H.Pipes.AccessControl" Version="15.0.1-dev.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Update="DotNet.ReproducibleBuilds" Version="1.2.39" />
   </ItemGroup>
 
   <ItemGroup>

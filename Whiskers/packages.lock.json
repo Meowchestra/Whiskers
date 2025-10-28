@@ -10,9 +10,9 @@
       },
       "DotNet.ReproducibleBuilds": {
         "type": "Direct",
-        "requested": "[1.2.25, )",
-        "resolved": "1.2.25",
-        "contentHash": "xCXiw7BCxHJ8pF6wPepRUddlh2dlQlbr81gXA72hdk4FLHkKXas7EH/n+fk5UCA/YfMqG1Z6XaPiUjDbUNBUzg=="
+        "requested": "[1.2.39, )",
+        "resolved": "1.2.39",
+        "contentHash": "fcFN01tDTIQqDuTwr1jUQK/geofiwjG5DycJQOnC72i1SsLAk1ELe+apBOuZ11UMQG8YKFZG1FgvjZPbqHyatg=="
       },
       "H.Formatters.Newtonsoft.Json": {
         "type": "Direct",
@@ -33,6 +33,12 @@
           "H.Pipes": "15.0.1-dev.3",
           "NamedPipeServerStream.NetFrameworkVersion": "1.1.13"
         }
+      },
+      "Newtonsoft.Json": {
+        "type": "Direct",
+        "requested": "[13.0.4, )",
+        "resolved": "13.0.4",
+        "contentHash": "pdgNNMai3zv51W5aq268sujXUyx7SNdE2bj1wZcWjAQrKMFZV260lbqYop1d2GM67JI1huLRwxo9ZqnfF/lC6A=="
       },
       "H.Formatters": {
         "type": "Transitive",
@@ -59,11 +65,6 @@
         "type": "Transitive",
         "resolved": "1.1.13",
         "contentHash": "F/j8Vs2CkK9BT6gOAJNmcUuf1DfCB7jF+rg6yiYMV1au8WDpuaasaehph/FFfN/2H+8hkXptEDWo1Ts24EVmPg=="
-      },
-      "Newtonsoft.Json": {
-        "type": "Transitive",
-        "resolved": "13.0.3",
-        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
       }
     }
   }
