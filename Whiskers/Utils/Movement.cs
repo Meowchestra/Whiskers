@@ -125,7 +125,7 @@ public unsafe class OverrideMovement : IDisposable
 
     private (Angle h, Angle v)? DirectionToDestination(bool allowVertical)
     {
-        var player = Api.ClientState?.LocalPlayer;
+        var player = Api.GetLocalPlayer();
         if (player == null)
             return null;
 

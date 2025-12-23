@@ -483,7 +483,28 @@ public class MainWindow : Window, IDisposable
         ImGui.SameLine();
         if (ImGui.Button("Erase"))
         {
-            File.Delete($"{Api.PluginInterface?.GetPluginConfigDirectory()}\\{Api.ClientState?.LocalPlayer?.Name}-({Api.ClientState?.LocalPlayer?.HomeWorld.ValueNullable?.Name.ToDalamudString().TextValue}).json");
+            var playerState = Api.PlayerState;
+            var pluginInterface = Api.PluginInterface;
+
+            if (playerState == null || pluginInterface == null)
+                return;
+
+            var worldName = playerState.HomeWorld.ValueNullable?.Name
+                .ToDalamudString()
+                .TextValue;
+
+            if (string.IsNullOrEmpty(worldName))
+                return;
+
+            var configDir = pluginInterface.GetPluginConfigDirectory();
+            var filePath =
+                Path.Combine(
+                    configDir,
+                    $"{playerState.CharacterName}-({worldName}).json"
+                );
+
+            if (File.Exists(filePath))
+                File.Delete(filePath);
         }
         ImGui.SameLine();
         if (ImGui.Button("Restore"))

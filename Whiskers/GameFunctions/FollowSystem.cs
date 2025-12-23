@@ -140,7 +140,7 @@ public class FollowSystemInternal : IDisposable
         }
 
         //If LocalPlayer object is null return (we are not logged in or between zones etc..)
-        if (Api.ClientState?.LocalPlayer == null) return;
+        if (Api.GetLocalPlayer() == null) return;
 
         //If followTarget is not empty GetFollowTargetObject then set our player variable and calculate the distance
         //between player and followTargetObject and if distance > followDistance move to the followTargetObject
@@ -148,7 +148,7 @@ public class FollowSystemInternal : IDisposable
         {
             try
             {
-                var player = Api.ClientState.LocalPlayer;
+                var player = Api.GetLocalPlayer();
                 if (!GetFollowTargetObject())
                     return;
 

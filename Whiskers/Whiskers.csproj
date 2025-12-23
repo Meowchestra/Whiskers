@@ -1,6 +1,6 @@
-﻿<Project Sdk="Dalamud.NET.SDK/13.1.0">
+﻿<Project Sdk="Dalamud.NET.SDK/14.0.1">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Platforms>x64</Platforms>
     <PlatformTarget>x64</PlatformTarget>
@@ -15,7 +15,7 @@
 
     <Description>MeowMusic companion for enhanced functionality.</Description>
     <PackageProjectUrl>https://github.com/Meowchestra/Whiskers</PackageProjectUrl>
-    <Version>0.0.2.11</Version>
+    <Version>0.0.3.1</Version>
 
     <NoWarn>CA1416</NoWarn>
   </PropertyGroup>
@@ -45,7 +45,7 @@
   </ItemGroup>
 
   <Target Name="PackagePlugin" Condition="'$(Configuration)' == 'Release'">
-    <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" Exclude="*.pdb;" AssemblyName="$(AssemblyName)" />
+    <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" Exclude="*.pdb;" AssemblyName="$(AssemblyName)" MakeZip="true" />
   </Target>
 
 </Project>

@@ -6,6 +6,7 @@
 using Dalamud.Game.Config;
 using Dalamud.Utility;
 using Newtonsoft.Json;
+using Whiskers.Config;
 using Whiskers.Utils;
 
 namespace Whiskers.Offsets;
@@ -570,7 +571,7 @@ internal static class GameSettings
                 GameSettingsTables.Instance.CustomTable = JsonConvert.DeserializeObject<GameSettingsVarTable>(jsonContent);
                 
                 // Get the configuration to check if we should skip window positioning when fullscreen
-                var config = Api.PluginInterface?.GetPluginConfig() as Config.Configuration ?? new Config.Configuration();
+                var config = Api.PluginInterface?.GetPluginConfig() as Configuration ?? new Configuration();
                 RestoreSettings(GameSettingsTables.Instance.CustomTable, true, config.PreserveFullscreenResolution);
             }
             catch (Exception ex)

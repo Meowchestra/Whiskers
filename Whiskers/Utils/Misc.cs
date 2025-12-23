@@ -145,32 +145,37 @@ internal static class Misc
 
     internal static IGameObject? GetNearestEntrance(out float distance)
     {
+        distance = float.MaxValue;
+
+        if (Api.Objects == null)
+            return null;
+
+        var player = Api.GetLocalPlayer();
+        if (player == null)
+            return null;
+
+        var playerPos = player.Position;
+
+        IGameObject? nearest = null;
         var currentDistance = float.MaxValue;
-        IGameObject? currentObject = null;
 
-        if (Api.Objects != null)
+        foreach (var x in Api.Objects)
         {
-            foreach (var x in Api.Objects)
-            {
-                if (x.IsTargetable && LangStrings.Entrance.Any(r => r.IsMatch(x.Name.TextValue)))
-                {
-                    if (Api.ClientState?.LocalPlayer != null)
-                    {
-                        var position = Vector3.Distance(Api.ClientState.LocalPlayer.Position, x.Position);
-                        if (position < currentDistance)
-                        {
-                            currentDistance = position;
-                            currentObject   = x;
+            if (!x.IsTargetable)
+                continue;
 
-                            distance = currentDistance;
-                            return currentObject;
-                        }
-                    }
-                }
+            if (!LangStrings.Entrance.Any(r => r.IsMatch(x.Name.TextValue)))
+                continue;
+
+            var dist = Vector3.Distance(playerPos, x.Position);
+            if (dist < currentDistance)
+            {
+                currentDistance = dist;
+                nearest         = x;
             }
         }
 
         distance = currentDistance;
-        return currentObject;
+        return nearest;
     }
 }
