@@ -18,12 +18,10 @@ _Personal fork based on <a href="https://github.com/GiR-Zippo/LightAmp">LightAmp
     And much more!
 </details>
 
-For extended controls, <a href="https://github.com/Meowchestra/ToyBox">ToyBox</a> can be used in conjunction with Whiskers.
-
 ## How to Install
 
 **Dalamud Settings　➜　Experimental　➜　Custom Plugin Repositories**
 
 Add the following URL repository and search for `Whiskers` in **Dalamud Plugins**.
 
-> https://raw.githubusercontent.com/Meowchestra/xivplugins/main/repo.json
+> https://raw.githubusercontent.com/Meowchestra/Whiskers/main/data/pluginmaster.json
