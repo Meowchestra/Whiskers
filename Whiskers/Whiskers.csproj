@@ -37,7 +37,7 @@
     <PackageReference Include="H.Formatters.Newtonsoft.Json" Version="15.0.1-dev.3" />
     <PackageReference Include="H.Pipes.AccessControl" Version="15.0.1-dev.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Update="DotNet.ReproducibleBuilds" Version="1.2.39" />
+    <PackageReference Update="DotNet.ReproducibleBuilds" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
