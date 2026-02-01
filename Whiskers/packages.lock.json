@@ -10,9 +10,9 @@
       },
       "DotNet.ReproducibleBuilds": {
         "type": "Direct",
-        "requested": "[2.0.1, )",
-        "resolved": "2.0.1",
-        "contentHash": "8rbExxnDIsdpJ16tmX7jwXZYA864OXQhAvQRPX+LLaxDPI1eCTWg6AZP85dJrOLv1Ib9fp0KGKY+zHgnSBSamQ=="
+        "requested": "[2.0.2, )",
+        "resolved": "2.0.2",
+        "contentHash": "VaHoEN6YHp0jXucxm67vfuRy8zo9ufiKSuaZ4ZudRi8xmWcEFMKxfCsg2nvYNvdISFTURDu+IHqADGh53+Bamw=="
       },
       "H.Formatters.Newtonsoft.Json": {
         "type": "Direct",
@@ -36,9 +36,9 @@
       },
       "Newtonsoft.Json": {
         "type": "Direct",
-        "requested": "[13.0.4, )",
-        "resolved": "13.0.4",
-        "contentHash": "pdgNNMai3zv51W5aq268sujXUyx7SNdE2bj1wZcWjAQrKMFZV260lbqYop1d2GM67JI1huLRwxo9ZqnfF/lC6A=="
+        "requested": "[13.0.5-beta1, )",
+        "resolved": "13.0.5-beta1",
+        "contentHash": "cGxikAY78u8CPfIT7mkICvI2ZNL7oDsC+DzgVWxtU5DmNhF2qDcU3YheDitdO9TKIra6Y5rHRD2T7oEexbAbLA=="
       },
       "H.Formatters": {
         "type": "Transitive",
