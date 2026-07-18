@@ -4,15 +4,15 @@
     "net10.0": {
       "DalamudPackager": {
         "type": "Direct",
-        "requested": "[14.0.1, )",
-        "resolved": "14.0.1",
-        "contentHash": "y0WWyUE6dhpGdolK3iKgwys05/nZaVf4ZPtIjpLhJBZvHxkkiE23zYRo7K7uqAgoK/QvK5cqF6l3VG5AbgC6KA=="
+        "requested": "[15.0.0, )",
+        "resolved": "15.0.0",
+        "contentHash": "411vwC8/X8Z/sQ2TI6v3SvOn66xFPeOjFn3Zn+h0d3Ox2t1kFm66AhDvmx/qcMwVrR+Hidxj0dadpQ2dgyXMBQ=="
       },
       "DotNet.ReproducibleBuilds": {
         "type": "Direct",
-        "requested": "[2.0.2, )",
-        "resolved": "2.0.2",
-        "contentHash": "VaHoEN6YHp0jXucxm67vfuRy8zo9ufiKSuaZ4ZudRi8xmWcEFMKxfCsg2nvYNvdISFTURDu+IHqADGh53+Bamw=="
+        "requested": "[2.0.5, )",
+        "resolved": "2.0.5",
+        "contentHash": "8LrlvI1KpjjJ4VGSqZ16yoOCKlQnYS+Y8rYNifNrscmVh5anJcF9E4e0NiDP30BHBMUbkoJ5KdcxoRWM7Pz9Aw=="
       },
       "H.Formatters.Newtonsoft.Json": {
         "type": "Direct",
