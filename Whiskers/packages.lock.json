@@ -16,12 +16,12 @@
       },
       "H.Formatters.Newtonsoft.Json": {
         "type": "Direct",
-        "requested": "[15.0.1-dev.3, )",
-        "resolved": "15.0.1-dev.3",
-        "contentHash": "Y/98ATydy94tZAdA1AsLx7EcWc/WGDwOq7C0zLo1XijlR0PtT9G5s79RDJsJV1CmFobM/e+qUIrbZkU0uHAYkA==",
+        "requested": "[15.0.1-dev.81, )",
+        "resolved": "15.0.1-dev.81",
+        "contentHash": "FMy68o804uFoEKNbCqvWVBUYlAHJGVJiasJEoNxPmlIQEmFNdzxbSNZgCB881p1cvAyH/r1ubjgGW8A01SDmzA==",
         "dependencies": {
-          "H.Formatters": "15.0.1-dev.3",
-          "Newtonsoft.Json": "13.0.3"
+          "H.Formatters": "15.0.1-dev.81",
+          "Newtonsoft.Json": "13.0.4"
         }
       },
       "H.Pipes.AccessControl": {
@@ -42,8 +42,8 @@
       },
       "H.Formatters": {
         "type": "Transitive",
-        "resolved": "15.0.1-dev.3",
-        "contentHash": "JuuRez804Xz4ooqxG1e9C+y9fslR8nAPvmXNJa4KbHnVyt6FwAgEJhXNh3XeapxqXhB1HFHc1DQk3oHc34cHhA=="
+        "resolved": "15.0.1-dev.81",
+        "contentHash": "NaZ3CkrcPukz8jaY2ivvt21RLcz1PMhjyz1COZ6EodlIeiD3rQRhR7OTDFLW411UEg42CLLN0e9YZvXFWV9Ppg=="
       },
       "H.Formatters.System.Text.Json": {
         "type": "Transitive",
