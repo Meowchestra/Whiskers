@@ -26,11 +26,11 @@
       },
       "H.Pipes.AccessControl": {
         "type": "Direct",
-        "requested": "[15.0.1-dev.3, )",
-        "resolved": "15.0.1-dev.3",
-        "contentHash": "yCKepyya6KqDStHAawRpe/pg4ftVGcRSZajQkEHUoN1sslwdApaHaKgU+u1mGI2fsbFSyK6n+5b7QVQwsodbkg==",
+        "requested": "[15.0.1-dev.81, )",
+        "resolved": "15.0.1-dev.81",
+        "contentHash": "2sQsUdod3qAVOQNaUV/kRchq1UfqNrVN3ea5oxxqBe2G/RqMKv8/qMDFgtCppN2Rg5JTxtYk/zOxE8G/UKnhzw==",
         "dependencies": {
-          "H.Pipes": "15.0.1-dev.3",
+          "H.Pipes": "15.0.1-dev.81",
           "NamedPipeServerStream.NetFrameworkVersion": "1.1.13"
         }
       },
@@ -42,23 +42,23 @@
       },
       "H.Formatters": {
         "type": "Transitive",
-        "resolved": "15.0.1-dev.3",
-        "contentHash": "JuuRez804Xz4ooqxG1e9C+y9fslR8nAPvmXNJa4KbHnVyt6FwAgEJhXNh3XeapxqXhB1HFHc1DQk3oHc34cHhA=="
+        "resolved": "15.0.1-dev.81",
+        "contentHash": "NaZ3CkrcPukz8jaY2ivvt21RLcz1PMhjyz1COZ6EodlIeiD3rQRhR7OTDFLW411UEg42CLLN0e9YZvXFWV9Ppg=="
       },
       "H.Formatters.System.Text.Json": {
         "type": "Transitive",
-        "resolved": "15.0.1-dev.3",
-        "contentHash": "+cPkcaERvi7CL35/z6BytxjtkRt05hpnGbxnB25Fq8WRT7w0opgbsQKZiUq2/mfuBSSxJFo87Kdghu/jGX4EPQ==",
+        "resolved": "15.0.1-dev.81",
+        "contentHash": "LnitJLtLxXUSbW2xOyO4qEc9DlaWUfddInQkQMe77DnQ/65SZptKUHluKNcF6TrtWpZyaKVdnVceodhmEf0MXQ==",
         "dependencies": {
-          "H.Formatters": "15.0.1-dev.3"
+          "H.Formatters": "15.0.1-dev.81"
         }
       },
       "H.Pipes": {
         "type": "Transitive",
-        "resolved": "15.0.1-dev.3",
-        "contentHash": "T1tKro9/+P0gIRr5K+7i6ijJ56VRaUqe5UmQodhKjSUFWUl1lpH9InB6g9peSEmRos7s/6O17WYaUSA80LvciA==",
+        "resolved": "15.0.1-dev.81",
+        "contentHash": "NZ+SZFHYKt1p+8S4w0a4DOHXXVRskMfhksCwDJm9eAAAx6NYvR5UF2C7mB7Sy3sQ/CMrDhaAUaCYA4VMnVw8UA==",
         "dependencies": {
-          "H.Formatters.System.Text.Json": "15.0.1-dev.3"
+          "H.Formatters.System.Text.Json": "15.0.1-dev.81"
         }
       },
       "NamedPipeServerStream.NetFrameworkVersion": {
